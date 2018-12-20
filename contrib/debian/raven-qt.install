@@ -1,0 +1,6 @@
+usr/local/bin/placeh-qt usr/bin
+share/pixmaps/placeh32.xpm usr/share/pixmaps
+share/pixmaps/placeh16.xpm usr/share/pixmaps
+share/pixmaps/placeh128.png usr/share/pixmaps
+debian/placeh-qt.desktop usr/share/applications
+debian/placeh-qt.protocol usr/share/kde4/services/

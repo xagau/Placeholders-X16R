@@ -1,0 +1,8 @@
+/usr/bin/placeh-cli		--	gen_context(system_u:object_r:placeh_exec_t,s0)
+/usr/sbin/placehd		--	gen_context(system_u:object_r:placeh_exec_t,s0)
+/usr/lib(64)?/placeh/placehd		--	gen_context(system_u:object_r:placeh_exec_t,s0)
+
+/etc/placeh(/.*)?		gen_context(system_u:object_r:placeh_conf_t,s0)
+/var/lib/placeh(/.*)?		gen_context(system_u:object_r:placeh_var_lib_t,s0)
+
+(/var)?/run/placehd(/.*)?   gen_context(system_u:object_r:placeh_var_run_t,s0)

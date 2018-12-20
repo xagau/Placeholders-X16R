@@ -1,0 +1,33 @@
+# /etc/conf.d/placehd: config file for /etc/init.d/placehd
+
+# Config file location
+#PLACEHD_CONFIGFILE="/etc/placeh/placeh.conf"
+
+# What directory to write pidfile to?  (created and owned by $PLACEHD_USER)
+#PLACEHD_PIDDIR="/var/run/placehd"
+
+# What filename to give the pidfile
+#PLACEHD_PIDFILE="${PLACEHD_PIDDIR}/placehd.pid"
+
+# Where to write placehd data (be mindful that the blockchain is large)
+#PLACEHD_DATADIR="/var/lib/placehd"
+
+# User and group to own placehd process
+#PLACEHD_USER="placeh"
+#PLACEHD_GROUP="placeh"
+
+# Path to placehd executable
+#PLACEHD_BIN="/usr/bin/placehd"
+
+# Nice value to run placehd under
+#PLACEHD_NICE=0
+
+# Additional options (avoid -conf and -datadir, use flags above)
+#PLACEHD_OPTS=""
+
+# The timeout in seconds OpenRC will wait for placehd to terminate
+# after a SIGTERM has been raised.
+# Note that this will be mapped as argument to start-stop-daemon's
+# '--retry' option, which means you can specify a retry schedule
+# here. For more information see man 8 start-stop-daemon.
+PLACEHD_SIGTERM_TIMEOUT=60

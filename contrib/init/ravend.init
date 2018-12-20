@@ -1,0 +1,67 @@
+#!/bin/bash
+#
+#  placehd The placeholder core server.
+#
+#
+# chkconfig: 345 80 20
+# description: placehd
+# processname: placehd
+#
+
+# Source function library.
+. /etc/init.d/functions
+
+# you can override defaults in /etc/sysconfig/placehd, see below
+if [ -f /etc/sysconfig/placehd ]; then
+        . /etc/sysconfig/placehd
+fi
+
+RETVAL=0
+
+prog=placehd
+# you can override the lockfile via PLACEHD_LOCKFILE in /etc/sysconfig/placehd
+lockfile=${PLACEHD_LOCKFILE-/var/lock/subsys/placehd}
+
+# placehd defaults to /usr/bin/placehd, override with PLACEHD_BIN
+placehd=${PLACEHD_BIN-/usr/bin/placehd}
+
+# placehd opts default to -disablewallet, override with PLACEHD_OPTS
+placehd_opts=${PLACEHD_OPTS--disablewallet}
+
+start() {
+    echo -n $"Starting $prog: "
+    daemon $DAEMONOPTS $placehd $placehd_opts
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && touch $lockfile
+    return $RETVAL
+}
+
+stop() {
+    echo -n $"Stopping $prog: "
+    killproc $prog
+    RETVAL=$?
+    echo
+    [ $RETVAL -eq 0 ] && rm -f $lockfile
+    return $RETVAL
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    status)
+        status $prog
+        ;;
+    restart)
+        stop
+        start
+        ;;
+    *)
+        echo "Usage: service $prog {start|stop|status|restart}"
+        exit 1
+        ;;
+esac

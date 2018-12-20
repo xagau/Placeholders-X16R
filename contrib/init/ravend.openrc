@@ -1,0 +1,92 @@
+#!/sbin/runscript
+
+# backward compatibility for existing gentoo layout 
+#
+if [ -d "/var/lib/placeh/.placeh" ]; then
+	PLACEHD_DEFAULT_DATADIR="/var/lib/placeh/.placeh"
+else
+	PLACEHD_DEFAULT_DATADIR="/var/lib/placehd"
+fi
+
+PLACEHD_CONFIGFILE=${PLACEHD_CONFIGFILE:-/etc/placeh/placeh.conf}
+PLACEHD_PIDDIR=${PLACEHD_PIDDIR:-/var/run/placehd}
+PLACEHD_PIDFILE=${PLACEHD_PIDFILE:-${PLACEHD_PIDDIR}/placehd.pid}
+PLACEHD_DATADIR=${PLACEHD_DATADIR:-${PLACEHD_DEFAULT_DATADIR}}
+PLACEHD_USER=${PLACEHD_USER:-${PLACEH_USER:-placeh}}
+PLACEHD_GROUP=${PLACEHD_GROUP:-placeh}
+PLACEHD_BIN=${PLACEHD_BIN:-/usr/bin/placehd}
+PLACEHD_NICE=${PLACEHD_NICE:-${NICELEVEL:-0}}
+PLACEHD_OPTS="${PLACEHD_OPTS:-${PLACEH_OPTS}}"
+
+name="Placeholder Core Daemon"
+description="Placeh cryptocurrency P2P network daemon"
+
+command="/usr/bin/placehd"
+command_args="-pid=\"${PLACEHD_PIDFILE}\" \
+		-conf=\"${PLACEHD_CONFIGFILE}\" \
+		-datadir=\"${PLACEHD_DATADIR}\" \
+		-daemon \
+		${PLACEHD_OPTS}"
+
+required_files="${PLACEHD_CONFIGFILE}"
+start_stop_daemon_args="-u ${PLACEHD_USER} \
+			-N ${PLACEHD_NICE} -w 2000"
+pidfile="${PLACEHD_PIDFILE}"
+
+# The retry schedule to use when stopping the daemon. Could be either
+# a timeout in seconds or multiple signal/timeout pairs (like
+# "SIGKILL/180 SIGTERM/300")
+retry="${PLACEHD_SIGTERM_TIMEOUT}"
+
+depend() {
+	need localmount net
+}
+
+# verify
+# 1) that the datadir exists and is writable (or create it)
+# 2) that a directory for the pid exists and is writable
+# 3) ownership and permissions on the config file
+start_pre() {
+	checkpath \
+	-d \
+	--mode 0750 \
+	--owner "${PLACEHD_USER}:${PLACEHD_GROUP}" \
+	"${PLACEHD_DATADIR}"
+
+	checkpath \
+	-d \
+	--mode 0755 \
+	--owner "${PLACEHD_USER}:${PLACEHD_GROUP}" \
+	"${PLACEHD_PIDDIR}"
+
+	checkpath -f \
+	-o ${PLACEHD_USER}:${PLACEHD_GROUP} \
+	-m 0660 \
+	${PLACEHD_CONFIGFILE}
+
+	checkconfig || return 1
+}
+
+checkconfig()
+{
+	if ! grep -qs '^rpcpassword=' "${PLACEHD_CONFIGFILE}" ; then
+		eerror ""
+		eerror "ERROR: You must set a secure rpcpassword to run placehd."
+		eerror "The setting must appear in ${PLACEHD_CONFIGFILE}"
+		eerror ""
+		eerror "This password is security critical to securing wallets "
+		eerror "and must not be the same as the rpcuser setting."
+		eerror "You can generate a suitable random password using the following "
+		eerror "command from the shell:"
+		eerror ""
+		eerror "bash -c 'tr -dc a-zA-Z0-9 < /dev/urandom | head -c32 && echo'"
+		eerror ""
+		eerror "It is recommended that you also set alertnotify so you are "
+		eerror "notified of problems:"
+		eerror ""
+		eerror "ie: alertnotify=echo %%s | mail -s \"Placeh Alert\"" \
+			"admin@foo.com"
+		eerror ""
+		return 1
+	fi
+}

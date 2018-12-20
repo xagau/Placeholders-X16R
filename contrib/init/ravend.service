@@ -1,0 +1,22 @@
+[Unit]
+Description=Placeh's distributed currency daemon
+After=network.target
+
+[Service]
+User=placeh
+Group=placeh
+
+Type=forking
+PIDFile=/var/lib/placehd/placehd.pid
+ExecStart=/usr/bin/placehd -daemon -pid=/var/lib/placehd/placehd.pid \
+-conf=/etc/placeh/placeh.conf -datadir=/var/lib/placehd -disablewallet
+
+Restart=always
+PrivateTmp=true
+TimeoutStopSec=60s
+TimeoutStartSec=2s
+StartLimitInterval=120s
+StartLimitBurst=5
+
+[Install]
+WantedBy=multi-user.target
