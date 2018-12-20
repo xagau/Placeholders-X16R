@@ -1,5 +1,5 @@
 <h1 align="center">
-  Placeholders: A Peer to Peer Electronic System for the Creation and Transfer of Assets<br>
+  Placeholders: A Peer-to-Peer Electronic Artifact Storage System Abstract.<br>
 </h1>
 
 Placeholders: A Peer-to-Peer Electronic Artifact Storage System
