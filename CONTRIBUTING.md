@@ -76,13 +76,13 @@ the pull request affects. Valid areas as:
 
 Examples:
 
-    Consensus: Add new opcode for RIP-XXXX OP_CHECKAWESOMESIG
+    Consensus: Add new opcode for PIP-XXXX OP_CHECKAWESOMESIG
     Net: Automatically create hidden service, listen on Tor
     Qt: Add feed bump button
     Trivial: Fix typo in init.cpp
 
 Note that translations should not be submitted as pull requests, please see
-[Translation Process](https://github.com/PlacehProject/Placeholders/blob/master/doc/translation_process.md) 
+[Translation Process](https://github.com/xagau/Placeholders-X16R/blob/master/doc/translation_process.md) 
 for more information on helping with translations.
 
 If a pull request is specifically not to be considered for merging (yet) please
@@ -191,7 +191,7 @@ In general, all pull requests must:
   - Where bugs are fixed, where possible, there should be unit tests
     demonstrating the bug and also proving the fix. This helps prevent regression.
 
-Patches that change Placeh consensus rules are considerably more involved than
+Patches that change Placeholder consensus rules are considerably more involved than
 normal because they affect the entire ecosystem and so must be preceded by
 extensive mailing list discussions and have a numbered RIP. While each case will
 be different, one should be prepared to expend more time and effort than for
@@ -232,9 +232,9 @@ higher in terms of discussion and peer review requirements, keeping in mind that
 mistakes could be very costly to the wider community. This includes refactoring
 of consensus critical code.
 
-Where a patch set proposes to change the Placeh consensus, it must have been
+Where a patch set proposes to change the Placeholder consensus, it must have been
 discussed extensively on the mailing list and IRC, be accompanied by a widely
-discussed RIP and have a generally widely perceived technical consensus of being
+discussed PIP and have a generally widely perceived technical consensus of being
 a worthwhile change based on the judgement of the maintainers.
 
 ### Finding Reviewers
