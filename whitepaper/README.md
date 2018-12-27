@@ -13,5 +13,7 @@ References:
 
 ...mox adventu...
 
+<a href="https://bitcointalk.org/index.php?topic=5086167.0">Please visit our ANN</a>
+
 <p align="center">
 http://www.placeh.io<br>
