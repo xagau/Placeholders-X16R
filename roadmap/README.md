@@ -2,52 +2,63 @@
 
 ### Phase 1 - Complete
 
-Placeholders (PHL) is a Proof of Work coin built on the Bitcoin UTXO model. As with other Bitcoin derivatives, PHL coins are distributed to persons augmenting the Placeh network by mining Placeh.
-*  x5 coin distribution (11 Million Total)
+Placeholders (PHL) is a Proof of Work coin built on the Bitcoin UTXO model. As with other Bitcoin derivatives, PHL coins are distributed to persons augmenting the Placeholder network by mining Placeholders.
+*  x5 coin distribution (10.5 Million Total)
 *  10x faster blocks (1 per minute)
 *  In app CPU mining
 *  Dark Gravity Wave difficulty adjustment (180 block average)
-*  Addresses start with R... for regular addresses, or r... for multisig
+*  Addresses start with F... for regular addresses.
 *  Network Port: 6705
 *  RPC Port: 6706
 
-### Phase 2 - Assets (in progress)
+### Phase 2 - Cloud Services (in progress)
+
+Upload binary files to artifacts.
+Artifact files marked as content-type torrent and end with the extension VDI will be used for distributed services.
+
+Cloud services is provided by users of Placeholders.
+There are 2 types of users, but any user can make use of both types of users.
+These users are:
+-Service Providers
+-Service Consumers
+
+Service providers provide the hardware and virtual machine container.
+Service consumers consume the resources provided by the service providers in exchange for compensation (Placeholder coins).
 
 #### ASIC Resistance
 
 ASIC Resistance - A published commitment to continual attempts at ASIC resistance. If ASICs are created for x16r, then we will, at a specific block number, modify one of the algorithms to add some varients of Equihash or similar efforts to increase the resistance to ASIC miners for Placeh.
 
-#### Asset Support
+#### Cloud Services
 
-Placeholders will be a hard fork that extends Placeh to include the ability to issue and transfer assets. The expected release of asset capabilities will be approximately seven months after the release of PHL. Placeh will be extended to allow issuing, reissuing, and transfer of assets. Assets can be reissuable or limited to a set supply at the point of issuance. The cost to create assets will be 5 PHL to create any qty of an asset. Each asset name must be unique. Asset names will be limited to A-Z and 0-9, '_' and '.' and must be at least three characters long. The '.' and the '_' cannot be the first, or the last character, or be consecutive.  
+Use-Case Implementation Overview:
+ 
 
-Examples of valid assets:  
-THE_GAME  
-A.TOKEN  
-123  
+Placeholders’ blockchain can store a link in the blockchain (this is an example of an "artifact") which points at a standard torrent file (copies of a file that are held by various people across the internet, commonly known as "seeders"). 
 
-Examples of invalid assets:  
-_TOKEN  
-THEEND.  
-A..B (consecutive punctuation)  
-AB  
-12  
-.FIRST
-apple
+A torrent is a directory file, which holds information on where to find pieces of another file.  Let’s take an example of a normal file (can be any file like a movie or software): This file can be split up into 20 or more different pieces (the torrent file holds this information).  Not every person needs to hold all 20 pieces as long as when someone wants the file, they download all 20 pieces onto their computer. When the file is requested by a person, the seeders will upload pieces of the file to the requester until the requester has all of the pieces and thus the full file.  This ensures availability and redundancy for the data while reducing risk of losing data.  
+ 
+Most people use torrents for sharing large files (i.e. movies and software).  In Placeholders’ case, the torrent file will be a file similar to Virtual Desktop Infrastructure (VDI).  VDI’s are commonly used for storing an image of an operating system (windows/linux/mac) in a single file.  Meaning, if you have access to this file, you can run software (e.g., VirtualBox or VMware’s workstation) to interact with the virtual operating system.  This would be similar to running a completely different computer, where the software is isolated to that virtual machine. This concept is typically referred to as running a "virtual machine".
 
-The PHL used to issue assets will be sent to a burn address, which will reduce the amount of PHL available.  
+Virtual machines are an instance of an operating system inside another operating system. For example, you may be running Windows right now, and if you wanted a virtual Windows pc (to test out software), you could run the VirtualBox software with a VDI image file to create a virtual PC that has no effect on your current Windows environment. Placeh takes this a step further and consolidates resources from different PHL wallet users and combines those resources to create an instance of a virtual private server in the cloud, which is then available to the buyer.
 
-Asset transfers require the standard PHL transaction fees for transfer from one address to another.
+In essence, Placeholders is creating an ecosystem to compete with Amazon Web Services and Google Cloud.  
+
+There are two parts to this ecosystem, suppliers and buyers.
+  
+
+Suppliers (i.e. people who offer their computing resources and will be paid for it):
+
+For example, a Placeholders wallet user will be able to rent part of their hard-drive space out to store portions of a VDI file, or rent out part of their CPU for distributed computing, or part of their RAM. These will all have various rates based upon the supply/demand and marketplace prices.  
+
+
+Buyers (people that want to launch a decentralized virtual server/pc):
+
+Currently, if a person wanted to launch a VPS (virtual private server), they would normally need to sign up and pay for a centralized provider like Amazon Web Services (AWS) or Google Cloud.  These providers have established rates to launch a server, based upon the configuration of the server (number of cpus, amount of hard-drive space, and amount of RAM (memory)).  An hourly rate is computed for the amount of resources desired, and the buyer is billed by the provider for launching and running that server instance. 
 
 #### Metadata
 
 Metadata about the token can be stored in IPFS. Initially this cannot be changed. If there is a demand, the system can be updated to allow updating the metadata by the token issuer.
-
-#### Rewards
-
-Reward capabilities will be added to allow payment (in PHL) to all holders of an asset. Payments of PHL would be distributed to all asset holders pro rata. This is useful for paying dividends, dividing payments, or rewarding a group of token holders.  
-
-Example: A small software company issues an asset GAMECO that represents a share of the project. GAMECO tokens can be traded with others. Once the software company profits, those profits can be distributed to all holders of GAMECO by sending the profits (via PHL) to all holders of GAMECO.
 
 #### Block Size
 
@@ -57,61 +68,3 @@ Placeh may increase the blocksize from 1 MB to X MB to allow for more on-chain t
 
 Rewards allow payment in PHL to asset holders.
 
-### Phase 4 - Unique Assets
-
-Once created, assets can be made unique for a cost of 5 PHL. Only non-divisible assets can be made unique. This moves an asset to a UTXO and associates a unique identifier with the txid. From this point the asset can be moved from one address to another and can be traced back to its origin. Only the issuer of the original asset can make an asset unique.  
-The costs to make unique assets will be sent to a burn address.  
-
-Some examples of unique assets:  
-*  Imagine that an art dealer issues the asset named ART. The dealer can then make unique ART assets by attaching a name or a serialized number to each piece of art. These unique tokens can be transferred to the new owner along with the artwork as a proof of authenticity. The tokens ART:MonaLisa and ART:VenusDeMilo are not fungible and represent distinct pieces of art.
-*  A software developer can issue the asset with the name of their software ABCGAME, and then assign each ABCGAME token a unique id or license key. The game tokens could be transferred as the license transfers. Each token ABCGAME:398222 and ABCGAME:
-are unique tokens.
-*  In game assets. A game ZYX_GAME could create unique limited edition in-game assets that are owned and used by the game player. Example: ZYX_GAME:Sword005 and ZYX_GAME:Purse
-*  PHL based unique assets can be tied to real world assets. Create an asset named GOLDVAULT. Each gold coin or gold bar in a vault can be serialized and audited. Associated unique assets GOLDVAULT:444322 and GOLDVAULT:555994 can be created to represent the specific assets in the physical gold vault. The public nature of the chain allows for full transparency.
-
-### Phase 5 - Messaging
-
-Messaging to token holders by authorized senders will be layered on top of the Phase 3 unique assets. See KAAAWWW Protocol for additional information.
-
-### Phase 6 - Voting
-
-Voting will be accomplished by creating and distributing parallel tokens to token holders. These tokens can be sent to PHL addresses to record a vote.
-
-### Appendix A - RPC commands for assets
-
-`issue(to_address, asset_name, qty, units=1, reissuable=false)`  
-Issue an asset with unique name. Unit as 1 for whole units, or 0.00000001 for satoshi-like units. Qty should be whole number. Reissuable is true/false for whether additional units can be issued by the
-original issuer.  
-
-`issuefrom(from_address, to_address, qty, units, units=1, reissuable=false)`  
-Issue an asset with unique name from a specific address -- allows control of which address/private_key is used to issue the asset. Unit as 1 for whole units, or 0.00000001 for satoshi-like units. Qty should be whole number. Reissuable is true/false for whether additional units can be issued by the original issuer.
-
-`issuemore(to_address, asset_name, qty)`  
-Issue more of a specific asset. This is only allowed by the original issuer of the asset and if the reissuable flag was set to true at the time of original issuance.  
-
-`makeuniqueasset(address, asset_name, unique_id)`  
-Creates a unique asset from a pool of assets with a specific name. Example: If the asset name is SOFTLICENSE, then this could make unique assets like SOFTLICENSE:38293 and SOFTLICENSE:48382 This would be called once per unique asset needed.  
-
-`listassets(assets=*, verbose=false, count=MAX, start=0)`  
-This lists assets that have already been created. It does not distinguish unique assets.  
-
-`listuniqueassets(asset)`  
-This lists the assets that have been made unique, and the address that owns the asset.  
-
-`sendasset(to_address, asset, amount)`  
-This sends assets from one asset holder to another.  
-
-`sendassetfrom(from_address, to_address, asset, amount)`  
-This sends asset from one asset holder to another, but allows specifying which address to send from, so that if a wallet that has multiple addresses holding a given asset, the send can disambiguate the address from which to send.  
-
-`getassettransaction(asset, txid)`  
-This returns details for a specific asset transaction.  
-
-`listassettransactions(asset, verbose=false, count=100, start=0)`  
-This returns a list of transactions for a given asset.  
-
-`reward(from_address, asset, amount, except=[])`  
-Sends PHL to holders of the the specified asset. The Placeh is split pro-rata to holders of the asset. Any remainder that cannot be evenly divided to the satoshi (1/100,000,000 PHL) level will be added to the mining fee. ​except​ is a list of addresses to exclude from the distribution - used so that you could exclude treasury shares that do not participate in the reward.  
-
-`send_asset(from_address, from_asset, to_asset, amount, except=[])`  
-Sends an asset to holders of the the specified to_asset. This can be used to send a voting token to holders of an asset. Combined with a messaging protocol explaining the vote, it could act as a distributed voting system.
