@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Placeholders"
-#define MyAppVersion "2.0.28.2"
+#define MyAppVersion "2.0.29.1"
 #define MyAppPublisher "placeh.io"
 #define MyAppURL "https://www.placeh.io"
 #define MyAppExeName "placeh-qt.exe"
@@ -21,7 +21,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=setup-placeh-rc2.0.28.2
+OutputBaseFilename=setup-placeh-rc2.0.29.1
 Compression=lzma
 SolidCompression=yes
 
