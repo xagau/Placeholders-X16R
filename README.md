@@ -1,7 +1,7 @@
 Placeholder Core integration/staging tree
 =====================================
 
-https://placeh.io
+https://www.placeh.io
 
 What is Placeholders?
 ----------------
