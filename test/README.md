@@ -27,6 +27,14 @@ The ZMQ functional test requires a python ZMQ library. To install it:
 
 - on Unix, run `sudo apt-get install python3-zmq`
 - on mac OS, run `pip3 install pyzmq`
+- on Windows, install python3-zmq 
+
+# (Windows or OS X)
+pip install --wheel pyzmq
+# or
+easy_install pyzmq
+# or (pretty much anywhere)
+pip install pyzmq
 
 #### Running the tests
 
