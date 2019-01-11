@@ -423,6 +423,61 @@ UniValue verifymessage(const JSONRPCRequest& request)
     return (pubkey.GetID() == *keyID);
 }
 
+
+//PHL
+UniValue verifyartifact(const JSONRPCRequest& request)
+{
+    if (request.fHelp || request.params.size() != 3)
+        throw std::runtime_error(
+            "verifyartifact \"address\" \n"
+            "\nVerify if an artifact is valid or not\n"
+            "\nArguments:\n"
+            "1. \"address\"         (string, required) The placeh address to use for the signature.\n"
+            "\nResult:\n"
+            "true|false   (boolean) If the artifact is verified or not.\n"
+            "\nExamples:\n"
+            "\nCreate the torrent for this vdi, and deploy it as an artifact to address F9ddp3zXbNd5zwxBngvRBe4zQgmoViNuma\n"
+            + HelpExampleCli("deployartifact", "\"F9ddp3zXbNd5zwxBngvRBe4zQgmoViNuma\" \"C:\Virtual Machines\centos-1.0.vdi\"") +
+            "\nSign the artifact with a signature\n"
+            + HelpExampleCli("signartifact", "\"F9ddp3zXbNd5zwxBngvRBe4zQgmoViNuma\" \"C:\Virtual Machines\centos-1.0.vdi\"") +
+            "\nVerify the signature on the artifact matches this file\n"
+            + HelpExampleRpc("verifyartifact", "\"F9ddp3zXbNd5zwxBngvRBe4zQgmoViNuma\" \"C:\Virtual Machines\centos-1.0.vdi\"")
+        );
+
+    LOCK(cs_main);
+
+    std::string strAddress  = request.params[0].get_str();
+    std::string strSign     = request.params[1].get_str();
+    std::string strMessage  = request.params[2].get_str();
+
+    CTxDestination destination = DecodeDestination(strAddress);
+    if (!IsValidDestination(destination)) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Invalid address");
+    }
+
+    const CKeyID *keyID = boost::get<CKeyID>(&destination);
+    if (!keyID) {
+        throw JSONRPCError(RPC_TYPE_ERROR, "Address does not refer to key");
+    }
+
+    bool fInvalid = false;
+    std::vector<unsigned char> vchSig = DecodeBase64(strSign.c_str(), &fInvalid);
+
+    if (fInvalid)
+        throw JSONRPCError(RPC_INVALID_ADDRESS_OR_KEY, "Malformed base64 encoding");
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageMagic;
+    ss << strMessage;
+
+    CPubKey pubkey;
+    if (!pubkey.RecoverCompact(ss.GetHash(), vchSig))
+        return false;
+
+    return (pubkey.GetID() == *keyID);
+}
+//PHL
+
 UniValue signmessagewithprivkey(const JSONRPCRequest& request)
 {
     if (request.fHelp || request.params.size() != 2)

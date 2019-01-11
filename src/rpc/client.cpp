@@ -155,6 +155,7 @@ static const CRPCConvertParam vRPCConvertParams[] =
     { "getaddressmempool", 0, "addresses"},
 	// PHL
 	{ "deployartifact", 1, "address"},
+	{ "verifyartifact", 1, "address"},
 	{ "signartifact", 1, "address"},
 	{ "createtorrent", 1, "address"},
 	// PHL
