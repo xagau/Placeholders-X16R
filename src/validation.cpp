@@ -1,6 +1,7 @@
 // Copyright (c) 2009-2010 Satoshi Nakamoto
 // Copyright (c) 2009-2016 The Bitcoin Core developers
-// Copyright (c) 2017 The Placeholder Core developers
+// Copyright (c) 2017 The Raven Core developers
+// Copyright (c) 2018 The Placeholder Core developers
 // Distributed under the MIT software license, see the accompanying
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
@@ -95,10 +96,12 @@ bool fEnableReplacement = DEFAULT_ENABLE_REPLACEMENT;
 uint64_t PIP89_ACTIVATION_BLOCK_HEIGHT = 1;
 uint64_t THE_SHIGGIDY_DROP = 129600;
 uint64_t THE_BULLISH_DPMIDD_PLATEAU = 129600 / 2;
+uint64_t THE_BREWHAUS_BREAKAWAY = THE_SHIGGIDY_DROP * 2;
+uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
 
 CAmount __SNAPSHOT_HEIGHT = 75000;
 CAmount __SNAPSHOT_COIN   = __SNAPSHOT_HEIGHT * (5 * (COIN*10));
-CAmount __TAIL_EMISSION = 0.12352 * COIN;
+CAmount __TAIL_EMISSION = 0.12352 ;
 
 uint256 hashAssumeValid;
 arith_uint256 nMinimumChainWork;
@@ -1180,19 +1183,34 @@ CAmount GetLegacySnapshot(int nHeight)
 
 CAmount GetTailEmission()
 {		
-	return __TAIL_EMISSION;
+	return __TAIL_EMISSION ;
 }
 
-CAmount GetDecayedEmission(CAmount nSubsidy, int nHeight)
+CAmount GetDecayedEmission(CAmount nSubsidy, CAmount decay, int nHeight)
 {		
-	return (nSubsidy - (nHeight * 0.00000025)) * COIN;
+	try {
+		return (nSubsidy - (nHeight * 0.00000025)) ;
+	} catch( ... ) {
+			return __TAIL_EMISSION;
+	}
 }
+
+CAmount decay = 0.00000025;
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
 		
-	CAmount nSubsidy = GetLegacySnapshot(nHeight); // capture legacy coinbase. (pre-X16R)
-    
+	CAmount nSubsidy = GetLegacySnapshot(nHeight); // capture legacy coinbase: 
+												   // (pre-DGW) 
+												   // ~42000 * 50 + 
+												   // Implement DGW + PIP88
+												   // ~33000 * 5 (SHA256) + burn contingency
+												   // Burn contigency is to cover: 
+												   // -Moving coins to X16R, 
+												   // -risk of coins being trapped on the exchange.
+												   // -Lost coins 
+												   // -unredeemable wallets potentially.
+   	
 	if( nHeight >= 2 ) { // reduce down to the expected block reward. 
 		nSubsidy = 5 * COIN;
 	}
@@ -1206,15 +1224,21 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 	}
 
 	if( nHeight >= THE_SHIGGIDY_DROP ) { 
-		nSubsidy = GetDecayedEmission(nSubsidy, nHeight);
+		nSubsidy = GetDecayedEmission(nSubsidy, decay, nHeight) * COIN;
 	}		
+
+	if( nHeight >= THE_BREWHAUS_BREAKAWAY ) { 
+		nSubsidy = GetDecayedEmission(nSubsidy, decay * 10, nHeight) * COIN;
+	}		
+
 	
 	if( nSubsidy <= GetTailEmission() ) { 
-		nSubsidy = GetTailEmission();
+		nSubsidy = GetTailEmission()  * COIN;
 	}
 	
-	// if debug
-	//std::cout << "Currency Subsidy:" << nHeight << ":" << nSubsidy << std::endl;
+	if( nHeight > THE_XAGAU_END ) {
+		nSubsidy = 0;
+	}	
 
     return nSubsidy;
 }
