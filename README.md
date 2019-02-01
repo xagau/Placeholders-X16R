@@ -1,4 +1,3 @@
-2.0.29.1
 Placeholder Core integration/staging tree
 =====================================
 
@@ -7,12 +6,7 @@ https://www.placeh.io
 What is Placeholders?
 ----------------
 
-Placeholders is an experimental digital currency that enables instant payments to
-anyone, anywhere in the world. Placeholders uses peer-to-peer technology to operate
-with no central authority: managing transactions and issuing money are carried
-out collectively by the network. 
-
-
+Placeholders is an experimental digital currency and cloud platform that enables instant payments to anyone, and virtual machine procurement anywhere in the world. Placeholders uses peer-to-peer technology to operate with no central authority: managing transactions and issuing money and virtual machines are carried out collectively by the network. 
 
 License
 -------
