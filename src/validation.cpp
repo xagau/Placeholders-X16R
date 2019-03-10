@@ -94,9 +94,11 @@ uint64_t nPruneTarget = 0;
 int64_t nMaxTipAge = DEFAULT_MAX_TIP_AGE;
 bool fEnableReplacement = DEFAULT_ENABLE_REPLACEMENT;
 uint64_t PIP89_ACTIVATION_BLOCK_HEIGHT = 1;
-uint64_t THE_SHIGGIDY_DROP = 129600;
-uint64_t THE_BULLISH_DPMIDD_PLATEAU = 129600 / 2;
-uint64_t THE_BREWHAUS_BREAKAWAY = THE_SHIGGIDY_DROP * 2;
+uint64_t THE_SHIGGIDY_DROP = 4;
+uint64_t THE_BULLISH_DPMIDD_PLATEAU = 3;
+uint64_t THE_BREWHAUS_BREAKAWAY = 129600;
+uint64_t THE_CRUNCHYCAT = THE_BREWHAUS_BREAKAWAY * 2;
+
 uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
 
 //Date:[92] years from now:0.12350000
@@ -105,7 +107,7 @@ uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
 //Total:10500000.03815850
 
 CAmount __SNAPSHOT_HEIGHT = 75000;
-CAmount __SNAPSHOT_COIN   = __SNAPSHOT_HEIGHT * (5 * (COIN*10));
+CAmount __SNAPSHOT_COIN   = 3500000 * (COIN));
 CAmount __TAIL_EMISSION = 0.12352 ;
 
 uint256 hashAssumeValid;
@@ -1224,21 +1226,24 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
         	nSubsidy = 4.5 * COIN;
 	}
 	
-	if( nHeight >= THE_SHIGGIDY_DROP ) { // Shiggidy drop
+	if( nHeight >=4 THE_SHIGGIDY_DROP ) { // Shiggidy drop
         	nSubsidy = 2.5 * COIN;
 	}
 
-	if( nHeight >= THE_SHIGGIDY_DROP ) { 
-		nSubsidy = GetDecayedEmission(nSubsidy, decay, nHeight) * COIN;
-	}		
+	//if( nHeight >= THE_SHIGGIDY_DROP ) { 
+	//	nSubsidy = GetDecayedEmission(nSubsidy, decay, nHeight) * COIN;
+	//}		
 
 	if( nHeight >= THE_BREWHAUS_BREAKAWAY ) { 
-		nSubsidy = GetDecayedEmission(nSubsidy, decay * 10, nHeight) * COIN;
+		nSubsidy = 1.8 * COIN;
 	}		
 
+	if( nHeight >= THE_CRUNCHYCAT ) { 
+		nSubsidy = 1 * COIN;
+	}
 	
-	if( nSubsidy <= GetTailEmission() ) { 
-		nSubsidy = GetTailEmission()  * COIN;
+	if( nSubsidy <= (THE_CRUNCHYCAT * 4) ) { 
+		nSubsidy = 0.1235  * COIN;
 	}
 	
 	if( nHeight > THE_XAGAU_END ) {
