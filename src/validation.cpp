@@ -107,8 +107,8 @@ uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
 //Total:10500000.03815850
 
 CAmount __SNAPSHOT_HEIGHT = 75000;
-CAmount __SNAPSHOT_COIN   = 3500000 * (COIN));
-CAmount __TAIL_EMISSION = 0.12352 ;
+CAmount __SNAPSHOT_COIN   = 3500000 * (COIN);
+CAmount __TAIL_EMISSION = 0.12352 * COIN ;
 
 uint256 hashAssumeValid;
 arith_uint256 nMinimumChainWork;
@@ -1178,7 +1178,11 @@ CAmount GetLegacySubsidy()
 
 CAmount GetLegacySnapshot(int nHeight)
 {	
-	if( nHeight >= PIP89_ACTIVATION_BLOCK_HEIGHT ) { 
+	//if( nHeight >= 0 ) { 
+	//	CAmount nSubsidy = __SNAPSHOT_COIN ; 
+	//	return nSubsidy;
+	//}
+	if( nHeight >= 1 ) { 
 		CAmount nSubsidy = __SNAPSHOT_COIN ; 
 		return nSubsidy;
 	}
@@ -1207,6 +1211,8 @@ CAmount decay = 0.00000025;
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
 		
+    std::cout << nHeight << std::endl;
+		
 	CAmount nSubsidy = GetLegacySnapshot(nHeight); // capture legacy coinbase: 
 												   // (pre-DGW) 
 												   // ~42000 * 50 + 
@@ -1226,7 +1232,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
         	nSubsidy = 4.5 * COIN;
 	}
 	
-	if( nHeight >=4 THE_SHIGGIDY_DROP ) { // Shiggidy drop
+	if( nHeight >= THE_SHIGGIDY_DROP ) { // Shiggidy drop
         	nSubsidy = 2.5 * COIN;
 	}
 
@@ -1242,7 +1248,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 		nSubsidy = 1 * COIN;
 	}
 	
-	if( nSubsidy <= (THE_CRUNCHYCAT * 4) ) { 
+	if( nHeight >= (THE_CRUNCHYCAT * 4) ) { 
 		nSubsidy = 0.1235  * COIN;
 	}
 	

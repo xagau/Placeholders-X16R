@@ -103,18 +103,6 @@ bool CChainParams::CSVEnabled() const{
 	return consensus.nCSVEnabled;
 }
 
-
-/**
- * Main network
- */
-/**
- * What makes a good checkpoint block?
- * + Is surrounded by blocks with reasonable timestamps
- *   (no blocks before with a timestamp after, none after with
- *    timestamp before)
- * + Contains no strange transactions
- */
-
 class CMainParams : public CChainParams {
 public:
     CMainParams() {
@@ -164,7 +152,7 @@ public:
         pchMessageStart[1] = 0x41;
         pchMessageStart[2] = 0x56;
         pchMessageStart[3] = 0x4e;
-        nDefaultPort = 6708;
+        nDefaultPort = 6608;
         nPruneAfterHeight = 100000;
 
         genesis = CreateGenesisBlock(1514999494, 25023712, 0x1e00ffff, 4, 5000 * COIN);
@@ -174,8 +162,8 @@ public:
         consensus.hashGenesisBlock = genesis.GetHash();
 
 		
-		assert(consensus.hashGenesisBlock == uint256S("0x0000006b444bc2f2ffe627be9d9e7e7a0730000870ef6eb6da46c8eae389df90"));
-        assert(genesis.hashMerkleRoot == uint256S("0x28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
+		//assert(consensus.hashGenesisBlock == uint256S("0x0000006b444bc2f2ffe627be9d9e7e7a0730000870ef6eb6da46c8eae389df90"));
+        //assert(genesis.hashMerkleRoot == uint256S("0x28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
 
 		
 		std::cout<<"GH:"<<genesis.GetHash().ToString().c_str()<<std::endl;
@@ -282,7 +270,8 @@ public:
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x00");
 
-
+		std::cout<<"Test net"<<std::endl;
+		
         pchMessageStart[0] = 0x52;
         pchMessageStart[1] = 0x56;
         pchMessageStart[2] = 0x4E;
@@ -290,11 +279,14 @@ public:
         nDefaultPort = 18770;
         nPruneAfterHeight = 1000;
 
-        uint32_t nGenesisTime = 1514999492;  // Thursday, September 20, 2018 12:00:00 PM GMT-06:00
+        uint32_t nGenesisTime = 1514999491;  // Thursday, September 20, 2018 12:00:00 PM GMT-06:00
 
+		std::cout<<"After Snapshot "<<std::endl;
+		
         // This is used inorder to mine the genesis block. Once found, we can use the nonce and block hash found to create a valid genesis block
 //        /////////////////////////////////////////////////////////////////
 
+		std::cout<<"Set Initial "<<std::endl;
 
         arith_uint256 test;
         bool fNegative;
@@ -306,10 +298,10 @@ public:
         int genesisNonce = 0;
         uint256 TempHashHolding = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
         uint256 BestBlockHash = uint256S("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
-        for (int i=0;i<40000000;i++) {
+        std::cout << "Ready 1 2 3: " << test.GetHex() << "\n\n";
+        for (int i=0;i<4000000;i++) {
             //genesis = CreateGenesisBlock(nGenesisTime, i, 0x1e00ffff, 4, 5 * COIN);
-            genesis = CreateGenesisBlock(nGenesisTime, i,  0x1d00ffff, 4, 5 * COIN);
-            
+            genesis = CreateGenesisBlock(nGenesisTime, i,  0x1d00ffff, 4, 5000 * COIN);            
 			
 			genesis.hashPrevBlock = TempHashHolding;
             consensus.hashGenesisBlock = genesis.GetHash();
