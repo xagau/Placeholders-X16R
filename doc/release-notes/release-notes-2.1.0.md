@@ -1,19 +1,16 @@
-Placeholder Core version *2.1.0* is now available!!
+Placeholder Core version *2.0.29.2* is now available!!
 ==============
 
-  <https://github.com/PlacehProject/Placeholders/releases/tag/v2.1.0>
+  <https://github.com/xagau/Placeholders-X16R>
 
 
-This is a major release containing bug fixes for 2.0.4.0/2.0.4.1.  It is highly recommended that users 
-upgrade to this version.  This is the final release for the phase 2 development (assets).
+This is a major release containing bug fixes for 2.0.29.2.  It is highly recommended that users 
+upgrade to this version.  
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/PlacehProject/Placeholders/issues>
+  <https://github.com/xagau/Placeholders-X16R/issues>
 
-To receive security and update notifications, please subscribe to:
-
-  <https://placeh.io/en/list/announcements/join/>
 
 How to Upgrade
 ==============
