@@ -1,5 +1,7 @@
 ## Placeholders Metadata Specification
 
+Asset functionality is currently embedded but not in use inside Placeholders.
+
 Additional fields may be added, but will be ignored by Placeholders.
 
 ```
