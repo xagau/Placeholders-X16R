@@ -242,7 +242,7 @@ class CTestNetParams : public CChainParams {
 public:
     CTestNetParams() {
         strNetworkID = "test";
-        consensus.nSubsidyHalvingInterval = 888888;  //~ 4 yrs at 1 min block time
+        consensus.nSubsidyHalvingInterval = 888888;  // <-- Deprecated
         consensus.nBIP34Enabled = true;
         consensus.nBIP65Enabled = true; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.nBIP66Enabled = true;
@@ -279,7 +279,7 @@ public:
         nDefaultPort = 18770;
         nPruneAfterHeight = 1000;
 
-        uint32_t nGenesisTime = 1514999491;  // Thursday, September 20, 2018 12:00:00 PM GMT-06:00
+        uint32_t nGenesisTime = 1514999494; //1514999491;  // Thursday, September 20, 2018 12:00:00 PM GMT-06:00
 
 		std::cout<<"After Snapshot "<<std::endl;
 		
@@ -299,6 +299,7 @@ public:
         uint256 TempHashHolding = uint256S("0x0000000000000000000000000000000000000000000000000000000000000000");
         uint256 BestBlockHash = uint256S("0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff");
         std::cout << "Ready 1 2 3: " << test.GetHex() << "\n\n";
+		// should find at 25023712
         for (int i=0;i<4000000;i++) {
             //genesis = CreateGenesisBlock(nGenesisTime, i, 0x1e00ffff, 4, 5 * COIN);
             genesis = CreateGenesisBlock(nGenesisTime, i,  0x1d00ffff, 4, 5000 * COIN);            
@@ -344,25 +345,25 @@ public:
 
         genesis.hashPrevBlock = TempHashHolding;
 
-		bool b = true;
-		if( b ) 
-			return;
+		//bool b = true;
+		//if( b ) 
+		//	return;
 
-//        /////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////
 
-        genesis = CreateGenesisBlock(nGenesisTime, 15615880, 0x1e00ffff, 2, 5000 * COIN);
+        //genesis = CreateGenesisBlock(nGenesisTime, 15615880, 0x1e00ffff, 2, 5000 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
 
         //Test MerkleRoot and GenesisBlock
-        assert(consensus.hashGenesisBlock == uint256S("0x000000ecfc5e6324a079542221d00e10362bdc894d56500c414060eea8a3ad5a"));
-        assert(genesis.hashMerkleRoot == uint256S("28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
+        //assert(consensus.hashGenesisBlock == uint256S("0x000000ecfc5e6324a079542221d00e10362bdc894d56500c414060eea8a3ad5a"));
+        //assert(genesis.hashMerkleRoot == uint256S("28ff00a867739a352523808d301f504bc4547699398d70faf2266a8bae5f3516"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
 
-        vSeeds.emplace_back("seed-testnet-placeh.bitactivate.com", false);
-        vSeeds.emplace_back("seed-testnet-placeh.placehcoin.com", false);
-        vSeeds.emplace_back("seed-testnet-placeh.placeh.io", false);
+        //vSeeds.emplace_back("seed-testnet-placeh.bitactivate.com", false);
+        //vSeeds.emplace_back("seed-testnet-placeh.placehcoin.com", false);
+        //vSeeds.emplace_back("seed-testnet-placeh.placeh.io", false);
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,111);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196);
@@ -392,9 +393,9 @@ public:
 
         /** PHL Start **/
         // Burn Amounts
-        nIssueAssetBurnAmount = 500 * COIN;
-        nReissueAssetBurnAmount = 100 * COIN;
-        nIssueSubAssetBurnAmount = 100 * COIN;
+        nIssueAssetBurnAmount = 5 * COIN;
+        nReissueAssetBurnAmount = 1 * COIN;
+        nIssueSubAssetBurnAmount = 1 * COIN;
         nIssueUniqueAssetBurnAmount = 5 * COIN;
 
         // Burn Addresses
