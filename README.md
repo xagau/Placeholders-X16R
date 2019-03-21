@@ -24,6 +24,7 @@ regularly to indicate new official, stable release versions of Placeholder Core.
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 Developer Discord can be found on Discord at #placeholders.
+https://discord.gg/qMkfbxG
 
 Testing
 -------
