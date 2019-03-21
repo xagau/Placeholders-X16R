@@ -69,10 +69,10 @@ Notable changes
 - Added asset transaction chaining
 - Chain synchronization stability
 
-2.1.0 Change log
+2.0.29.2 Change log
 ==============
 
-Changelog available here: <https://github.com/PlacehProject/Placeholders/commits/release_2.1.0>
+Changelog available here: <https://github.com/xagau/Placeholders-X16R/commits/>
 
 Credits
 ==============
