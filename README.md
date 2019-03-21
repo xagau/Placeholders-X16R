@@ -18,26 +18,23 @@ Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/PlacehProject/Placeholders/tags) are created
+completely stable. [Tags](https://github.com/xagau/Placeholders-X16R/tags) are created
 regularly to indicate new official, stable release versions of Placeholder Core.
 
 The contribution workflow is described in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-The developer [mailing list](https://lists.linuxfoundation.org/mailman/listinfo/placeh-dev)
-should be used to discuss complicated or controversial changes before working
-on a patch set.
-
-Developer IRC can be found on Freenode at #placeh-core-dev.
+Developer Discord can be found on Discord at #placeholders.
 
 Testing
 -------
-
 Testing and code review is the bottleneck for development; we get more pull
 requests than we can review and test on short notice. Please be patient and help out by testing
 other people's pull requests, and remember this is a security-critical project where any mistake might cost people
-lots of money.
+lots of placeholders.
 
-Testnet is now up and running and available to use during development. There is an issue when connecting to the testnet that requires the use of the -maxtipage parameter in order to connect to the test network initially. After the initial launch the -maxtipage parameter is not required.
+Testnet is now up and running and available to use during development. There is an issue when connecting to the testnet that requires the use of the -maxtipage parameter in order to connect to the test network initially. 
+
+After the initial launch the -maxtipage parameter is not required.
 
 Use this command to initially start placehd on the testnet. <code>./placehd -testnet -maxtipage=259200</code>
 
