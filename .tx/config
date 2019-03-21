@@ -5,3 +5,9 @@ host = https://www.transifex.com
 file_filter = src/qt/locale/raven_<lang>.ts
 source_file = src/qt/locale/raven_en.ts
 source_lang = en
+
+[placeh.qt-translation-014x]
+file_filter = src/qt/locale/placeh_<lang>.ts
+source_file = src/qt/locale/placeh_en.ts
+source_lang = en
+
