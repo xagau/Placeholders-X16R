@@ -14,6 +14,8 @@ License
 Placeholder Core is released under the terms of the MIT license. See [COPYING](COPYING) for more
 information or see https://opensource.org/licenses/MIT.
 
+Placeholders Core contains Patent Pending technology.
+
 Development Process
 -------------------
 
@@ -84,4 +86,7 @@ Bitcoin is and always should be focused on its goals of being a better form of m
 In the new global economy, borders and jurisdictions will be less relevant as more assets are tradable and trade across borders is increasingly frictionless. In an age where people can move significant amounts of wealth instantly using Bitcoin, global consumers will likely demand the same efficiency for their securities and similar asset holdings. Computer scientists, political writers and the like will demand to have an affordable, censorship resistant way to publish content.
 
 For such a global system to work it will need to be independent of regulatory jurisdictions.  This is not due to ideological belief but practicality: if the rails for blockchain asset transfer are not censorship resistance and jurisdiction agnostic, any given jurisdiction may be in conflict with another.  In legacy systems, wealth was generally confined in the jurisdiction of the holder and therefore easy to control based on the policies of that jurisdiction. Because of the global nature of blockchain technology any protocol level ability to control wealth would potentially place jurisdictions in conflict and will not be able to operate fairly.  
+
+
+Placeholders contains [Patent Pending] technology.
 
