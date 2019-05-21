@@ -213,6 +213,22 @@ void WalletFrame::gotoAssetsPage()
         i.value()->gotoAssetsPage();
 }
 
+/** PHL START */
+void WalletFrame::gotoRepositoryPage()
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoAssetsPage();
+}
+
+/** PHL START */
+void WalletFrame::gotoProvideResourcesPage()
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoAssetsPage();
+}
+
 void WalletFrame::displayAssetInfo()
 {
     QMap<QString, WalletView*>::const_iterator i;

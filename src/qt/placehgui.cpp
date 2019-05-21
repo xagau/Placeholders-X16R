@@ -413,22 +413,22 @@ void PlacehGUI::createActions()
     //tabGroup->addAction(assetAction);
     /* PHL END */
 	
-    /** PHL START 
+    
     repositoryAction = new QAction(platformStyle->SingleColorIcon(":/icons/open"), tr("&Repository"), this);
     repositoryAction->setStatusTip(tr("Manage Repository"));
     repositoryAction->setToolTip(repositoryAction->statusTip());
     repositoryAction->setCheckable(true);
-    repositoryAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    repositoryAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_6));
     tabGroup->addAction(repositoryAction);
     
     
-    artifactManagementAction = new QAction(platformStyle->SingleColorIcon(":/icons/open"), tr("&Artifact Management"), this);
-    artifactManagementAction->setStatusTip(tr("Artifact Management"));
-    artifactManagementAction->setToolTip(artifactManagementAction->statusTip());
-    artifactManagementAction->setCheckable(true);
-    artifactManagementAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
-    tabGroup->addAction(artifactManagementAction);
-    PHL END */	
+    provideResourcesAction = new QAction(platformStyle->SingleColorIcon(":/icons/open"), tr("&Provide Resources"), this);
+    provideResourcesAction->setStatusTip(tr("Provide Resources"));
+    provideResourcesAction->setToolTip(provideResourcesAction->statusTip());
+    provideResourcesAction->setCheckable(true);
+    provideResourcesAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
+    tabGroup->addAction(provideResourcesAction);
+    
 
 #ifdef ENABLE_WALLET
     // These showNormalIfMinimized are needed because Send Coins and Receive Coins
@@ -447,6 +447,11 @@ void PlacehGUI::createActions()
     connect(historyAction, SIGNAL(triggered()), this, SLOT(gotoHistoryPage()));
     connect(assetAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(assetAction, SIGNAL(triggered()), this, SLOT(gotoAssetsPage()));
+	connect(repositoryAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(repositoryAction, SIGNAL(triggered()), this, SLOT(gotoRepositoryPage()));
+	connect(provideResourcesAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(provideResourcesAction, SIGNAL(triggered()), this, SLOT(gotoProvideResourcesPage()));
+	
 #endif // ENABLE_WALLET
 
     quitAction = new QAction(platformStyle->TextColorIcon(":/icons/quit"), tr("E&xit"), this);
@@ -585,6 +590,12 @@ void PlacehGUI::createToolBars()
         /** PHL START */
         //toolbar->addAction(assetAction);
         /** PHL END */
+        /** PHL START */
+        toolbar->addAction(repositoryAction);
+        /** PHL END */
+        /** PHL START */
+        toolbar->addAction(provideResourcesAction);
+        /** PHL END */
         overviewAction->setChecked(true);
     }
 }
@@ -696,6 +707,8 @@ void PlacehGUI::setWalletActionsEnabled(bool enabled)
 		usedReceivingAddressesAction->setEnabled(enabled);
 		openAction->setEnabled(enabled);
 
+		repositoryAction->setEnabled(false);
+		provideResourcesAction->setEnabled(false);
 		/** PHL START */
 		//assetAction->setEnabled(false);
 		/** PHL END */
@@ -851,6 +864,20 @@ void PlacehGUI::gotoAssetsPage()
 {
     assetAction->setChecked(true);
     if (walletFrame) walletFrame->gotoAssetsPage();
+};
+
+/** PHL START */
+void PlacehGUI::gotoRepositoryPage()
+{
+    repositoryAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoRepositoryPage();
+};
+
+/** PHL START */
+void PlacehGUI::gotoProvideResourcesPage()
+{
+    provideResourcesAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoProvideResourcesPage();
 };
 /** PHL END */
 #endif // ENABLE_WALLET

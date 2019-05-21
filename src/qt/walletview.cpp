@@ -62,6 +62,10 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     sendCoinsPage = new SendCoinsDialog(platformStyle);
 
     assetsPage = new AssetsDialog(platformStyle);
+	
+	repositoryPage = new AssetsDialog(platformStyle);
+	provideResourcesPage = new AssetsDialog(platformStyle);
+	
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
     usedReceivingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::ReceivingTab, this);
@@ -75,6 +79,14 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     addWidget(assetsPage);
     /** PHL END */
 
+    /** PHL START */
+    addWidget(repositoryPage);
+    /** PHL END */
+
+    /** PHL START */
+    addWidget(provideResourcesPage);
+    /** PHL END */
+	
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
     connect(overviewPage, SIGNAL(transactionClicked(QModelIndex)), transactionView, SLOT(focusTransaction(QModelIndex)));
     connect(overviewPage, SIGNAL(outOfSyncWarningClicked()), this, SLOT(requestedSyncWarningInfo()));
@@ -92,7 +104,15 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     /** PHL START */
     connect(assetsPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
-    /** RNV END */
+    /** PHL END */
+
+    /** PHL START */
+    connect(repositoryPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    /** PHL END */
+    /** PHL START */
+    connect(provideResourcesPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    /** PHL END */
+	
 }
 
 WalletView::~WalletView()
@@ -146,6 +166,12 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     /** PHL START */
     assetsPage->setModel(_walletModel);
 
+    /** PHL START */
+    repositoryPage->setModel(_walletModel);
+
+    /** PHL START */
+    provideResourcesPage->setModel(_walletModel);
+	
     if (_walletModel)
     {
         // Receive and pass through messages from wallet model
@@ -375,6 +401,20 @@ void WalletView::gotoAssetsPage()
 {
     setCurrentWidget(assetsPage);
 }
+
+/** PHL START */
+void WalletView::gotoRepositoryPage()
+{
+    setCurrentWidget(repositoryPage);
+}
+/** PHL END */
+
+/** PHL START */
+void WalletView::gotoProvideResourcesPage()
+{
+    setCurrentWidget(provideResourcesPage);
+}
+/** PHL END */
 
 void WalletView::displayAssetInfo()
 {

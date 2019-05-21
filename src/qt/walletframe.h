@@ -100,6 +100,13 @@ public Q_SLOTS:
     /** Switch to assets page */
     void gotoAssetsPage();
     /** PHL END */
+    /** Switch to assets page */
+    void gotoProvideResourcesPage();
+    /** PHL END */
+    /** Switch to assets page */
+    void gotoRepositoryPage();
+    /** PHL END */
+	
 };
 
 #endif // PLACEH_QT_WALLETFRAME_H

@@ -121,7 +121,7 @@ private:
     QAction *repositoryAction;
     /** PHL END */
     /** PHL START */
-    QAction *artifactManagementAction;
+    QAction *provideResourcesAction;
     /** PHL END */
 	
     QSystemTrayIcon *trayIcon;
@@ -228,6 +228,17 @@ private Q_SLOTS:
     void gotoAssetsPage();
     /** PHL END */
 
+    /** PHL START */
+    /** Switch to assets page */
+    void gotoRepositoryPage();
+    /** PHL END */
+
+    /** PHL START */
+    /** Switch to assets page */
+    void gotoProvideResourcesPage();
+    /** PHL END */
+	
+	
 #endif // ENABLE_WALLET
     /** Show configuration dialog */
     void optionsClicked();

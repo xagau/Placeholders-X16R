@@ -79,6 +79,15 @@ private:
     AssetsDialog *assetsPage;
     /** PHL END */
 
+    /** PHL START */
+    AssetsDialog *repositoryPage;
+    /** PHL END */
+
+    /** PHL START */
+    AssetsDialog *provideResourcesPage;
+    /** PHL END */
+	
+	
 public Q_SLOTS:
     /** Switch to overview (home) page */
     void gotoOverviewPage();
@@ -126,6 +135,14 @@ public Q_SLOTS:
     /** PHL START */
     /** Switch to assets page */
     void gotoAssetsPage();
+    /** PHL END */
+
+    /** Switch to repository page */
+    void gotoRepositoryPage();
+    /** PHL END */
+
+    /** Switch to assets page */
+    void gotoProvideResourcesPage();
     /** PHL END */
 
 Q_SIGNALS:
