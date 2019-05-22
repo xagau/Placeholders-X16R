@@ -707,8 +707,8 @@ void PlacehGUI::setWalletActionsEnabled(bool enabled)
 		usedReceivingAddressesAction->setEnabled(enabled);
 		openAction->setEnabled(enabled);
 
-		repositoryAction->setEnabled(false);
-		provideResourcesAction->setEnabled(false);
+		repositoryAction->setEnabled(enabled);
+		provideResourcesAction->setEnabled(enabled);
 		/** PHL START */
 		//assetAction->setEnabled(false);
 		/** PHL END */
