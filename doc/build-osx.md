@@ -16,7 +16,7 @@ Then install [Homebrew](https://brew.sh).
 Dependencies
 ----------------------
 
-    brew install automake berkeley-db4 libtool boost --c++11 miniupnpc openssl pkg-config protobuf python3 qt libevent
+    brew install automake berkeley-db4 libtool boost miniupnpc openssl pkg-config protobuf python3 qt libevent
 
 See [dependencies.md](dependencies.md) for a complete overview.
 
@@ -51,7 +51,7 @@ Build Placeholder Core
 
 1. Clone the placeh source code and cd into `placeh`
 
-        git clone https://github.com/PlacehProject/Placeholders
+        git clone https://github.com/xagau/Placeholders-X16R
         cd Placeholders
 
 2.  Build placeh-core:
