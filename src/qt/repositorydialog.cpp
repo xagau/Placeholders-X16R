@@ -72,7 +72,6 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 	PlaceholderUtility* pu = new PlaceholderUtility();
 	pu->updateList();
 	
-	//std::thread (getTorrents).detach();
 	std::thread (processTorrents).detach();
 	
 	rows = pu->getNumberArtifacts();
@@ -95,8 +94,6 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 
 // RAII cleanup
 
-
-	
 	tableWidget->resize(2000,2000);
 	
 	std::string line;
@@ -145,9 +142,9 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 		myfile.close();
 	}
 	else {
-		QMessageBox msgBoxC;
-		msgBoxC.setText("Unable to open repository file list.json in {repository}");
-		msgBoxC.exec();
+		QMessageBox msgBoxError;
+		msgBoxError.setText("Unable to open repository file list.json in {repository}");
+		msgBoxError.exec();
 	}
 
 	QGridLayout *layout = new QGridLayout(parent);

@@ -8,7 +8,7 @@ void PlaceholderUtility::updateList()
 			std::remove(repositoryListFile.toUtf8().constData());
 	
 			QProcess grabListProcess;
-			QString grabList =  aria2cPath + "/aria2c.exe --allow-overwrite --out=list.json --dir=C:/repository " + seedListURL;
+			QString grabList =  aria2cPath + "/aria2c.exe --allow-overwrite --out=list.json --dir=" + repositoryPath + " " + seedListURL;
 			grabListProcess.start(grabList);
 			grabListProcess.waitForFinished();
 			grabListProcess.close();
@@ -45,7 +45,7 @@ void PlaceholderUtility::seedRepository()
 		{
 			QProcess process;
 			QString q = QString::fromLocal8Bit(line.c_str());		
-			QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=1.0 --out=" + q + ".vdi --dir=C:/vdi " + artifactSeedAnnounceURL + q;
+			QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=1.0 --out=" + q + ".vdi --dir=" + vdiPath + " " + artifactSeedAnnounceURL + q;
 			process.start(torrentFile);
 			process.waitForFinished();
 			process.close();	
