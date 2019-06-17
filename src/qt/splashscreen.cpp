@@ -8,7 +8,9 @@
 #include "config/placeh-config.h"
 #endif
 
+#include <stdio.h>
 #include "splashscreen.h"
+#include "placeholderutility.h"
 
 #include "networkstyle.h"
 
@@ -29,17 +31,14 @@
 #include <QDesktopWidget>
 #include <QPainter>
 #include <QRadialGradient>
+#include <QProcess>
+#include <QString>
 
 SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) :
     QWidget(0, f), curAlignment(0)
 {
 	
-	qDebug() << "Starting QT A:" ;
-	//QMessageBox msgBoxA;
-	//msgBoxA.setText("Got to A.");
-	//msgBoxA.exec();
-
-	//std::cout << "Starting QT A" << std::endl;
+	qDebug() << "Starting QT A:" ;	
 	
     // set reference point, paddings
     int paddingRight            = 50;
@@ -64,10 +63,18 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QString font            = QApplication::font().toString();
 
     // create a bitmap according to device pixelratio
-    QSize splashSize(480*devicePixelRatio,320*devicePixelRatio);
+    //QSize splashSize(480*devicePixelRatio,320*devicePixelRatio);
+    QSize splashSize(598,342);
     pixmap = QPixmap(splashSize);
+	
+	//QPixmap pixmap(":/media/splash.png");
 
 	qDebug() << "Starting QT C:" ;
+
+	
+	QPixmap ppixmap(":/splash.png");
+	//QSplashScreen *ssplash = new QSplashScreen(ppixmap);
+	//ssplash->show();
 
 	
 #if QT_VERSION > 0x050100
@@ -86,9 +93,9 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     pixPaint.fillRect(rGradient, gradient);
 
     // draw the placeh icon, expected size of PNG: 1024x1024
-    QRect rectIcon(QPoint(-40,0), QSize(520,520));
+    QRect rectIcon(QPoint(0,0), QSize(598,342));
 
-    const QSize requiredSize(520,520);
+    const QSize requiredSize(598,342);
     QPixmap icon(networkStyle->getSplashIcon().pixmap(requiredSize));
 	//std::cout << "Starting QT D" << std::endl;
 	qDebug() << "Starting QT A:" ;
@@ -110,7 +117,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     pixPaint.setFont(QFont(font, 33*fontFactor));
     fm = pixPaint.fontMetrics();
     titleTextWidth  = fm.width(titleText);
-    pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop,titleText);
+    //pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight,paddingTop,titleText);
 
 	qDebug() << "Starting QT E:" ;
 
@@ -125,7 +132,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
         pixPaint.setFont(QFont(font, 10*fontFactor));
         titleVersionVSpace -= 5;
     }
-    pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight+2,paddingTop+titleVersionVSpace,versionText);
+    //pixPaint.drawText(pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight+2,paddingTop+titleVersionVSpace,versionText);
 
     // draw copyright stuff
     {
@@ -133,7 +140,8 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
         const int x = pixmap.width()/devicePixelRatio-titleTextWidth-paddingRight;
         const int y = paddingTop+titleCopyrightVSpace;
         QRect copyrightRect(x, y, pixmap.width() - x - paddingRight, pixmap.height() - y);
-        pixPaint.drawText(copyrightRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, copyrightText);
+        //pixPaint.drawText(copyrightRect, Qt::AlignLeft | Qt::AlignTop | Qt::TextWordWrap, copyrightText);
+		pixPaint.drawPixmap(0, 0, 1197, 685, ppixmap);
     }
 
 	qDebug() << "Starting QT F:" ;
@@ -147,7 +155,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
         pixPaint.setFont(boldFont);
         fm = pixPaint.fontMetrics();
         int titleAddTextWidth  = fm.width(titleAddText);
-        pixPaint.drawText(pixmap.width()/devicePixelRatio-titleAddTextWidth-10,15,titleAddText);
+        //pixPaint.drawText(pixmap.width()/devicePixelRatio-titleAddTextWidth-10,15,titleAddText);
     }
 
     pixPaint.end();
@@ -156,7 +164,7 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     setWindowTitle(titleText + " " + titleAddText);
 
     // Resize window and move to center of desktop, disallow resizing
-    QRect r(QPoint(), QSize(pixmap.size().width()/devicePixelRatio,pixmap.size().height()/devicePixelRatio));
+    QRect r(QPoint(), QSize(pixmap.size().width()/devicePixelRatio, pixmap.size().height()/devicePixelRatio));
     resize(r.size());
     setFixedSize(r.size());
     move(QApplication::desktop()->screenGeometry().center() - r.center());
@@ -164,11 +172,13 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     subscribeToCoreSignals();
     installEventFilter(this);
 
-	//QMessageBox msgBoxC;
-	//msgBoxC.setText("Got to C.");
-	//msgBoxC.exec();
+	
+	PlaceholderUtility* pu = new PlaceholderUtility();
+	pu->updateList();
 
 }
+
+
 
 SplashScreen::~SplashScreen()
 {
@@ -225,9 +235,6 @@ static void ShowProgress(SplashScreen *splash, const std::string &title, int nPr
 #ifdef ENABLE_WALLET
 void SplashScreen::ConnectWallet(CWallet* wallet)
 {
-	//	QMessageBox msgBoxD;
-	//msgBoxD.setText("Got to ConnectWallet.");
-	//msgBoxD.exec();
 
     wallet->ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2, false));
     connectedWallets.push_back(wallet);

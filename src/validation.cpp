@@ -98,6 +98,7 @@ uint64_t THE_SHIGGIDY_DROP = 4;
 uint64_t THE_BULLISH_DPMIDD_PLATEAU = 3;
 uint64_t THE_BREWHAUS_BREAKAWAY = 129600;
 uint64_t THE_CRUNCHYCAT = THE_BREWHAUS_BREAKAWAY * 2;
+uint64_t THE_TAIL_EMISSION = THE_CRUNCHYCAT * 4;
 
 uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
 
@@ -1178,10 +1179,6 @@ CAmount GetLegacySubsidy()
 
 CAmount GetLegacySnapshot(int nHeight)
 {	
-	//if( nHeight >= 0 ) { 
-	//	CAmount nSubsidy = __SNAPSHOT_COIN ; 
-	//	return nSubsidy;
-	//}
 	if( nHeight >= 1 ) { 
 		CAmount nSubsidy = __SNAPSHOT_COIN ; 
 		return nSubsidy;
@@ -1191,22 +1188,6 @@ CAmount GetLegacySnapshot(int nHeight)
 	}	
 }
 
-
-CAmount GetTailEmission()
-{		
-	return __TAIL_EMISSION ;
-}
-
-CAmount GetDecayedEmission(CAmount nSubsidy, CAmount decay, int nHeight)
-{		
-	try {
-		return (nSubsidy - (nHeight * 0.00000025)) ;
-	} catch( ... ) {
-			return __TAIL_EMISSION;
-	}
-}
-
-CAmount decay = 0.00000025;
 
 CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 {
@@ -1236,10 +1217,6 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
         	nSubsidy = 2.5 * COIN;
 	}
 
-	//if( nHeight >= THE_SHIGGIDY_DROP ) { 
-	//	nSubsidy = GetDecayedEmission(nSubsidy, decay, nHeight) * COIN;
-	//}		
-
 	if( nHeight >= THE_BREWHAUS_BREAKAWAY ) { 
 		nSubsidy = 1.8 * COIN;
 	}		
@@ -1248,7 +1225,8 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 		nSubsidy = 1 * COIN;
 	}
 	
-	if( nHeight >= (THE_CRUNCHYCAT * 4) ) { 
+	
+	if( nHeight >= (THE_TAIL_EMISSION) ) { 
 		nSubsidy = 0.1235  * COIN;
 	}
 	

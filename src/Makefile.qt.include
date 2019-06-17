@@ -115,6 +115,9 @@ QT_FORMS_UI = \
   qt/forms/signverifymessagedialog.ui \
   qt/forms/transactiondescdialog.ui \
   qt/forms/assetsdialog.ui \
+  qt/forms/repositorydialog.ui \
+  qt/forms/provideresourcesdialog.ui \
+  qt/forms/deployvmdialog.ui \
   qt/forms/createassetdialog.ui \
   qt/forms/reissueassetdialog.ui \
   qt/forms/sendassetsentry.ui
@@ -170,7 +173,11 @@ QT_MOC_CPP = \
   qt/moc_walletmodel.cpp \
   qt/moc_walletview.cpp \
   qt/moc_assetsdialog.cpp \
+  qt/moc_repositorydialog.cpp \
+  qt/moc_provideresourcesdialog.cpp \
+  qt/moc_deployvmdialog.cpp \
   qt/moc_createassetdialog.cpp \
+  qt/moc_slidersgroup.cpp \
   qt/moc_reissueassetdialog.cpp \
   qt/moc_sendassetsentry.cpp
 
@@ -202,6 +209,9 @@ PLACEH_QT_H = \
   qt/assetcontroldialog.h \
   qt/assetcontroltreewidget.h \
   qt/assetsdialog.h \
+  qt/repositorydialog.h \
+  qt/provideresourcesdialog.h \
+  qt/delpoyvmdialog.h \
   qt/createassetdialog.h \
   qt/bantablemodel.h \
   qt/placehaddressvalidator.h \
@@ -210,6 +220,7 @@ PLACEH_QT_H = \
   qt/placehunits.h \
   qt/callback.h \
   qt/clientmodel.h \
+  qt/crc32.h \
   qt/coincontroldialog.h \
   qt/coincontroltreewidget.h \
   qt/csvmodelwriter.h \
@@ -255,6 +266,8 @@ PLACEH_QT_H = \
   qt/walletmodel.h \
   qt/walletmodeltransaction.h \
   qt/walletview.h \
+  qt/slidersgroup.h \
+  qt/placeholderutility.h \
   qt/winshutdownmonitor.h
 
 RES_ICONS = \
@@ -340,6 +353,7 @@ PLACEH_QT_BASE_CPP = \
   qt/qvaluecombobox.cpp \
   qt/rpcconsole.cpp \
   qt/splashscreen.cpp \
+  qt/slidersgroup.cpp \
   qt/trafficgraphwidget.cpp \
   qt/utilitydialog.cpp
 
@@ -352,11 +366,15 @@ PLACEH_QT_WALLET_CPP = \
   qt/assetcontroldialog.cpp \
   qt/assetcontroltreewidget.cpp \
   qt/assetsdialog.cpp \
+  qt/repositorydialog.cpp \
+  qt/provideresourcesdialog.cpp \
+  qt/deployvmdialog.cpp \
   qt/createassetdialog.cpp \
   qt/coincontroldialog.cpp \
   qt/coincontroltreewidget.cpp \
   qt/editaddressdialog.cpp \
   qt/openuridialog.cpp \
+  qt/crc32.cpp \
   qt/overviewpage.cpp \
   qt/paymentrequestplus.cpp \
   qt/paymentserver.cpp \
@@ -374,6 +392,8 @@ PLACEH_QT_WALLET_CPP = \
   qt/transactionrecord.cpp \
   qt/transactiontablemodel.cpp \
   qt/transactionview.cpp \
+  qt/slidersgroup.cpp \
+  qt/placeholderutility.cpp \
   qt/walletframe.cpp \
   qt/walletmodel.cpp \
   qt/walletmodeltransaction.cpp \

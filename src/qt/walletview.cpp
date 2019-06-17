@@ -4,7 +4,6 @@
 // file COPYING or http://www.opensource.org/licenses/mit-license.php.
 
 #include "walletview.h"
-
 #include "addressbookpage.h"
 #include "askpassphrasedialog.h"
 #include "placehgui.h"
@@ -21,6 +20,9 @@
 #include "transactionview.h"
 #include "walletmodel.h"
 #include "assetsdialog.h"
+#include "repositorydialog.h"
+#include "provideresourcesdialog.h"
+#include "deployvmdialog.h"
 #include <validation.h>
 
 #include "ui_interface.h"
@@ -45,6 +47,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     transactionsPage = new QWidget(this);
     QVBoxLayout *vbox = new QVBoxLayout();
+    QVBoxLayout *vboxRepositoryPage = new QVBoxLayout();
+    QVBoxLayout *vboxProvideResourcesPage = new QVBoxLayout();
     QHBoxLayout *hbox_buttons = new QHBoxLayout();
     transactionView = new TransactionView(platformStyle, this);
     vbox->addWidget(transactionView);
@@ -63,8 +67,13 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     assetsPage = new AssetsDialog(platformStyle);
 	
-	repositoryPage = new AssetsDialog(platformStyle);
-	provideResourcesPage = new AssetsDialog(platformStyle);
+	
+	repositoryPage = new RepositoryDialog(platformStyle);
+
+	provideResourcesPage = new ProvideResourcesDialog(platformStyle);
+
+	
+	deployVMPage = new DeployVMDialog(platformStyle);
 	
 
     usedSendingAddressesPage = new AddressBookPage(platformStyle, AddressBookPage::ForEditing, AddressBookPage::SendingTab, this);
@@ -85,6 +94,10 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 
     /** PHL START */
     addWidget(provideResourcesPage);
+    /** PHL END */
+
+    /** PHL START */
+    addWidget(deployVMPage);
     /** PHL END */
 	
     // Clicking on a transaction on the overview pre-selects the transaction on the transaction history page
@@ -109,8 +122,13 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
     /** PHL START */
     connect(repositoryPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     /** PHL END */
+	
     /** PHL START */
     connect(provideResourcesPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
+    /** PHL END */
+
+    /** PHL START */
+    connect(deployVMPage, SIGNAL(message(QString,QString,unsigned int)), this, SIGNAL(message(QString,QString,unsigned int)));
     /** PHL END */
 	
 }
@@ -172,6 +190,9 @@ void WalletView::setWalletModel(WalletModel *_walletModel)
     /** PHL START */
     provideResourcesPage->setModel(_walletModel);
 	
+    /** PHL START */
+    deployVMPage->setModel(_walletModel);
+
     if (_walletModel)
     {
         // Receive and pass through messages from wallet model
@@ -413,6 +434,12 @@ void WalletView::gotoRepositoryPage()
 void WalletView::gotoProvideResourcesPage()
 {
     setCurrentWidget(provideResourcesPage);
+}
+
+/** PHL START */
+void WalletView::gotoDeployVMPage()
+{
+    setCurrentWidget(deployVMPage);
 }
 /** PHL END */
 

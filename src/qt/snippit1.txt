@@ -1,0 +1,5 @@
+			QProcess process;
+			QString torrentFile =  "C:/Progra~2/Placeholders/aria2c.exe --dir=C:/repository/   --out=" + q + ".torrent http://explore.placeh.io:8080/raw/" + q;
+			process.start(torrentFile);
+			//process.waitForFinished();
+			//process.close();

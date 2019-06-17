@@ -9,7 +9,6 @@
 #endif
 
 #include "placehgui.h"
-
 #include "chainparams.h"
 #include "clientmodel.h"
 #include "fs.h"
@@ -53,6 +52,15 @@
 #include <QTimer>
 #include <QTranslator>
 #include <QSslConfiguration>
+
+
+#include <iostream>
+#include <fstream>
+#include <string>
+
+#include <QString>
+#include <QDir>
+#include <QProcess>
 
 #if defined(QT_STATICPLUGIN)
 #include <QtPlugin>
@@ -461,6 +469,7 @@ void PlacehApplication::startThread()
 	
     coreThread->start();
 }
+
 
 void PlacehApplication::parameterSetup()
 {

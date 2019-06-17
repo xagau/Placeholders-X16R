@@ -107,6 +107,8 @@ public Q_SLOTS:
     void gotoRepositoryPage();
     /** PHL END */
 	
+	void gotoDeployVMPage();
+	
 };
 
 #endif // PLACEH_QT_WALLETFRAME_H

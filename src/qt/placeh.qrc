@@ -1,5 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
     <qresource prefix="/icons">
+	
+        <file alias="placeh_icon">res/icons/_placeh.png</file>
         <file alias="placeh">res/icons/placeh.png</file>
         <file alias="address-book">res/icons/address-book.png</file>
         <file alias="quit">res/icons/quit.png</file>
@@ -42,6 +44,7 @@
         <file alias="key">res/icons/key.png</file>
         <file alias="filesave">res/icons/filesave.png</file>
         <file alias="debugwindow">res/icons/debugwindow.png</file>
+        <file alias="splash">res/icons/splash.png</file>
         <file alias="open">res/icons/open.png</file>
         <file alias="info">res/icons/info.png</file>
         <file alias="about">res/icons/about.png</file>

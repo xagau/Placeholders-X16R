@@ -218,7 +218,7 @@ void WalletFrame::gotoRepositoryPage()
 {
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoAssetsPage();
+        i.value()->gotoRepositoryPage();
 }
 
 /** PHL START */
@@ -226,7 +226,14 @@ void WalletFrame::gotoProvideResourcesPage()
 {
     QMap<QString, WalletView*>::const_iterator i;
     for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
-        i.value()->gotoAssetsPage();
+        i.value()->gotoProvideResourcesPage();
+}
+
+void WalletFrame::gotoDeployVMPage()
+{
+    QMap<QString, WalletView*>::const_iterator i;
+    for (i = mapWalletViews.constBegin(); i != mapWalletViews.constEnd(); ++i)
+        i.value()->gotoDeployVMPage();
 }
 
 void WalletFrame::displayAssetInfo()

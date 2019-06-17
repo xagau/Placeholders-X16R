@@ -59,7 +59,7 @@ SendAssetsEntry::SendAssetsEntry(const PlatformStyle *_platformStyle, const QStr
 
     ui->administratorToolButton->setToolTip(tr("Select to view administrator assets to transfer"));
 
-    ui->assetSelectionBox->addItem(tr("Select an asset to transfer"));
+    ui->assetSelectionBox->addItem(tr("Select an artifact to seed"));
     ui->assetSelectionBox->addItems(myAssetsNames);
 
     ui->payAmount->setValue(0.00000000);
@@ -415,7 +415,7 @@ void SendAssetsEntry::switchAdministratorList(bool fSwitchStatus)
             }
             ui->assetSelectionBox->clear();
 
-            ui->assetSelectionBox->addItem(tr("Select an asset to transfer"));
+            ui->assetSelectionBox->addItem(tr("Select an artifact to seed"));
             ui->assetSelectionBox->addItems(list);
             ui->assetSelectionBox->setCurrentIndex(0);
             ui->payAmount->clear();

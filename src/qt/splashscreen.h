@@ -49,7 +49,8 @@ private:
     void ConnectWallet(CWallet*);
 
     QPixmap pixmap;
-    QString curMessage;
+    //QPixmap pixmap(":/media/splash.png");
+	QString curMessage;
     QColor curColor;
     int curAlignment;
 

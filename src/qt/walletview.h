@@ -21,6 +21,9 @@ class TransactionView;
 class WalletModel;
 class AddressBookPage;
 class AssetsDialog;
+class RepositoryDialog;
+class ProvideResourcesDialog;
+class DeployVMDialog;
 
 QT_BEGIN_NAMESPACE
 class QModelIndex;
@@ -80,13 +83,16 @@ private:
     /** PHL END */
 
     /** PHL START */
-    AssetsDialog *repositoryPage;
+    RepositoryDialog *repositoryPage;
     /** PHL END */
 
     /** PHL START */
-    AssetsDialog *provideResourcesPage;
+    ProvideResourcesDialog *provideResourcesPage;
     /** PHL END */
 	
+	 /** PHL START */
+    DeployVMDialog *deployVMPage;
+    /** PHL END */
 	
 public Q_SLOTS:
     /** Switch to overview (home) page */
@@ -133,16 +139,15 @@ public Q_SLOTS:
 
 
     /** PHL START */
-    /** Switch to assets page */
     void gotoAssetsPage();
     /** PHL END */
 
-    /** Switch to repository page */
     void gotoRepositoryPage();
     /** PHL END */
 
-    /** Switch to assets page */
     void gotoProvideResourcesPage();
+    /** PHL END */
+    void gotoDeployVMPage();
     /** PHL END */
 
 Q_SIGNALS:

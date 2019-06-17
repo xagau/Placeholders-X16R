@@ -17,6 +17,8 @@
 #include <QMap>
 #include <QMenu>
 #include <QPoint>
+#include <QProcess>
+#include <QString>
 #include <QSystemTrayIcon>
 
 class ClientModel;
@@ -111,6 +113,7 @@ private:
     QAction *aboutQtAction;
     QAction *openRPCConsoleAction;
     QAction *openAction;
+    //QAction *torrentAction;
     QAction *showHelpMessageAction;
 
     /** PHL START */
@@ -122,6 +125,9 @@ private:
     /** PHL END */
     /** PHL START */
     QAction *provideResourcesAction;
+    /** PHL END */
+    /** PHL START */
+    QAction *deployToNetworkAction;
     /** PHL END */
 	
     QSystemTrayIcon *trayIcon;
@@ -206,6 +212,8 @@ public Q_SLOTS:
 
 private Q_SLOTS:
 #ifdef ENABLE_WALLET
+
+	
     /** Switch to overview (home) page */
     void gotoOverviewPage();
     /** Switch to history (transactions) page */
@@ -224,19 +232,23 @@ private Q_SLOTS:
     void openClicked();
 
     /** PHL START */
-    /** Switch to assets page */
     void gotoAssetsPage();
     /** PHL END */
 
     /** PHL START */
-    /** Switch to assets page */
     void gotoRepositoryPage();
     /** PHL END */
 
     /** PHL START */
-    /** Switch to assets page */
     void gotoProvideResourcesPage();
     /** PHL END */
+	
+	/** PHL START */
+    void gotoDeployVMPage();
+    /** PHL END */
+	
+	
+	
 	
 	
 #endif // ENABLE_WALLET

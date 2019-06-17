@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DeployVMDialog</class>
+ <widget class="QDialog" name="DeployVMDialog">
+ </widget>
+ <resources>
+  <include location="../placeh.qrc"/>
+ </resources>
+</ui>

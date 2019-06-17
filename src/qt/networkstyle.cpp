@@ -28,12 +28,14 @@ NetworkStyle::NetworkStyle(const QString &_appName, const int iconColorHueShift,
     titleAddText(qApp->translate("SplashScreen", _titleAddText))
 {
     // load pixmap
-    QPixmap pixmap(":/icons/placeh");
+    QPixmap pixmap(":/icons/placeh_icon");
+    QPixmap ppixmap(":/icons/placeh");
 
     if(iconColorHueShift != 0 && iconColorSaturationReduction != 0)
     {
         // generate QImage from QPixmap
         QImage img = pixmap.toImage();
+        QImage iimg = ppixmap.toImage();
 
         int h,s,l,a;
 
@@ -71,12 +73,14 @@ NetworkStyle::NetworkStyle(const QString &_appName, const int iconColorHueShift,
         //convert back to QPixmap
 #if QT_VERSION >= 0x040700
         pixmap.convertFromImage(img);
+		ppixmap.convertFromImage(iimg);
 #else
         pixmap = QPixmap::fromImage(img);
+		ppixmap = QPixmap::fromImage(iimg);
 #endif
     }
     
-    splashIcon          = QIcon(pixmap.scaled(QSize(310,310),Qt::KeepAspectRatio,Qt::SmoothTransformation));
+    splashIcon          = QIcon(ppixmap.scaled(QSize(598,342),Qt::KeepAspectRatio,Qt::SmoothTransformation));
     appIcon             = QIcon(pixmap);
     trayAndWindowIcon   = QIcon(pixmap.scaled(QSize(256,256)));
 }

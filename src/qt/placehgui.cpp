@@ -27,6 +27,7 @@
 #ifdef ENABLE_WALLET
 #include "walletframe.h"
 #include "walletmodel.h"
+#include "worker.h"
 #endif // ENABLE_WALLET
 
 #ifdef Q_OS_MAC
@@ -40,6 +41,7 @@
 #include "core_io.h"
 
 #include <iostream>
+#include <thread>
 
 #include <QAction>
 #include <QApplication>
@@ -52,11 +54,14 @@
 #include <QMimeData>
 #include <QProgressDialog>
 #include <QSettings>
+
+
 #include <QShortcut>
 #include <QStackedWidget>
 #include <QStatusBar>
 #include <QStyle>
 #include <QTimer>
+#include <QThread>
 #include <QToolBar>
 #include <QVBoxLayout>
 
@@ -131,27 +136,12 @@ PlacehGUI::PlacehGUI(const PlatformStyle *_platformStyle, const NetworkStyle *ne
     platformStyle(_platformStyle)
 
 {
-	//QMessageBox msgBoxC;
-	//msgBoxC.setText("Got to placehgui - create main frame.");
-	//msgBoxC.exec();
-
     QSettings settings;
     if (!restoreGeometry(settings.value("MainWindowGeometry").toByteArray())) {
-        // Restore failed (perhaps missing setting), center the window
-        	//QMessageBox msgBoxY;
-			//msgBoxY.setText("Got to placehgui - calling move create main frame.");
-			//msgBoxY.exec();
 			
 		move(QApplication::desktop()->availableGeometry().center() - frameGeometry().center());
 
-		//QMessageBox msgBoxZ;
-		//	msgBoxZ.setText("Got to placehgui - calling move - DONE create main frame.");
-	//		msgBoxZ.exec();
     }
-
-		//QMessageBox msgBoxZ;
-		//	msgBoxZ.setText("Got to placehgui - AFTER RESTORE - DONE create main frame.");
-		//	msgBoxZ.exec();
 	
     QString windowTitle = tr(PACKAGE_NAME) + " - ";
 #ifdef ENABLE_WALLET
@@ -178,19 +168,10 @@ PlacehGUI::PlacehGUI(const PlatformStyle *_platformStyle, const NetworkStyle *ne
     setUnifiedTitleAndToolBarOnMac(true);
 #endif
 
-	//QMessageBox msgBoxG;
-	//msgBoxG.setText("Got to placehgui - MAKE RPCConsole dialog create main frame .");
-	//msgBoxG.exec();
 	
     rpcConsole = new RPCConsole(_platformStyle, 0);
-    //QMessageBox msgBoxM;
-	//msgBoxM.setText("Got to placehgui - AFTER MAKE RPCConsole dialog create main frame .");
-	//msgBoxM.exec();
 	
 	helpMessageDialog = new HelpMessageDialog(this, false);
-	//QMessageBox msgBoxB;
-	//msgBoxB.setText("Got to placehgui - setup help dialog create main frame .");
-	//msgBoxB.exec();
 
 #ifdef ENABLE_WALLET
     if(enableWallet)
@@ -411,10 +392,20 @@ void PlacehGUI::createActions()
     assetAction->setCheckable(true);
     assetAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
     //tabGroup->addAction(assetAction);
-    /* PHL END */
+    
+	
+	//torrentAction = new QAction(platformStyle->SingleColorIcon(":/icons/open"), "Torrents", this);
+    //torrentAction->setStatusTip(tr("Manage Assets"));
+    //torrentAction->setToolTip(assetAction->statusTip());
+    //torrentAction->setCheckable(true);
+    //torrentAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_5));
+    //tabGroup->addAction(torrentAction);
+    
+	
+	/* PHL END */
 	
     
-    repositoryAction = new QAction(platformStyle->SingleColorIcon(":/icons/open"), tr("&Repository"), this);
+    repositoryAction = new QAction(platformStyle->SingleColorIcon(":/icons/tx_asset_input"), tr("&Manage Repository"), this);
     repositoryAction->setStatusTip(tr("Manage Repository"));
     repositoryAction->setToolTip(repositoryAction->statusTip());
     repositoryAction->setCheckable(true);
@@ -422,12 +413,19 @@ void PlacehGUI::createActions()
     tabGroup->addAction(repositoryAction);
     
     
-    provideResourcesAction = new QAction(platformStyle->SingleColorIcon(":/icons/open"), tr("&Provide Resources"), this);
+    provideResourcesAction = new QAction(platformStyle->SingleColorIcon(":/icons/options"), tr("&Provide Resources"), this);
     provideResourcesAction->setStatusTip(tr("Provide Resources"));
     provideResourcesAction->setToolTip(provideResourcesAction->statusTip());
     provideResourcesAction->setCheckable(true);
     provideResourcesAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
     tabGroup->addAction(provideResourcesAction);
+	
+	deployToNetworkAction = new QAction(platformStyle->SingleColorIcon(":/icons/tx_asset_output"), tr("&Deploy to Network"), this);
+    deployToNetworkAction->setStatusTip(tr("Deploy to Network"));
+    deployToNetworkAction->setToolTip(deployToNetworkAction->statusTip());
+    deployToNetworkAction->setCheckable(true);
+    deployToNetworkAction->setShortcut(QKeySequence(Qt::ALT + Qt::Key_7));
+    tabGroup->addAction(deployToNetworkAction);
     
 
 #ifdef ENABLE_WALLET
@@ -451,6 +449,8 @@ void PlacehGUI::createActions()
     connect(repositoryAction, SIGNAL(triggered()), this, SLOT(gotoRepositoryPage()));
 	connect(provideResourcesAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
     connect(provideResourcesAction, SIGNAL(triggered()), this, SLOT(gotoProvideResourcesPage()));
+	connect(deployToNetworkAction, SIGNAL(triggered()), this, SLOT(showNormalIfMinimized()));
+    connect(deployToNetworkAction, SIGNAL(triggered()), this, SLOT(gotoDeployVMPage()));
 	
 #endif // ENABLE_WALLET
 
@@ -522,6 +522,7 @@ void PlacehGUI::createActions()
         connect(usedSendingAddressesAction, SIGNAL(triggered()), walletFrame, SLOT(usedSendingAddresses()));
         connect(usedReceivingAddressesAction, SIGNAL(triggered()), walletFrame, SLOT(usedReceivingAddresses()));
         connect(openAction, SIGNAL(triggered()), this, SLOT(openClicked()));
+			
     }
 #endif // ENABLE_WALLET
 
@@ -588,13 +589,13 @@ void PlacehGUI::createToolBars()
         toolbar->addAction(historyAction);
 
         /** PHL START */
-        //toolbar->addAction(assetAction);
-        /** PHL END */
-        /** PHL START */
         toolbar->addAction(repositoryAction);
         /** PHL END */
         /** PHL START */
         toolbar->addAction(provideResourcesAction);
+        /** PHL END */
+		/** PHL START */
+        toolbar->addAction(deployToNetworkAction);
         /** PHL END */
         overviewAction->setChecked(true);
     }
@@ -709,9 +710,8 @@ void PlacehGUI::setWalletActionsEnabled(bool enabled)
 
 		repositoryAction->setEnabled(enabled);
 		provideResourcesAction->setEnabled(enabled);
-		/** PHL START */
-		//assetAction->setEnabled(false);
-		/** PHL END */
+		deployToNetworkAction->setEnabled(enabled);
+
 	} catch(...) {
 		
 	}
@@ -831,6 +831,8 @@ void PlacehGUI::gotoOverviewPage()
     if (walletFrame) walletFrame->gotoOverviewPage();
 }
 
+
+
 void PlacehGUI::gotoHistoryPage()
 {
     historyAction->setChecked(true);
@@ -878,6 +880,13 @@ void PlacehGUI::gotoProvideResourcesPage()
 {
     provideResourcesAction->setChecked(true);
     if (walletFrame) walletFrame->gotoProvideResourcesPage();
+};
+
+/** PHL START */
+void PlacehGUI::gotoDeployVMPage()
+{
+    deployToNetworkAction->setChecked(true);
+    if (walletFrame) walletFrame->gotoDeployVMPage();
 };
 /** PHL END */
 #endif // ENABLE_WALLET

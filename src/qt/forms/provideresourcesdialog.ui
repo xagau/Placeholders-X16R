@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ProvideResourcesDialog</class>
+ <widget class="QDialog" name="ProvideResourcesDialog">
+ </widget>
+ <resources>
+  <include location="../placeh.qrc"/>
+ </resources>
+</ui>
