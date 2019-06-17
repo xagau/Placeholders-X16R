@@ -90,6 +90,23 @@ ProvideResourcesDialog::ProvideResourcesDialog(const PlatformStyle *_platformSty
     /** PHL END */
 }
 
+
+void ProvideResourcesDialog::provide()
+{
+	PlaceholderUtility* pu = new PlaceholderUtility();
+	if(!pu->isMachineConfiguredForVirtualBox())
+	{
+		QMessageBox msgBoxError;
+		msgBoxError.setText("This machine is not configured for Virtual Box");
+		msgBoxError.exec();			
+	}
+	else {
+		QMessageBox msgBoxOK;
+		msgBoxOK.setText("This machine has Virtual Box installed");
+		msgBoxOK.exec();	
+	}
+}
+
 void  ProvideResourcesDialog::createControls(const QString &title)
 {
     controlsGroup = new QGroupBox(title);
@@ -124,13 +141,17 @@ void  ProvideResourcesDialog::createControls(const QString &title)
     costSpinBox->setRange(0.01, 100000);
     costSpinBox->setSingleStep(0.01);
 
+	
+	provideResourcesButton = new QPushButton(tr("Provide Resources"));
+	
+	
     orientationCombo = new QComboBox;
     orientationCombo->addItem(tr("Automatically host best offer"));
     orientationCombo->addItem(tr("Strictly enforce rate"));
 	
-	connect(orientationCombo, SIGNAL(activated(int)),
-            stackedWidget, SLOT(setCurrentIndex(int)));
+	connect(orientationCombo, SIGNAL(activated(int)), stackedWidget, SLOT(setCurrentIndex(int)));
 
+	connect(provideResourcesButton, SIGNAL(clicked()), this, SLOT(provide()) );			
 
     QGridLayout *controlsLayout = new QGridLayout;
     controlsLayout->addWidget(coresLabel, 0, 0);
@@ -146,7 +167,10 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 	
     controlsLayout->addWidget(invertedAppearance, 0, 2);
     controlsLayout->addWidget(invertedKeyBindings, 1, 2);
+
     controlsLayout->addWidget(orientationCombo, 5, 0, 1, 3);
+    controlsLayout->addWidget(provideResourcesButton, 6, 0, 1, 3);
+		
     controlsGroup->setLayout(controlsLayout);
 	
 }

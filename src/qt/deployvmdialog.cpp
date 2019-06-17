@@ -207,9 +207,9 @@ void DeployVMDialog::selectFile()
 		
 		if( fileName.endsWith(".zip", Qt::CaseInsensitive) ) { 
 		
-			QMessageBox msgBoxC;
-			msgBoxC.setText("This zip will be converted to torrent for seeding");
-			msgBoxC.exec();										
+			QMessageBox msgBoxError;
+			msgBoxError.setText("This zip will be converted to torrent for seeding");
+			msgBoxError.exec();										
 
 		}
 		else if( fileName.endsWith(".vdi", Qt::CaseInsensitive) ) { 

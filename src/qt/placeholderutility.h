@@ -20,11 +20,15 @@ class PlaceholderUtility {
 		QString aria2cPath = "C:/Progra~2/Placeholders";
 		QString mktorrentPath = "C:/Progra~2/Placeholders";
 		QString vdiPath = "C:/vdi";
+		QString virtualBoxManage = "VBoxManage.exe";
+		QString virtualBoxPath = "C:/Progra~1/Oracle/VirtualBox/";
 		
 		QString deployEntryPointURL = "http://explore.placeh.io:8080/deploy";
+		bool exists(const std::string& name);
 		
 	public:
 	
+		bool isMachineConfiguredForVirtualBox();
 		void updateList();
 		void seedRepository();
 		int getNumberArtifacts();

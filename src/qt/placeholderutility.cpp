@@ -31,6 +31,22 @@ QString PlaceholderUtility::getDeployEntryPointURL()
 	return deployEntryPointURL;
 }
 
+bool PlaceholderUtility::isMachineConfiguredForVirtualBox()
+{
+		bool result = true;
+		if( !exists(virtualBoxPath.toUtf8().constData()) ) {
+			result = false;
+		}
+		else if( !exists((virtualBoxPath + virtualBoxManage).toUtf8().constData()) ) {
+			result = false;
+		}		
+		return result;
+}
+
+inline bool PlaceholderUtility::exists(const std::string& name) {
+    std::ifstream f(name.c_str());
+    return f.good();
+}
 
 void PlaceholderUtility::seedRepository()
 {

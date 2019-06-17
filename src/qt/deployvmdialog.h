@@ -66,16 +66,12 @@ private:
    
 	void console(const char* msg);
 
-	//QByteArray fileChecksum(const QString &fileName, QCryptographicHash::Algorithm hashAlgorithm);
-   
-    //oid createMenu();
     void createHorizontalGroupBox();
-    //void createGridGroupBox();
-    //void createFormGroupBox();
+
 
     enum { NumGridRows = 3, NumButtons = 4 };
 
-    //QMenuBar *menuBar;
+
     QGroupBox *horizontalGroupBox;
     QGroupBox *gridGroupBox;
     QGroupBox *formGroupBox;

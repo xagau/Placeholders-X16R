@@ -7,11 +7,13 @@
 #define PLACEH_QT_PROVIDE_RESOURCES_H
 
 #include "walletmodel.h"
+#include "placeholderutility.h"
 
 #include <QDialog>
 #include <QMessageBox>
 #include <QString>
 #include <QTimer>
+#include <QPushButton>
 
 #include <QGroupBox>
 #include <QLabel>
@@ -57,6 +59,8 @@ public:
 
 	void createControls(const QString &title);
 
+	
+
     SlidersGroup *horizontalSliders;
     SlidersGroup *verticalSliders;
     QStackedWidget *stackedWidget;
@@ -75,9 +79,10 @@ public:
     QSpinBox *bandwidthSpinBox;
     QSpinBox *costSpinBox;
     QComboBox *orientationCombo;
-   
+    QPushButton *provideResourcesButton;   
 
 public Q_SLOTS:
+	void provide();
     
 
 private:
