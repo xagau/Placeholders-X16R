@@ -209,9 +209,6 @@ void SplashScreen::slotFinish(QWidget *mainWin)
 
 static void InitMessage(SplashScreen *splash, const std::string &message)
 {
-	//	QMessageBox msgBoxD;
-	//msgBoxD.setText("Got to InitMessage.");
-	//msgBoxD.exec();
 
     QMetaObject::invokeMethod(splash, "showMessage",
         Qt::QueuedConnection,
@@ -222,9 +219,7 @@ static void InitMessage(SplashScreen *splash, const std::string &message)
 
 static void ShowProgress(SplashScreen *splash, const std::string &title, int nProgress, bool resume_possible)
 {
-	//	QMessageBox msgBoxD;
-	//msgBoxD.setText("Got to ShowProgress.");
-	//msgBoxD.exec();
+
 	
     InitMessage(splash, title + std::string("\n") +
             (resume_possible ? _("(press q to shutdown and continue later)")
@@ -243,10 +238,7 @@ void SplashScreen::ConnectWallet(CWallet* wallet)
 
 void SplashScreen::subscribeToCoreSignals()
 {
-    // Connect signals to client
-	//	QMessageBox msgBoxD;
-	//msgBoxD.setText("Got to subscribeToCoreSignals.");
-	//msgBoxD.exec();
+
 	
     uiInterface.InitMessage.connect(boost::bind(InitMessage, this, _1));
     uiInterface.ShowProgress.connect(boost::bind(ShowProgress, this, _1, _2, _3));
@@ -281,9 +273,7 @@ void SplashScreen::showMessage(const QString &message, int alignment, const QCol
 
 void SplashScreen::paintEvent(QPaintEvent *event)
 {
-	//QMessageBox msgBoxD;
-	//msgBoxD.setText("Got to D.");
-	//msgBoxD.exec();
+
 	
     QPainter painter(this);
     painter.drawPixmap(0, 0, pixmap);
@@ -291,9 +281,6 @@ void SplashScreen::paintEvent(QPaintEvent *event)
     painter.setPen(curColor);
     painter.drawText(r, curAlignment, curMessage);
 
-	//QMessageBox msgBoxE;
-	//msgBoxE.setText("Got to E.");
-	//msgBoxE.exec();
 	
 }
 

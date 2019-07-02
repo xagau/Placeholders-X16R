@@ -19,6 +19,7 @@
 #include <QLabel>
 #include <QCheckBox>
 #include <QSpinBox>
+#include <QDoubleSpinBox>
 #include <QComboBox>
 #include "slidersgroup.h"
 #include <QStackedWidget>
@@ -66,6 +67,8 @@ public:
     QStackedWidget *stackedWidget;
 
     QGroupBox *controlsGroup;
+    QLabel *userLabel;
+    QLabel *passwordLabel;
     QLabel *coresLabel;
     QLabel *memoryLabel;
     QLabel *diskspaceLabel;
@@ -73,11 +76,19 @@ public:
     QLabel *costLabel;
     QCheckBox *invertedAppearance;
     QCheckBox *invertedKeyBindings;
+    QLineEdit *userId;
+    QLineEdit *password;
     QSpinBox *coresSpinBox;
+    QDoubleSpinBox *costCoresSpinBox;
     QSpinBox *memorySpinBox;
+    QDoubleSpinBox *costMemorySpinBox;
     QSpinBox *diskspaceSpinBox;
+	QDoubleSpinBox *costDiskspaceSpinBox;
+
     QSpinBox *bandwidthSpinBox;
-    QSpinBox *costSpinBox;
+	QDoubleSpinBox *costBandwidthSpinBox;
+
+    QDoubleSpinBox *costSpinBox;
     QComboBox *orientationCombo;
     QPushButton *provideResourcesButton;   
 

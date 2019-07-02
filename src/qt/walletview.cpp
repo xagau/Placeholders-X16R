@@ -69,7 +69,8 @@ WalletView::WalletView(const PlatformStyle *_platformStyle, QWidget *parent):
 	
 	
 	repositoryPage = new RepositoryDialog(platformStyle);
-
+	
+		
 	provideResourcesPage = new ProvideResourcesDialog(platformStyle);
 
 	
@@ -426,7 +427,14 @@ void WalletView::gotoAssetsPage()
 /** PHL START */
 void WalletView::gotoRepositoryPage()
 {
+	repositoryPage->refresh();
+	repositoryPage->repaint();
+	repositoryPage->update();
+	QApplication::processEvents();
     setCurrentWidget(repositoryPage);
+	repositoryPage->repaint();
+	repositoryPage->update();
+	QApplication::processEvents();
 }
 /** PHL END */
 

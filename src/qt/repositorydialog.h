@@ -7,16 +7,20 @@
 #define PLACEH_QT_REPOSITORYDIALOG_H
 
 #include "walletmodel.h"
+#include "wallet/coincontrol.h"
 
 #include <QDialog>
 #include <QMessageBox>
 #include <QString>
 #include <QTimer>
+#include <QTableWidget>
 
 class ClientModel;
 class PlatformStyle;
 class SendAssetsEntry;
 class SendCoinsRecipient;
+class CCoinControl;
+
 
 namespace Ui {
     class RepositoryDialog;
@@ -37,13 +41,31 @@ public:
 
     void setClientModel(ClientModel *clientModel);
     void setModel(WalletModel *model);
-  
-public Q_SLOTS:
+	
+	void sendCoins(QString amount, QString address);
+	void refresh() ;
 
+	
+public Q_SLOTS:
+	void handleDownload();
+	void handleInformation();
 private:
     Ui::RepositoryDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
+	
+	int DESCRIPTION_COLUMN = 0;
+	int PRICE_COLUMN = 1;
+	int ARTIFACT_COLUMN = 2;
+	int STATUS_COLUMN = 3;
+	int SERVICE_COLUMN = 4;
+	int CONTENT_TYPE_COLUMN = 5;
+	int INFORMATION_COLUMN = 6;
+	//int SIZE_COLUMN = 6;
+	//int SEED_COLUMN = 7;
+	//int SIGNATURE_COLUMN = 8;
+	//int ENCAPSULATION_COLUMN = 9;
+	QTableWidget *tableWidget;
 
 private Q_SLOTS:
 

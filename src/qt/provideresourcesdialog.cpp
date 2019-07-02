@@ -46,6 +46,17 @@
 #include <QTextDocument>
 #include <QTableWidget>
 #include <QTimer>
+
+#include <QUrl>
+#include <QUrlQuery>
+#include <QEventLoop>
+
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+
+#include <QUuid>
+
 #include <policy/policy.h>
 #include <core_io.h>
 #include <rpc/mining.h>
@@ -91,9 +102,86 @@ ProvideResourcesDialog::ProvideResourcesDialog(const PlatformStyle *_platformSty
 }
 
 
+
+
+
 void ProvideResourcesDialog::provide()
 {
+	
+	
 	PlaceholderUtility* pu = new PlaceholderUtility();
+	
+	
+	if(userId->text().trimmed().isEmpty())
+	{
+		QMessageBox msgBoxError;
+		msgBoxError.setText("Portal User ID Required");
+		msgBoxError.exec();			
+		userId->setFocus();
+		return;
+	}
+	
+	if(password->text().trimmed().isEmpty())
+	{
+		QMessageBox msgBoxError;
+		msgBoxError.setText("Portal Password Required");
+		msgBoxError.exec();			
+		password->setFocus();
+		return;
+	}
+	
+	//if(!pu->isMachineConfiguredForVirtualBox())
+	//{
+	//	QMessageBox msgBoxError;
+	//	msgBoxError.setText("This machine is not configured for Virtual Box");
+	//	msgBoxError.exec();			
+	//	return;
+	//}
+	
+	
+	
+	QNetworkAccessManager * manager = new QNetworkAccessManager(this);
+	QUrlQuery query;
+	QUrl params;
+	QByteArray postData;
+	
+	try { query.addQueryItem("providerId", userId->text().trimmed());} catch(...) { } 
+	try { query.addQueryItem("notes", "These are the notes");} catch(...) { } 
+	try { query.addQueryItem("selectMaxBandwidth", "" + bandwidthSpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("selectMaxCores", "" + coresSpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("selectMaxMemory", "" + memorySpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("selectMaxDiskspace", "" + diskspaceSpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("selectMaxDuration", "1");} catch(...) { } 
+	try { query.addQueryItem("selectMaxGPUs", "1");} catch(...) { } 
+	try { query.addQueryItem("OS", "default-template");} catch(...) { } 
+
+	try { query.addQueryItem("perBandwidthPrice", "" + bandwidthCostSpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("perCorePrice", "" + coreCostSpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("perMemoryPrice", "" + memoryCostSpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("perGPUPrice", "1");} catch(...) { } 
+	try { query.addQueryItem("perDiskspacePrice", "" + diskspaceCostSpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("referenceId", QUUid::createUuid().toString());} catch(...) { } 
+	try { query.addQueryItem("architecture", "Placeholder Native"); } catch(...) { } 
+
+
+	params.setQuery(query);
+	//postData = params.toEncoded(QUrl::RemoveFragment);
+
+	// Call the webservice
+	QNetworkAccessManager *networkManager = new QNetworkAccessManager(this);
+	connect(networkManager, SIGNAL(finished(QNetworkReply*)),
+			SLOT(onPostAnswer(QNetworkReply*)));
+			
+	QUrl serviceUrl  = QUrl(pu->getProvideServiceEndPointURL());
+	
+	QNetworkRequest networkRequest(serviceUrl);
+	networkRequest.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
+
+	networkManager->post(networkRequest,params.query().toUtf8());
+
+	
+	
+	
 	if(!pu->isMachineConfiguredForVirtualBox())
 	{
 		QMessageBox msgBoxError;
@@ -111,35 +199,47 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 {
     controlsGroup = new QGroupBox(title);
 
-    coresLabel = new QLabel(tr("Maximum Cores (CPUs):"));
-    memoryLabel = new QLabel(tr("Maximum Memory GB:"));
-    diskspaceLabel   = new QLabel(tr("Maximum Diskspace GB:"));
-    bandwidthLabel   = new QLabel(tr("Maximum Bandwidth TB:"));
-    costLabel  = new QLabel(tr("Cost (USD) per Duration\nFor this configuration:"));
-
-    invertedAppearance = new QCheckBox(tr("Use up to maximum"));
-    invertedKeyBindings = new QCheckBox(tr("Use up to maximum"));
+	userLabel = new QLabel(tr("User ID:"));
+    passwordLabel = new QLabel(tr("Password:"));
+    
+	userId = new QLineEdit();
+    password = new QLineEdit();
+	password->setEchoMode(QLineEdit::Password);
 	
+    coresLabel = new QLabel(tr("Maximum Cores (CPUs):"));
 	coresSpinBox = new QSpinBox;
     coresSpinBox->setRange(1, 32);
     coresSpinBox->setSingleStep(1);
-
+	
+    memoryLabel = new QLabel(tr("Maximum Memory GB:"));
     memorySpinBox = new QSpinBox;
     memorySpinBox->setRange(1, 128);
     memorySpinBox->setSingleStep(1);
 
+    diskspaceLabel   = new QLabel(tr("Maximum Diskspace GB:"));
     diskspaceSpinBox = new QSpinBox;
     diskspaceSpinBox->setRange(1, 1000);
     diskspaceSpinBox->setSingleStep(1);
 
+    bandwidthLabel   = new QLabel(tr("Maximum Bandwidth TB:"));
     bandwidthSpinBox = new QSpinBox;
     bandwidthSpinBox->setRange(1, 1000);
     bandwidthSpinBox->setSingleStep(1);
-	
-	
-	costSpinBox = new QSpinBox;
+
+    costLabel  = new QLabel(tr("Cost (USD) per Duration\nFor this configuration:"));
+	costSpinBox = new QDoubleSpinBox;
     costSpinBox->setRange(0.01, 100000);
+	costSpinBox->setPrefix("$");
     costSpinBox->setSingleStep(0.01);
+
+    invertedAppearance = new QCheckBox(tr("Use up to maximum"));
+    invertedKeyBindings = new QCheckBox(tr("Use up to maximum"));
+	
+
+
+
+	
+	
 
 	
 	provideResourcesButton = new QPushButton(tr("Provide Resources"));
@@ -154,22 +254,32 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 	connect(provideResourcesButton, SIGNAL(clicked()), this, SLOT(provide()) );			
 
     QGridLayout *controlsLayout = new QGridLayout;
-    controlsLayout->addWidget(coresLabel, 0, 0);
-    controlsLayout->addWidget(memoryLabel, 1, 0);
-    controlsLayout->addWidget(diskspaceLabel, 2, 0);
-    controlsLayout->addWidget(bandwidthLabel, 3, 0);
-    controlsLayout->addWidget(costLabel, 4, 0);
-    controlsLayout->addWidget(coresSpinBox, 0, 1);
-    controlsLayout->addWidget(memorySpinBox, 1, 1);
-    controlsLayout->addWidget(diskspaceSpinBox, 2, 1);
-    controlsLayout->addWidget(bandwidthSpinBox, 3, 1);    
-	controlsLayout->addWidget(costSpinBox, 4, 1);
-	
-    controlsLayout->addWidget(invertedAppearance, 0, 2);
-    controlsLayout->addWidget(invertedKeyBindings, 1, 2);
+    controlsLayout->addWidget(userLabel, 0, 0);
+    controlsLayout->addWidget(userId, 0, 1);
 
-    controlsLayout->addWidget(orientationCombo, 5, 0, 1, 3);
-    controlsLayout->addWidget(provideResourcesButton, 6, 0, 1, 3);
+    controlsLayout->addWidget(passwordLabel, 1, 0);
+    controlsLayout->addWidget(password, 1, 1);
+
+    controlsLayout->addWidget(coresLabel, 2, 0);
+    controlsLayout->addWidget(coresSpinBox, 2, 1);
+
+    controlsLayout->addWidget(memoryLabel, 3, 0);
+    controlsLayout->addWidget(memorySpinBox, 3, 1);
+
+    controlsLayout->addWidget(diskspaceLabel, 4, 0);
+    controlsLayout->addWidget(diskspaceSpinBox, 4, 1);
+
+    controlsLayout->addWidget(bandwidthLabel, 5, 0);
+    controlsLayout->addWidget(bandwidthSpinBox, 5, 1);    
+
+    controlsLayout->addWidget(costLabel, 6, 0);
+	controlsLayout->addWidget(costSpinBox, 6, 1);
+	
+    //controlsLayout->addWidget(invertedAppearance, 0, 2);
+    //controlsLayout->addWidget(invertedKeyBindings, 1, 2);
+
+    controlsLayout->addWidget(orientationCombo, 7, 0, 1, 3);
+    controlsLayout->addWidget(provideResourcesButton, 8, 0, 1, 3);
 		
     controlsGroup->setLayout(controlsLayout);
 	

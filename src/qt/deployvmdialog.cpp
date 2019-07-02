@@ -61,8 +61,6 @@
 #include <QHttpMultiPart>
 #include <QByteArray>
 #include <QDesktopServices>
-//#include <QCryptographicHash>
-
 
 #include <QDialog>
 #include <QMessageBox>
@@ -83,6 +81,7 @@
 #include <QWidget>
 #include <QComboBox>
 #include <QVBoxLayout>
+#include <QPalette>
 
 
 #include <zlib.h>
@@ -102,8 +101,7 @@ DeployVMDialog::DeployVMDialog(const PlatformStyle *_platformStyle, QWidget *par
     createHorizontalGroupBox();
 
 	
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok
-                                     | QDialogButtonBox::Cancel);
+    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
 
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
     connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
@@ -123,72 +121,90 @@ DeployVMDialog::DeployVMDialog(const PlatformStyle *_platformStyle, QWidget *par
 
 void DeployVMDialog::createHorizontalGroupBox()
 {
-	int maxHeight = 55;
+	int maxHeight = 100;
 	int margin    = 15;
 	
     horizontalGroupBox = new QGroupBox(tr("Network Deployment Details"));
 	horizontalGroupBox->setFixedHeight(maxHeight);
 	
-    QHBoxLayout *layout = new QHBoxLayout;
-
+	QVBoxLayout *base = new QVBoxLayout;
 	
+    QHBoxLayout *layoutTop = new QHBoxLayout;
+    QHBoxLayout *layoutBottom = new QHBoxLayout;
 
-        QPushButton* browseButton = new QPushButton(tr("Browse for File"));
+    QPushButton* browseButton = new QPushButton(tr("Browse for File"));
 		
-        layout->addWidget(browseButton);
-		QLabel* checksumLabel = new QLabel(tr("Checksum"));
-        layout->addWidget(checksumLabel);
+    layoutTop->addWidget(browseButton);
+	QLabel* checksumLabel = new QLabel(tr("Checksum"));
+    layoutTop->addWidget(checksumLabel);
 		
-		checksum->setMaximumWidth(100);
-		checksum->setFixedWidth(80);
-		
-		layout->addWidget(checksum);
-		
-		QLabel* artifactLabel = new QLabel(tr("Artifact"));		
-		layout->addWidget(artifactLabel);
+	checksum->setMaximumWidth(100);
+	checksum->setFixedWidth(80);
+	checksum->setReadOnly(true);
 
-		layout->addWidget(artifact);
-		
-		QLabel* signatureLabel = new QLabel(tr("Signature"));		
-		layout->addWidget(signatureLabel);
+	QPalette *palette = new QPalette();
+	palette->setColor(QPalette::Base,Qt::lightGray);
+	palette->setColor(QPalette::Text,Qt::darkGray);
+	checksum->setPalette(*palette);
 
+	layoutTop->addWidget(checksum);
+		
+	QLabel* artifactLabel = new QLabel(tr("Artifact"));		
+	layoutTop->addWidget(artifactLabel);
+	artifact->setPlaceholderText("Eg. F9ddp3zXbNd5zwxBngvRBe4zQgmoViNuma");
+	layoutTop->addWidget(artifact);
+		
+		
+	signature->setPalette(*palette);
+	signature->setReadOnly(true);
+	
+	signButton = new QPushButton(tr("Sign"));
+	QLabel* signatureLabel = new QLabel(tr("Signature"));		
+	layoutTop->addWidget(signatureLabel);
+	layoutTop->addWidget(signature);
+	layoutTop->addWidget(signButton);
+		
+	QLabel* descriptionLabel = new QLabel(tr("Description"));		
+	layoutBottom->addWidget(descriptionLabel);
+	layoutBottom->addWidget(description);
 
-		QCheckBox* signatureCheckBox = new QCheckBox(tr("Generate Signature"));
-		layout->addWidget(signature);
-		layout->addWidget(signatureCheckBox);
-		
-		QLabel* bountyLabel = new QLabel(tr("Bounty"));
-		layout->addWidget(bountyLabel);
+	QLabel* bountyLabel = new QLabel(tr("Bounty (PHL)"));
+	layoutBottom->addWidget(bountyLabel);
 
-		QLineEdit* bounty = new QLineEdit();
-		bounty->setMaximumWidth(80);
-		bounty->setFixedWidth(100);
+	bounty->setMaximumWidth(80);
+	bounty->setFixedWidth(100);
+	bounty->setPlaceholderText("0.00000000");
 		
-        layout->addWidget(bounty);
+	layoutBottom->addWidget(bounty);
 		
-		deployToNetworkButton = new QPushButton(tr("Deploy to Network"));
+	deployToNetworkButton = new QPushButton(tr("Deploy to Network"));
 
-		deployToNetworkButton->setEnabled(false);
+	deployToNetworkButton->setEnabled(false);
 		
-		viewOnExplorerButton = new QPushButton(tr("View on Explorer"));
+	viewOnExplorerButton = new QPushButton(tr("View on Explorer"));
 
-        layout->addWidget(deployToNetworkButton);
-        layout->addWidget(viewOnExplorerButton);
+    layoutTop->addWidget(deployToNetworkButton);
+    layoutTop->addWidget(viewOnExplorerButton);
 		
-		clearConsoleButton = new QPushButton(tr("Clear"));
-		layout->addWidget(clearConsoleButton);
-		
-		//layout->addStretch(1);
+	clearConsoleButton = new QPushButton(tr("Clear"));
+	layoutBottom->addWidget(clearConsoleButton);		
 
-		connect(viewOnExplorerButton, SIGNAL(clicked()), this, SLOT(viewOnExplorer()));
-		connect(clearConsoleButton, SIGNAL(clicked()), bigEditor, SLOT(clear()));
-		connect(browseButton, SIGNAL(clicked()), this, SLOT(selectFile()));
-		connect(deployToNetworkButton, SIGNAL(clicked()), this, SLOT(deployToNetwork()));
+	connect(viewOnExplorerButton, SIGNAL(clicked()), this, SLOT(viewOnExplorer()));
+	connect(clearConsoleButton, SIGNAL(clicked()), bigEditor, SLOT(clear()));
+	connect(browseButton, SIGNAL(clicked()), this, SLOT(selectFile()));
+	connect(signButton, SIGNAL(clicked()), this, SLOT(signMessage()));
+	connect(deployToNetworkButton, SIGNAL(clicked()), this, SLOT(deployToNetwork()));
 		
-		//
-		horizontalGroupBox->setLayout(layout);
+	base->addLayout(layoutTop);
+	base->addLayout(layoutBottom);
+	//
+	horizontalGroupBox->setLayout(base);
 }
+/*
 
+MOVE MAIN CODE IN THIS FUNCTION TO PLACEHOLDER UTILITY 
+
+*/
 
 void DeployVMDialog::selectFile()
 {
@@ -196,31 +212,41 @@ void DeployVMDialog::selectFile()
 		fileName = QFileDialog::getOpenFileName(this, ("Open File"),
 													  "/home",
 													  ("Artifact (*.png *.gif *.jpg *.torrent *.txt *.html *.xml *.htm *.mov *.mpeg *.mp3 *.js *.pdf *.vdi *.json)"));
+													  
+		QFile *file = new QFile(fileName);
+		if( file->size() > 2000000 ) { 
+			QMessageBox msgBoxError;
+			msgBoxError.setText("This file is too large. Please convert it into a torrent first.");
+			msgBoxError.exec();														
+			return;
+		}
 
 		deployToNetworkButton->setEnabled(true);
 		Crc32 *crc32 = new Crc32();
 		
 		quint32 crc = crc32->calculateFromFile(fileName);
-		
+			
 		QString cs = QString::number(crc);
 		checksum->setText(cs);
+		
+
 		
 		if( fileName.endsWith(".zip", Qt::CaseInsensitive) ) { 
 		
 			QMessageBox msgBoxError;
-			msgBoxError.setText("This zip will be converted to torrent for seeding");
+			msgBoxError.setText("This zip will be converted to torrent for seeding (NOT WORKING YET)");
 			msgBoxError.exec();										
 
 		}
 		else if( fileName.endsWith(".vdi", Qt::CaseInsensitive) ) { 
 			QMessageBox msgBoxC;
-			msgBoxC.setText("This VDI will be converted to torrent for seeding");
+			msgBoxC.setText("This VDI will be converted to torrent for seeding (NOT WORKING YET)");
 			msgBoxC.exec();										
 		
 		}
 		else if( fileName.endsWith(".mpeg", Qt::CaseInsensitive) ) { 
 			QMessageBox msgBoxC;
-			msgBoxC.setText("This MPEG will be converted to torrent for seeding");
+			msgBoxC.setText("This MPEG will be converted to torrent for seeding (NOT WORKING YET)");
 			msgBoxC.exec();										
 		
 		}
@@ -284,7 +310,7 @@ void DeployVMDialog::viewOnExplorer()
 	console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	
 	//QString address = artifact->text();
-	QString link = "http://explore.placeh.io:8080/raw/" + address;
+	QString link = "http://explore.placeh.io:8080/raw/" + address.trimmed();
 	QDesktopServices::openUrl(QUrl(link));
 	console("OK");
 }
@@ -306,7 +332,20 @@ void DeployVMDialog::console(const char* message)
 
 void DeployVMDialog::deployToNetwork()
 {
-	
+	if( artifact->text().trimmed().isEmpty()) { 
+		QMessageBox msgBoxC;
+		msgBoxC.setText("No Artifact!");
+		msgBoxC.exec();	
+		artifact->setFocus();
+		return;
+	}
+	if( description->text().trimmed().isEmpty()) { 
+		QMessageBox msgBoxC;
+		msgBoxC.setText("No Description!");
+		msgBoxC.exec();	
+		description->setFocus();
+		return;
+	}
 	console("Create Network Access Manager");
 	console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	QNetworkAccessManager *networkManager = new QNetworkAccessManager(this);
@@ -329,11 +368,15 @@ void DeployVMDialog::deployToNetwork()
 	
 	query.addQueryItem("contentType", contentMimeType);//"application/x-bittorrent");
 	query.addQueryItem("verifySignature", "-");
-	console("WARNING: BAD SIGNATURE!!!");
-	console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	if( signature->text().trimmed().isEmpty() ) { 
+		console("WARNING: BAD SIGNATURE!!!");
+		console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	}
 	query.addQueryItem("signature", signature->text());
-	console("WARNING: NO CHECKSUM!!!");
-	console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	if( checksum->text().trimmed().isEmpty() ) { 
+		console("WARNING: NO CHECKSUM!!!");
+		console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+	}
 	query.addQueryItem("crc32Long", "-");
 	query.addQueryItem("crc32Hex", "-");
 	query.addQueryItem("verifyCommand", "-");
@@ -342,7 +385,9 @@ void DeployVMDialog::deployToNetwork()
 	console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	query.addQueryItem("artifact", artifact->text());
 	query.addQueryItem("address", artifact->text());
-	query.addQueryItem("data", "-=-=-=" + artifact->text() + "=-=-=-");
+	query.addQueryItem("bounty", bounty->text());
+	query.addQueryItem("description", description->text());
+	query.addQueryItem("data", "-=" + artifact->text() + "=- Created with 2.0.30.4d");
 	console("Setting network parameters...");
 	console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 
@@ -410,6 +455,59 @@ void DeployVMDialog::deployToNetwork()
 
 }
 
+void DeployVMDialog::signMessage()
+{
+    if (!model)
+        return;
+
+    /* Clear old signature to ensure users don't get confused on error with an old signature displayed */
+    signature->setText("");
+
+    CTxDestination destination = DecodeDestination(artifact->text().toStdString());
+    if (!IsValidDestination(destination)) {
+		console("The entered address is invalid");
+        //ui->statusLabel_SM->setStyleSheet("QLabel { color: red; }");
+        //ui->statusLabel_SM->setText(tr("The entered address is invalid.") + QString(" ") + tr("Please check the address and try again."));
+        return;
+    }
+    const CKeyID* keyID = boost::get<CKeyID>(&destination);
+    if (!keyID) {
+		console("The entered address does not refer to a key");
+        //ui->addressIn_SM->setValid(false);
+        //ui->statusLabel_SM->setStyleSheet("QLabel { color: red; }");
+        //ui->statusLabel_SM->setText(tr("The entered address does not refer to a key.") + QString(" ") + tr("Please check the address and try again."));
+        return;
+    }
+
+    WalletModel::UnlockContext ctx(model->requestUnlock());
+    if (!ctx.isValid())
+    {
+        console("The wallet unlock was cancelled");
+        return;
+    }
+
+    CKey key;
+    if (!model->getPrivKey(*keyID, key))
+    {
+        console("Private key for the entered address is not available.");
+        return;
+    }
+
+    CHashWriter ss(SER_GETHASH, 0);
+    ss << strMessageMagic;
+    ss << artifact->text().toStdString() + " " + checksum->text().toStdString();
+
+    std::vector<unsigned char> vchSig;
+    if (!key.SignCompact(ss.GetHash(), vchSig))
+    {
+        console("Message signing failed.");
+        return;
+    }
+
+    console("Message signed.");
+
+    signature->setText(QString::fromStdString(EncodeBase64(vchSig.data(), vchSig.size())));
+}
 
 /*
 void DeployVMDialog::deployToNetwork()

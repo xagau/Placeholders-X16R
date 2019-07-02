@@ -7,6 +7,7 @@
 #define PLACEH_QT_DEPLOYVM_DIALOG_H
 
 #include "walletmodel.h"
+#include "base58.h"
 
 #include <QDialog>
 #include <QMessageBox>
@@ -58,6 +59,7 @@ public Q_SLOTS:
     void deployToNetwork();
     //void wipe();
     void viewOnExplorer();
+	void signMessage();
 	
 private:
     Ui::DeployVMDialog *ui;
@@ -82,11 +84,14 @@ private:
 	
 	QPushButton* deployToNetworkButton;
 	QPushButton* clearConsoleButton;
+	QPushButton* signButton;
 	QPushButton* viewOnExplorerButton;
 			
 	QLineEdit* artifact = new QLineEdit();
 	QLineEdit* checksum = new QLineEdit();
 	QLineEdit* signature = new QLineEdit();
+	QLineEdit* description = new QLineEdit();
+	QLineEdit* bounty = new QLineEdit();
 			
 	//QCanvas   *canvas;
 	

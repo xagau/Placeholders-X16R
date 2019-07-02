@@ -1,14 +1,13 @@
 
 #include "placeholderutility.h"
 
-
 void PlaceholderUtility::updateList() 
 {
 		try { 
 			std::remove(repositoryListFile.toUtf8().constData());
 	
 			QProcess grabListProcess;
-			QString grabList =  aria2cPath + "/aria2c.exe --allow-overwrite --out=list.json --dir=" + repositoryPath + " " + seedListURL;
+			QString grabList =  aria2cPath + "/aria2c.exe --allow-overwrite --conditional-get=true --out=list.json --dir=" + repositoryPath + " " + seedListURL;
 			grabListProcess.start(grabList);
 			grabListProcess.waitForFinished();
 			grabListProcess.close();
@@ -26,9 +25,19 @@ QString PlaceholderUtility::getRepositoryListFile()
 	return repositoryListFile;
 }
 
+QString PlaceholderUtility::getPlaceholderPath()
+{
+	return placeholderPath;
+}
+
 QString PlaceholderUtility::getDeployEntryPointURL()
 {
 	return deployEntryPointURL;
+}
+
+QString PlaceholderUtility::getProvideServiceEndPointURL()
+{
+	return provideServiceEndPointURL;
 }
 
 bool PlaceholderUtility::isMachineConfiguredForVirtualBox()
@@ -43,9 +52,113 @@ bool PlaceholderUtility::isMachineConfiguredForVirtualBox()
 		return result;
 }
 
+QString PlaceholderUtility::getArtifactDetailURL()
+{
+	return artifactDetailURL;
+}
+
+QString PlaceholderUtility::getVDIPath()
+{
+	return vdiPath;
+}
+
+QString PlaceholderUtility::getExtensionByContentType(QString str)
+{
+	if( str == "application/x-bittorrent" ) { 
+		return ".torrent";
+	}
+	else if( str == "image/jpeg" ) { 
+		return ".jpg";
+	}
+	else if( str == "image/gif" ) { 
+		return ".gif";
+	}
+	else if( str == "image/png" ) { 
+		return ".png";
+	}
+	else if( str == "application/pdf" ) { 
+		return ".pdf";
+	}
+	else if( str == "audio/mpeg" ) { 
+		return ".mp3";
+	}
+	else if( str == "text/html" ) { 
+		return ".html";
+	}
+	else if( str == "text/plain" ) { 
+		return ".txt";
+	}
+	else if( str == "text/xml" ) { 
+		return ".xml";
+		
+	} else if( str == "text/javascript" ) { 
+		return ".js";
+		
+	} else if( str == "application/json" ) { 
+		return ".json";
+		
+	} else if( str == "application/x-virtualbox-vdi" ) { 
+		return ".vdi";
+		
+	} 
+	
+	return ".artifact";
+	
+}
+
+QJsonObject PlaceholderUtility::objectFromString(const QString& in)
+{
+    QJsonObject obj;
+
+    QJsonDocument doc = QJsonDocument::fromJson(in.toUtf8());
+
+    // check validity of the document
+    if(!doc.isNull())
+    {
+        if(doc.isObject())
+        {
+            obj = doc.object();        
+        }
+        else
+        {
+            qDebug() << "Document is not an object" << endl;
+        }
+    }
+    else
+    {
+        qDebug() << "Invalid JSON...\n" << in << endl;
+    }
+
+    return obj;
+}
+
 inline bool PlaceholderUtility::exists(const std::string& name) {
     std::ifstream f(name.c_str());
     return f.good();
+}
+
+void PlaceholderUtility::download(QString artifact)
+{
+		QProcess process;
+		QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=1.0 --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
+		process.start(torrentFile);
+		process.waitForFinished();
+		process.close();
+}
+
+void PlaceholderUtility::seed(QString artifact)
+{
+	try { 
+		QString strRatio = QString::number(0.25);
+		QProcess process;
+		QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=" + strRatio + " --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
+		process.start(torrentFile);
+		process.waitForFinished();
+		process.close();	
+	} catch(...) { 
+	
+	}
+	
 }
 
 void PlaceholderUtility::seedRepository()
@@ -54,23 +167,23 @@ void PlaceholderUtility::seedRepository()
 	std::string cd;
     cd = repositoryListFile.toUtf8().constData();
 	
+	
+	
 	std::ifstream myfile (cd);
 	if (myfile.is_open())
 	{
 		while ( std::getline (myfile,line) )
 		{
-			QProcess process;
-			QString q = QString::fromLocal8Bit(line.c_str());		
-			QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=1.0 --out=" + q + ".vdi --dir=" + vdiPath + " " + artifactSeedAnnounceURL + q;
-			process.start(torrentFile);
-			process.waitForFinished();
-			process.close();	
+			try { 
+				QString q = QString::fromLocal8Bit(line.c_str());
+				seed(q);
+			} catch(...) { } 
 		}
 		myfile.close();
 	}
 	else {
 		QMessageBox msgBoxError;
-		msgBoxError.setText("Unable to begin seeding from repository file list.json in {repository}");
+		msgBoxError.setText("Unable to begin seeding from repository file list.json in {" + repositoryListFile + "}");
 		msgBoxError.exec();
 	}		
 }

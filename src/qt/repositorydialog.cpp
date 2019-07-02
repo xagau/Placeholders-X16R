@@ -36,7 +36,10 @@
 #include <string>
 #include <thread>
 
+
 #include <QString>
+#include <QList>
+
 #include <QDir>
 #include <QProcess>
 #include <QFontMetrics>
@@ -45,12 +48,27 @@
 #include <QScrollBar>
 #include <QSettings>
 #include <QTextDocument>
+#include <QDesktopServices>
 #include <QTableWidget>
+#include <QHeaderView>
+
 #include <QTimer>
 #include <policy/policy.h>
 #include <core_io.h>
 #include <rpc/mining.h>
 
+#include <QJsonObject>
+
+#include <QUrl>
+#include <QEventLoop>
+
+#include <QNetworkAccessManager>
+#include <QNetworkRequest>
+#include <QNetworkReply>
+
+
+#include <QApplication>
+#include <QDebug>
 
 void processTorrents()
 {
@@ -58,83 +76,124 @@ void processTorrents()
 	pu->seedRepository();
 }
 
-
-RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
-        QDialog(parent),
-        ui(new Ui::RepositoryDialog),
-        clientModel(0),
-        model(0)
+void RepositoryDialog::refresh()
 {
-	
-	int cols = 11;
-	int rows = 0;
-
+	//
 	PlaceholderUtility* pu = new PlaceholderUtility();
 	pu->updateList();
-	
-	std::thread (processTorrents).detach();
-	
-	rows = pu->getNumberArtifacts();
-	
-	QTableWidget *tableWidget = new QTableWidget(rows, cols, this);
-
-	tableWidget->setHorizontalHeaderItem(0, new QTableWidgetItem("Encapsulation"));
-	tableWidget->setHorizontalHeaderItem(1, new QTableWidgetItem("Artifact"));
-	tableWidget->setHorizontalHeaderItem(2, new QTableWidgetItem("Requirements"));
-	tableWidget->setHorizontalHeaderItem(3, new QTableWidgetItem("Signed"));
-	tableWidget->setHorizontalHeaderItem(4, new QTableWidgetItem("Seed"));
-	tableWidget->setHorizontalHeaderItem(5, new QTableWidgetItem("File Type"));
-	tableWidget->setHorizontalHeaderItem(6, new QTableWidgetItem("Size"));
-	tableWidget->setHorizontalHeaderItem(7, new QTableWidgetItem("Status"));
-	tableWidget->setHorizontalHeaderItem(8, new QTableWidgetItem("Bounty"));
-	tableWidget->setHorizontalHeaderItem(9, new QTableWidgetItem("Description"));
-	tableWidget->setHorizontalHeaderItem(10, new QTableWidgetItem("Service"));
-	
-	
-
-// RAII cleanup
-
-	tableWidget->resize(2000,2000);
+	int rows = pu->getNumberArtifacts();
+	tableWidget->setRowCount(rows);
+	//tableWidget->resize(2000,2000);
 	
 	std::string line;
 	std::ifstream myfile (pu->getRepositoryListFile().toUtf8().constData());
 	if (myfile.is_open())
 	{
 		int i = 0;
+		QPalette *palette = new QPalette();
+		palette->setColor(QPalette::Base,Qt::gray);
+		palette->setColor(QPalette::Text,Qt::darkGray);
+
 		while ( std::getline (myfile,line) )
 		{
-			QString q = QString::fromLocal8Bit(line.c_str());		
-			QTableWidgetItem *encapsulationItem = new QTableWidgetItem("Raw");
-			tableWidget->setItem(i, 0, encapsulationItem);
-			QTableWidgetItem *addressItem = new QTableWidgetItem(q);
-			tableWidget->setItem(i, 1, addressItem);
-			QTableWidgetItem *hostItem = new QTableWidgetItem("N/A");
-			tableWidget->setItem(i, 2, hostItem);
-			QTableWidgetItem *signedItem = new QTableWidgetItem("NO");
-			tableWidget->setItem(i, 3, signedItem);
-			QTableWidgetItem *seedItem = new QTableWidgetItem("YES");
-			tableWidget->setItem(i, 4, seedItem);
-			QTableWidgetItem *fileTypeItem = new QTableWidgetItem("VDI");
-			tableWidget->setItem(i, 5, fileTypeItem);
-			QTableWidgetItem *sizeItem = new QTableWidgetItem("-/- MB");
-			tableWidget->setItem(i, 6, sizeItem);
-			QTableWidgetItem *statusItem = new QTableWidgetItem("AVAILABLE");
-			tableWidget->setItem(i, 7, statusItem);
-			QTableWidgetItem *bountyItem = new QTableWidgetItem("0.00 PHL");
-			tableWidget->setItem(i, 8, bountyItem);
-			QTableWidgetItem *descriptionItem = new QTableWidgetItem("-/-");
-			tableWidget->setItem(i, 9, descriptionItem);
-			
-			QWidget* pWidget = new QWidget();
-			QPushButton* btnDownload = new QPushButton();
-			btnDownload->setText("Download");
-			QHBoxLayout* pLayout = new QHBoxLayout(pWidget);
-			pLayout->addWidget(btnDownload);
-			pLayout->setAlignment(Qt::AlignCenter);
-			pLayout->setContentsMargins(0, 0, 0, 0);
-			pWidget->setLayout(pLayout);
+			QString q = QString::fromLocal8Bit(line.c_str());	
 
-			tableWidget->setCellWidget(i, 10, pWidget);
+			QEventLoop loop;
+			QNetworkAccessManager nam;
+			QNetworkRequest req(QUrl(pu->getArtifactDetailURL() + q));
+			QNetworkReply *reply = nam.get(req);
+			connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+			loop.exec();
+			QByteArray buffer = reply->readAll();
+
+			QString dataLine = buffer.constData();
+			
+			QJsonObject o = pu->objectFromString(dataLine.toUtf8().constData());
+
+			QString encapsulation = o.value("encapsulation").toString();
+			QString asigned = o.value("signed").toString();
+			QString signature = o.value("signature").toString();
+			QString seed = o.value("seed").toString();
+			QString contentType = o.value("contentType").toString();
+			QString size = o.value("size").toString();
+			QString status = o.value("status").toString();
+			QString bounty = o.value("bounty").toString();
+			QString description = o.value("description").toString();
+			QString service = o.value("service").toString();
+		
+
+			
+			QTableWidgetItem *encapsulationItem = new QTableWidgetItem(encapsulation);
+			encapsulationItem->setFlags(encapsulationItem->flags() ^ Qt::ItemIsEditable); 
+			//encapsulationItem->setPalette(palette);			
+			//tableWidget->setItem(i, ENCAPSULATION_COLUMN, encapsulationItem);
+			
+			QTableWidgetItem *addressItem = new QTableWidgetItem(q);
+			//addressItem->setFlags(addressItem->flags() ^ Qt::ItemIsEditable); 
+			//addressItem->setPalette(palette);
+			tableWidget->setItem(i, ARTIFACT_COLUMN, addressItem);
+			
+			
+			//QTableWidgetItem *informationItem = new QTableWidgetItem(information);
+			//informationItem->setFlags(signatureItem->flags() ^ Qt::ItemIsEditable); 
+			//informationItem->setPalette(palette);
+			//tableWidget->setItem(i, INFORMATION_COLUMN, signatureItem);
+
+			
+			QTableWidgetItem *seedItem = new QTableWidgetItem(seed);
+			seedItem->setFlags(seedItem->flags() ^ Qt::ItemIsEditable); 
+			//tableWidget->setItem(i, SEED_COLUMN, seedItem);
+
+			QTableWidgetItem *fileTypeItem = new QTableWidgetItem(contentType);
+			fileTypeItem->setFlags(fileTypeItem->flags() ^ Qt::ItemIsEditable); 
+			tableWidget->setItem(i, CONTENT_TYPE_COLUMN, fileTypeItem);
+
+			QTableWidgetItem *sizeItem = new QTableWidgetItem(size);
+			sizeItem->setFlags(sizeItem->flags() ^ Qt::ItemIsEditable); 
+			//tableWidget->setItem(i, SIZE_COLUMN, sizeItem);
+			
+			QTableWidgetItem *statusItem = new QTableWidgetItem(status);
+			statusItem->setFlags(statusItem->flags() ^ Qt::ItemIsEditable); 
+			tableWidget->setItem(i, STATUS_COLUMN, statusItem);
+
+			QTableWidgetItem *bountyItem = new QTableWidgetItem(bounty);
+			bountyItem->setFlags(bountyItem->flags() ^ Qt::ItemIsEditable); 
+			tableWidget->setItem(i, PRICE_COLUMN, bountyItem);
+
+			QTableWidgetItem *descriptionItem = new QTableWidgetItem(description);
+			descriptionItem->setFlags(descriptionItem->flags() ^ Qt::ItemIsEditable); 		
+			tableWidget->setItem(i, DESCRIPTION_COLUMN, descriptionItem);
+			
+ 
+			QWidget*     pWidgetDownload   = new QWidget();
+			QWidget*     pWidgetInfo       = new QWidget();
+			QPushButton* btnDownload       = new QPushButton();
+			QPushButton* btnInformation    = new QPushButton();
+			
+
+			//connect( btnDownload, );
+			connect(btnDownload, SIGNAL (clicked()), this, SLOT (handleDownload()));
+			connect(btnInformation, SIGNAL (clicked()), this, SLOT (handleInformation()));
+
+			
+			btnInformation->setText("[?]");
+			btnInformation->setFixedWidth(25);
+			QHBoxLayout* pLayoutInfo = new QHBoxLayout(pWidgetInfo);
+			pLayoutInfo->addWidget(btnInformation);
+			pLayoutInfo->setAlignment(Qt::AlignCenter);
+			pLayoutInfo->setContentsMargins(0, 0, 0, 0);
+			pWidgetInfo->setLayout(pLayoutInfo);
+			pWidgetInfo->setFixedWidth(25);
+			tableWidget->setCellWidget(i, INFORMATION_COLUMN, pWidgetInfo);
+			
+			btnDownload->setText("Download");
+			QHBoxLayout* pLayoutDownload = new QHBoxLayout(pWidgetDownload);
+			pLayoutDownload->addWidget(btnDownload);
+			pLayoutDownload->setAlignment(Qt::AlignCenter);
+			pLayoutDownload->setContentsMargins(0, 0, 0, 0);
+			pWidgetDownload->setLayout(pLayoutDownload);
+
+			tableWidget->setCellWidget(i, SERVICE_COLUMN, pWidgetDownload);
 
 			i++;
 						
@@ -146,14 +205,66 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 		msgBoxError.setText("Unable to open repository file list.json in {repository}");
 		msgBoxError.exec();
 	}
+	
+	tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	//tableWidget->repaint(); //.update();
+	//tableWidget->update();
+	
+}
 
-	QGridLayout *layout = new QGridLayout(parent);
+RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget *parent) :
+        QDialog(parent),
+        ui(new Ui::RepositoryDialog),
+        clientModel(0),
+        model(0)
+{
+		
 
 	
-    layout->addWidget(tableWidget, 1, Qt::AlignLeft);
+// RAII cleanup
+
+	int cols = 7;
+	int rows = 0;
+	
+	QGridLayout *layout = new QGridLayout(parent);
+	PlaceholderUtility* pu = new PlaceholderUtility();
+	//pu->updateList();
+		
+	rows = pu->getNumberArtifacts();
+	
+	tableWidget = new QTableWidget(rows, cols, this);
+	//QScrollArea *scroll = new QScrollArea();
+    //tableWidget->append(scroll);
+	//tableWidget->setWidgetResizable(true);
+	
+	tableWidget->setAlternatingRowColors(true);
+	tableWidget->setStyleSheet("alternate-background-color: white;background-color: #f0f0f0;");
+
+	tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+	QHeaderView* header = tableWidget->horizontalHeader();
+    header->setSectionResizeMode(QHeaderView::Stretch);
+
+	//tableWidget->setHorizontalHeaderItem(ENCAPSULATION_COLUMN, new QTableWidgetItem("Encapsulation"));
+	tableWidget->setHorizontalHeaderItem(ARTIFACT_COLUMN, new QTableWidgetItem("Payment Address"));
+	tableWidget->setHorizontalHeaderItem(INFORMATION_COLUMN, new QTableWidgetItem("Information"));
+	//tableWidget->setHorizontalHeaderItem(SEED_COLUMN, new QTableWidgetItem("Seed"));
+	tableWidget->setHorizontalHeaderItem(CONTENT_TYPE_COLUMN, new QTableWidgetItem("Content Type"));
+	//tableWidget->setHorizontalHeaderItem(SIZE_COLUMN, new QTableWidgetItem("Size"));
+	tableWidget->setHorizontalHeaderItem(STATUS_COLUMN, new QTableWidgetItem("Status"));
+	tableWidget->setHorizontalHeaderItem(PRICE_COLUMN, new QTableWidgetItem("Price (PHL)"));
+	tableWidget->setHorizontalHeaderItem(DESCRIPTION_COLUMN, new QTableWidgetItem("Description"));
+	tableWidget->setHorizontalHeaderItem(SERVICE_COLUMN, new QTableWidgetItem("Service"));
+
+	//PlaceholderUtility* pu = new PlaceholderUtility();
+
+	//tableWidget->setRowCount(0);
+
+	
+	
+	layout->addWidget(tableWidget, 1, Qt::AlignLeft);
 
     setLayout(layout);
-    /** PHL END */
+	
 }
 
 void RepositoryDialog::setClientModel(ClientModel *_clientModel)
@@ -169,6 +280,180 @@ void RepositoryDialog::setModel(WalletModel *_model)
     this->model = _model;
 
 }
+
+void RepositoryDialog::sendCoins(QString amount, QString _address)
+{
+	try { 
+	
+	SendCoinsRecipient recipient; // = new SendCoinRecipient();
+	recipient.address = _address; //, "Marketplace Purchase", 1000000, "Marketplace Purchase" );
+	recipient.amount = (CAmount)(amount.toDouble() * (double)COIN);
+	recipient.label = "Marketplace Purchase";
+	recipient.message = "Marketplace Purchase";
+	recipient.fSubtractFeeFromAmount = true;
+	
+	QList<SendCoinsRecipient> list;
+	list.append(recipient);
+	
+	CCoinControl ctrl;
+    
+	WalletModelTransaction currentTransaction(list);
+	
+	WalletModel::UnlockContext ctx(this->model->requestUnlock());
+    if(!ctx.isValid())
+    {
+        // Unlock wallet was cancelled
+        //fNewRecipientAllowed = true;
+			
+		QMessageBox msgBoxError;
+		msgBoxError.setText("Could not unlock wallet");
+		msgBoxError.exec();
+			
+        return;
+    }
+	
+
+	
+    this->model->prepareTransaction(currentTransaction, ctrl);
+
+	
+	this->model->sendCoins(currentTransaction);
+	
+
+
+	//QString sendCommand =  path + "/placeh-cli sendtoaddress \"" + _address + "\" " + amount;
+	} catch(...) { 
+		QMessageBox msgBoxError;
+		msgBoxError.setText("An error occured trying to send coins");
+		msgBoxError.exec();
+	
+	}
+			
+
+	
+}
+
+void RepositoryDialog::handleInformation()
+{
+	int row = tableWidget->currentRow();
+
+	QWidget *w = qobject_cast<QWidget *>(sender()->parent());
+	if(w){
+		row = tableWidget->indexAt(w->pos()).row();
+	}	
+
+	QString artifactSelected = tableWidget->item(row, ARTIFACT_COLUMN)->text(); 
+
+	
+	PlaceholderUtility* pu = new PlaceholderUtility();
+	
+	QEventLoop loop;
+	QNetworkAccessManager nam;
+	QNetworkRequest req(QUrl(pu->getArtifactDetailURL() + artifactSelected));
+	QNetworkReply *reply = nam.get(req);
+	connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+	loop.exec();
+	QByteArray buffer = reply->readAll();
+	QString dataLine = buffer.constData();
+		
+	QJsonObject o = pu->objectFromString(dataLine.toUtf8().constData());
+
+	QString encapsulation = o.value("encapsulation").toString();
+	QString asigned = o.value("signed").toString();
+	QString signature = o.value("signature").toString();
+	QString seed = o.value("seed").toString();
+	QString contentType = o.value("contentType").toString();
+	QString size = o.value("size").toString();
+	QString status = o.value("status").toString();
+	QString bounty = o.value("bounty").toString();
+	QString description = o.value("description").toString();
+	QString service = o.value("service").toString();
+			
+	
+		
+	QString msg =  "Encapsulation:" + encapsulation + "\n" + 
+				   "Signed:       " + asigned + "\n" + 
+				   "Seed:         " + seed + "\n" + 
+				   "Signature:    " + signature + "\n";
+			   
+	QMessageBox msgBoxInformation;
+	msgBoxInformation.setStyleSheet("QTextEdit { font-family: monospace; }");
+	msgBoxInformation.setText(msg);
+	msgBoxInformation.exec();
+}
+
+
+void RepositoryDialog::handleDownload()
+{
+	try { 
+	
+
+		int row = tableWidget->currentRow();
+
+		QWidget *w = qobject_cast<QWidget *>(sender()->parent());
+		if(w){
+			row = tableWidget->indexAt(w->pos()).row();
+		}	
+
+
+	QString artifactSelected = tableWidget->item(row, ARTIFACT_COLUMN)->text(); //"FGSJDQgSs2ygs4SzH4VkJ5i8VzSfduaPJL";
+	QString bountySelected = tableWidget->item(row, PRICE_COLUMN)->text();
+	QString description = tableWidget->item(row, DESCRIPTION_COLUMN)->text();
+	QString contentType = tableWidget->item(row, CONTENT_TYPE_COLUMN)->text();
+
+	QString theTitle = "Confirm Payment?";
+	QString theQuestion = "Pay Address " + artifactSelected + "\n " + bountySelected + " PHL\n to download:\n " + description + "\n";
+	QMessageBox::StandardButton reply;
+
+	
+	reply = QMessageBox::question(this, theTitle,  theQuestion, QMessageBox::Yes|QMessageBox::No);
+
+	if (reply == QMessageBox::Yes) {
+		try { 
+		if( bountySelected != "0.00000000" ) { 
+			sendCoins(bountySelected, artifactSelected);
+		}
+		} catch(...) { } 
+						
+		PlaceholderUtility* pu = new PlaceholderUtility();
+		QString newExtension = pu->getExtensionByContentType(contentType);
+		QMessageBox msgBoxError;
+		msgBoxError.setText("Downloading to C:/vdi/" + artifactSelected + ".artifact.\n Content Type:" + contentType + "\nRenaming to: " + newExtension);
+		msgBoxError.exec();		
+		
+		pu->download(artifactSelected);
+		
+		QFile::rename(pu->getVDIPath() + "/" + artifactSelected + ".artifact", pu->getVDIPath() + "/" + artifactSelected + newExtension);
+		
+		QMessageBox msgBoxDone;
+		msgBoxDone.setText("Download Complete.");
+		msgBoxDone.exec();						
+		
+		
+		QMessageBox::StandardButton newReply;
+		QString theNewTitle = "Open File?";
+		QString theNewQuestion = "Do you want to open:" + artifactSelected + newExtension + "?\n";
+		newReply = QMessageBox::question(this, theNewTitle,  theNewQuestion, QMessageBox::Yes|QMessageBox::No);
+	
+		
+		if (newReply == QMessageBox::Yes) {
+			QDesktopServices::openUrl(QUrl(pu->getVDIPath() + "/" + artifactSelected + newExtension));
+		}
+		
+		
+
+	} else {
+		qDebug() << "Yes was *not* clicked";
+	}
+	
+	} catch(...) { 
+		QMessageBox msgBoxDone;
+		msgBoxDone.setText("Null PTR.");
+		msgBoxDone.exec();						
+	
+	}
+}
+
 
 RepositoryDialog::~RepositoryDialog()
 {

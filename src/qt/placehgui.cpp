@@ -263,37 +263,22 @@ PlacehGUI::PlacehGUI(const PlatformStyle *_platformStyle, const NetworkStyle *ne
     // See https://qt-project.org/doc/qt-4.8/gallery.html
 	
 	try { 
-		//QMessageBox msgBoxD;
-		//msgBoxD.setText("INSIDE TRY.");
-		//msgBoxD.exec();
+
 		
 		QString curStyle = QApplication::style()->metaObject()->className();
 		if(curStyle == "QWindowsStyle" || curStyle == "QWindowsXPStyle")
 		{	
 			progressBar->setStyleSheet("QProgressBar { background-color: #e8e8e8; border: 1px solid grey; border-radius: 7px; padding: 1px; text-align: center; } QProgressBar::chunk { background: QLinearGradient(x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #FF8000, stop: 1 orange); border-radius: 7px; margin: 0px; }");
 		}
-		//QMessageBox msgBoxA;
-		//msgBoxA.setText("INSIDE TRY.AA");
-		//msgBoxA.exec();
 
 		statusBar()->addWidget(progressBarLabel);
 		statusBar()->addWidget(progressBar);
 		statusBar()->addPermanentWidget(frameBlocks);
 
-		//QMessageBox msgBoxB;
-		//msgBoxB.setText("INSIDE TRY.BB");
-		//msgBoxB.exec();
-		// Install event filter to be able to catch status tip events (QEvent::StatusTip)
 		this->installEventFilter(this);
 
-		//QMessageBox msgBoxCC;
-		//msgBoxCC.setText("INSIDE TRY.CC");
-		//msgBoxCC.exec();
-		// Initially wallet actions should be disabled
 		setWalletActionsEnabled(false);
-		//QMessageBox msgBoxDD;
-		//msgBoxDD.setText("INSIDE TRY.DD");
-		//msgBoxDD.exec();
+
 	
 	} catch(...) {
 		QMessageBox msgBoxD;
@@ -405,7 +390,7 @@ void PlacehGUI::createActions()
 	/* PHL END */
 	
     
-    repositoryAction = new QAction(platformStyle->SingleColorIcon(":/icons/tx_asset_input"), tr("&Manage Repository"), this);
+    repositoryAction = new QAction(platformStyle->SingleColorIcon(":/icons/tx_asset_input"), tr("&Marketplace"), this);
     repositoryAction->setStatusTip(tr("Manage Repository"));
     repositoryAction->setToolTip(repositoryAction->statusTip());
     repositoryAction->setCheckable(true);

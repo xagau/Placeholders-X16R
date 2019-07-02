@@ -9,6 +9,7 @@
 #include "amount.h"
 
 #include <QStackedWidget>
+#include <QApplication>
 
 class PlacehGUI;
 class ClientModel;
