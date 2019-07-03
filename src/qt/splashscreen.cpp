@@ -173,8 +173,13 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     installEventFilter(this);
 
 	
-	PlaceholderUtility* pu = new PlaceholderUtility();
-	pu->updateList();
+	
+	try { 
+		
+		PlaceholderUtility* pu = new PlaceholderUtility();
+		pu->updateList();
+	
+	} catch(...) { } 
 
 }
 

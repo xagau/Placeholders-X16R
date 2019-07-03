@@ -22,7 +22,7 @@ void PlaceholderUtility::updateList()
 
 PlaceholderUtility::PlaceholderUtility() 
 { 
-/*
+	/*
 	try { 
 		QString settingsFile = QApplication::applicationDirPath() + "/settings.ini";
 		QSettings settings(settingsFile, QSettings::IniFormat);

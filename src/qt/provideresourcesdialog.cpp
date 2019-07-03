@@ -68,6 +68,7 @@ ProvideResourcesDialog::ProvideResourcesDialog(const PlatformStyle *_platformSty
         clientModel(0),
         model(0)        
 {
+	try { 
 	horizontalSliders = new SlidersGroup(Qt::Horizontal, tr("Diskspace (GB SSD)"));
     verticalSliders = new SlidersGroup(Qt::Vertical, tr("Vertical"));
 
@@ -101,6 +102,9 @@ ProvideResourcesDialog::ProvideResourcesDialog(const PlatformStyle *_platformSty
     bandwidthCostSpinBox->setValue(1);
 
     setWindowTitle(tr("Provide Resources"));
+	
+	} catch(...) { } 
+	
 
     /** PHL END */
 }
@@ -182,9 +186,6 @@ void ProvideResourcesDialog::provide()
 	networkRequest.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
 
 	networkManager->post(networkRequest,params.query().toUtf8());
-
-	
-	
 	
 	if(!pu->isMachineConfiguredForVirtualBox())
 	{
@@ -201,129 +202,116 @@ void ProvideResourcesDialog::provide()
 
 void  ProvideResourcesDialog::createControls(const QString &title)
 {
-    controlsGroup = new QGroupBox(title);
+	try { 
+		controlsGroup = new QGroupBox(title);
 
-	userLabel = new QLabel(tr("User ID:"));
-    passwordLabel = new QLabel(tr("Password:"));
-    
-	userId = new QLineEdit();
-    password = new QLineEdit();
-	password->setEchoMode(QLineEdit::Password);
-	
-    coresLabel = new QLabel(tr("Maximum Cores (CPUs):"));
-	coresSpinBox = new QSpinBox;
-    coresSpinBox->setRange(1, 32);
-    coresSpinBox->setSingleStep(1);
-	
-	coresCostLabel = new QLabel(tr("Maximum Cores (CPUs):"));
-	coresCostSpinBox = new QDoubleSpinBox;
-    memoryCostSpinBox->setPrefix("$");
-    coresCostSpinBox->setRange(0, 320);
-    coresCostSpinBox->setSingleStep(0.01);
-	
-    memoryLabel = new QLabel(tr("Maximum Memory GB:"));
-    memorySpinBox = new QSpinBox;
-    memorySpinBox->setRange(1, 1280);
-    memorySpinBox->setSingleStep(1);
-
-    memoryCostLabel = new QLabel(tr("Per Per GB Memory:"));
-    memoryCostSpinBox = new QDoubleSpinBox;
-    memoryCostSpinBox->setPrefix("$");
-    memoryCostSpinBox->setRange(0, 1280);
-    memoryCostSpinBox->setSingleStep(0.01);
-
-    diskspaceLabel   = new QLabel(tr("Maximum Diskspace GB:"));
-    diskspaceSpinBox = new QSpinBox;
-    diskspaceSpinBox->setRange(1, 1000);
-    diskspaceSpinBox->setSingleStep(1);
-
-    diskspaceCostLabel   = new QLabel(tr("Price Per GB:"));
-    diskspaceCostSpinBox = new QDoubleSpinBox;
-    diskspaceCostSpinBox->setPrefix("$");
-    diskspaceCostSpinBox->setRange(0, 1000);
-    diskspaceCostSpinBox->setSingleStep(0.01);
-	
-    bandwidthLabel   = new QLabel(tr("Maximum Bandwidth TB:"));
-    bandwidthSpinBox = new QSpinBox;
-    bandwidthSpinBox->setPrefix("$");
-    bandwidthSpinBox->setRange(1, 1000);
-    bandwidthSpinBox->setSingleStep(1);
-
-    bandwidthCostLabel   = new QLabel(tr("Price Per TB:"));
-    bandwidthCostSpinBox = new QDoubleSpinBox;
-	bandwidthCostSpinBox->setPrefix("$");
-    bandwidthCostSpinBox->setRange(0, 1000);
-    bandwidthCostSpinBox->setSingleStep(0.01);
-	
-    costLabel  = new QLabel(tr("Cost (USD) per Duration\nFor this configuration:"));
-	costSpinBox = new QDoubleSpinBox;
-    costSpinBox->setRange(0.01, 100000);
-	costSpinBox->setPrefix("$");
-    costSpinBox->setSingleStep(0.01);
-
-    invertedAppearance = new QCheckBox(tr("Use up to maximum"));
-    invertedKeyBindings = new QCheckBox(tr("Use up to maximum"));
-	
-
-
-
-	
-	
-
-	
-	provideResourcesButton = new QPushButton(tr("Provide Resources"));
-	
-	
-    //orientationCombo = new QComboBox;
-    //orientationCombo->addItem(tr("Automatically host best offer"));
-    //orientationCombo->addItem(tr("Strictly enforce rate"));
-	
-	//connect(orientationCombo, SIGNAL(activated(int)), stackedWidget, SLOT(setCurrentIndex(int)));
-
-	connect(provideResourcesButton, SIGNAL(clicked()), this, SLOT(provide()) );			
-
-    QGridLayout *controlsLayout = new QGridLayout;
-	
-    controlsLayout->addWidget(userLabel, 0, 0);
-    controlsLayout->addWidget(userId, 0, 1);
-
-    controlsLayout->addWidget(passwordLabel, 1, 0);
-    controlsLayout->addWidget(password, 1, 1);
-
-    controlsLayout->addWidget(coresLabel, 2, 0);
-    controlsLayout->addWidget(coresSpinBox, 2, 1);
-
-    controlsLayout->addWidget(coresCostLabel, 3, 0);
-    controlsLayout->addWidget(coresCostSpinBox, 3, 1);
-	
-    controlsLayout->addWidget(memoryLabel, 4, 0);
-    controlsLayout->addWidget(memorySpinBox, 4, 1);
-
-    controlsLayout->addWidget(memoryCostLabel, 5, 0);
-    controlsLayout->addWidget(memoryCostSpinBox, 5, 1);
-	
-    controlsLayout->addWidget(diskspaceLabel, 6, 0);
-    controlsLayout->addWidget(diskspaceSpinBox, 6, 1);
-
-	controlsLayout->addWidget(diskspaceCostLabel, 7, 0);
-    controlsLayout->addWidget(diskspaceCostSpinBox, 7, 1);
-
-    controlsLayout->addWidget(bandwidthLabel, 8, 0);
-    controlsLayout->addWidget(bandwidthSpinBox, 8, 1);    
-
-    controlsLayout->addWidget(bandwidthCostLabel, 9, 0);
-    controlsLayout->addWidget(bandwidthCostSpinBox, 9, 1);    
-
-    //controlsLayout->addWidget(costLabel, 10, 0);
-	//controlsLayout->addWidget(costSpinBox, 10, 1);
-	
-    //controlsLayout->addWidget(invertedAppearance, 0, 2);
-    //controlsLayout->addWidget(invertedKeyBindings, 1, 2);
-
-    //controlsLayout->addWidget(orientationCombo, 7, 0, 1, 3);
-   // controlsLayout->addWidget(provideResourcesButton, 8, 0, 1, 3);
+		userLabel = new QLabel(tr("User ID:"));
+		passwordLabel = new QLabel(tr("Password:"));
 		
-    controlsGroup->setLayout(controlsLayout);
+		userId = new QLineEdit();
+		password = new QLineEdit();
+		password->setEchoMode(QLineEdit::Password);
+		
+		coresLabel = new QLabel(tr("Maximum Cores (CPUs):"));
+		coresSpinBox = new QSpinBox;
+		coresSpinBox->setRange(1, 32);
+		coresSpinBox->setSingleStep(1);
+		
+		coresCostLabel = new QLabel(tr("Maximum Cores (CPUs):"));
+		coresCostSpinBox = new QDoubleSpinBox;
+		coresCostSpinBox->setPrefix("$");
+		coresCostSpinBox->setRange(0.01, 320);
+		coresCostSpinBox->setSingleStep(0.01);
+		
+		memoryLabel = new QLabel(tr("Maximum Memory GB:"));
+		memorySpinBox = new QSpinBox;
+		memorySpinBox->setRange(1, 1280);
+		memorySpinBox->setSingleStep(1);
+
+		memoryCostLabel = new QLabel(tr("Per Per GB Memory:"));
+		memoryCostSpinBox = new QDoubleSpinBox;
+		memoryCostSpinBox->setPrefix("$");
+		memoryCostSpinBox->setRange(0.01, 1280);
+		memoryCostSpinBox->setSingleStep(0.01);
+
+		diskspaceLabel   = new QLabel(tr("Maximum Diskspace GB:"));
+		diskspaceSpinBox = new QSpinBox;
+		diskspaceSpinBox->setRange(1, 1000);
+		diskspaceSpinBox->setSingleStep(1);
+
+		diskspaceCostLabel   = new QLabel(tr("Price Per GB:"));
+		diskspaceCostSpinBox = new QDoubleSpinBox;
+		diskspaceCostSpinBox->setPrefix("$");
+		diskspaceCostSpinBox->setRange(0.01, 1000);
+		diskspaceCostSpinBox->setSingleStep(0.01);
+		
+		bandwidthLabel   = new QLabel(tr("Maximum Bandwidth TB:"));
+		bandwidthSpinBox = new QSpinBox;
+		bandwidthSpinBox->setPrefix("$");
+		bandwidthSpinBox->setRange(1, 1000);
+		bandwidthSpinBox->setSingleStep(1);
+
+		bandwidthCostLabel   = new QLabel(tr("Price Per TB:"));
+		bandwidthCostSpinBox = new QDoubleSpinBox;
+		bandwidthCostSpinBox->setPrefix("$");
+		bandwidthCostSpinBox->setRange(0.01, 1000);
+		bandwidthCostSpinBox->setSingleStep(0.01);
+		
+		costLabel  = new QLabel(tr("Cost (USD) per Duration\nFor this configuration:"));
+		costSpinBox = new QDoubleSpinBox;
+		costSpinBox->setRange(0.01, 100000);
+		costSpinBox->setPrefix("$");
+		costSpinBox->setSingleStep(0.01);
+		
+		provideResourcesButton = new QPushButton(tr("Provide Resources"));
+
+		connect(provideResourcesButton, SIGNAL(clicked()), this, SLOT(provide()) );			
+
+		QGridLayout *controlsLayout = new QGridLayout;
+		
+		controlsLayout->addWidget(userLabel, 0, 0);
+		controlsLayout->addWidget(userId, 0, 1);
+
+		controlsLayout->addWidget(passwordLabel, 1, 0);
+		controlsLayout->addWidget(password, 1, 1);
+
+		controlsLayout->addWidget(coresLabel, 2, 0);
+		controlsLayout->addWidget(coresSpinBox, 2, 1);
+
+		controlsLayout->addWidget(coresCostLabel, 3, 0);
+		controlsLayout->addWidget(coresCostSpinBox, 3, 1);
+		
+		controlsLayout->addWidget(memoryLabel, 4, 0);
+		controlsLayout->addWidget(memorySpinBox, 4, 1);
+
+		controlsLayout->addWidget(memoryCostLabel, 5, 0);
+		controlsLayout->addWidget(memoryCostSpinBox, 5, 1);
+		
+		controlsLayout->addWidget(diskspaceLabel, 6, 0);
+		controlsLayout->addWidget(diskspaceSpinBox, 6, 1);
+
+		controlsLayout->addWidget(diskspaceCostLabel, 7, 0);
+		controlsLayout->addWidget(diskspaceCostSpinBox, 7, 1);
+
+		controlsLayout->addWidget(bandwidthLabel, 8, 0);
+		controlsLayout->addWidget(bandwidthSpinBox, 8, 1);    
+
+		controlsLayout->addWidget(bandwidthCostLabel, 9, 0);
+		controlsLayout->addWidget(bandwidthCostSpinBox, 9, 1);    
+
+		//controlsLayout->addWidget(costLabel, 10, 0);
+		//controlsLayout->addWidget(costSpinBox, 10, 1);
+		
+		//controlsLayout->addWidget(invertedAppearance, 0, 2);
+		//controlsLayout->addWidget(invertedKeyBindings, 1, 2);
+
+		//controlsLayout->addWidget(orientationCombo, 7, 0, 1, 3);
+		controlsLayout->addWidget(provideResourcesButton, 10, 0, 1, 3);
+			
+		controlsGroup->setLayout(controlsLayout);
+	
+	
+	} catch(...) { } 
 	
 }
 

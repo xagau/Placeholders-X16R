@@ -94,33 +94,37 @@ DeployVMDialog::DeployVMDialog(const PlatformStyle *_platformStyle, QWidget *par
         model(0)     
 {
 
-	bigEditor = new QTextEdit;
-    bigEditor->setPlainText(tr("Ready..."));
+	try { 
+		bigEditor = new QTextEdit;
+		bigEditor->setPlainText(tr("Ready..."));
 
 	 	
-    createHorizontalGroupBox();
+		createHorizontalGroupBox();
 
+		
+		buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+
+		connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
+		connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+		
+		QVBoxLayout *mainLayout = new QVBoxLayout;
+		 
+		mainLayout->addWidget(horizontalGroupBox);
+
+		mainLayout->addWidget(bigEditor);
+		mainLayout->addWidget(buttonBox);
+		
+		setLayout(mainLayout);
+
+		setWindowTitle(tr("Deploy To Network"));
 	
-    buttonBox = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
-
-    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-	
-	QVBoxLayout *mainLayout = new QVBoxLayout;
-	 
-	mainLayout->addWidget(horizontalGroupBox);
-
-    mainLayout->addWidget(bigEditor);
-    mainLayout->addWidget(buttonBox);
-	
-	setLayout(mainLayout);
-
-    setWindowTitle(tr("Deploy To Network"));
+	} catch(...) { } 
 	
 }
 
 void DeployVMDialog::createHorizontalGroupBox()
 {
+	try { 
 	int maxHeight = 100;
 	int margin    = 15;
 	
@@ -199,6 +203,8 @@ void DeployVMDialog::createHorizontalGroupBox()
 	base->addLayout(layoutBottom);
 	//
 	horizontalGroupBox->setLayout(base);
+	
+	} catch(...) { } 
 }
 /*
 
