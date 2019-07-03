@@ -92,11 +92,15 @@ ProvideResourcesDialog::ProvideResourcesDialog(const PlatformStyle *_platformSty
     setLayout(layout);
 
     coresSpinBox->setValue(0);
+    coresCostSpinBox->setValue(0);
     memorySpinBox->setValue(1);
+    memoryCostSpinBox->setValue(1);
     diskspaceSpinBox->setValue(8);
+    diskspaceCostSpinBox->setValue(8);
     bandwidthSpinBox->setValue(1);
+    bandwidthCostSpinBox->setValue(1);
 
-    setWindowTitle(tr("Sliders"));
+    setWindowTitle(tr("Provide Resources"));
 
     /** PHL END */
 }
@@ -270,15 +274,16 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 	provideResourcesButton = new QPushButton(tr("Provide Resources"));
 	
 	
-    orientationCombo = new QComboBox;
-    orientationCombo->addItem(tr("Automatically host best offer"));
-    orientationCombo->addItem(tr("Strictly enforce rate"));
+    //orientationCombo = new QComboBox;
+    //orientationCombo->addItem(tr("Automatically host best offer"));
+    //orientationCombo->addItem(tr("Strictly enforce rate"));
 	
-	connect(orientationCombo, SIGNAL(activated(int)), stackedWidget, SLOT(setCurrentIndex(int)));
+	//connect(orientationCombo, SIGNAL(activated(int)), stackedWidget, SLOT(setCurrentIndex(int)));
 
 	connect(provideResourcesButton, SIGNAL(clicked()), this, SLOT(provide()) );			
 
     QGridLayout *controlsLayout = new QGridLayout;
+	
     controlsLayout->addWidget(userLabel, 0, 0);
     controlsLayout->addWidget(userId, 0, 1);
 
@@ -315,8 +320,8 @@ void  ProvideResourcesDialog::createControls(const QString &title)
     //controlsLayout->addWidget(invertedAppearance, 0, 2);
     //controlsLayout->addWidget(invertedKeyBindings, 1, 2);
 
-    controlsLayout->addWidget(orientationCombo, 7, 0, 1, 3);
-    controlsLayout->addWidget(provideResourcesButton, 8, 0, 1, 3);
+    //controlsLayout->addWidget(orientationCombo, 7, 0, 1, 3);
+   // controlsLayout->addWidget(provideResourcesButton, 8, 0, 1, 3);
 		
     controlsGroup->setLayout(controlsLayout);
 	
