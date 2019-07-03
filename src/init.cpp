@@ -534,7 +534,7 @@ std::string HelpMessage(HelpMessageMode mode)
 std::string LicenseInfo()
 {
     const std::string URL_SOURCE_CODE = "<https://github.com/xagau/Placeholders-X16R>";
-    const std::string URL_WEBSITE = "<https://placeh.io>";
+    const std::string URL_WEBSITE = "<https://www.placeh.io>";
 
     return CopyrightHolders(strprintf(_("Copyright (C) %i-%i"), 2009, COPYRIGHT_YEAR) + " ") + "\n" +
            "\n" +

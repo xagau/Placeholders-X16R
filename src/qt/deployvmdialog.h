@@ -57,7 +57,6 @@ public:
 public Q_SLOTS:
     void selectFile();
     void deployToNetwork();
-    //void wipe();
     void viewOnExplorer();
 	void signMessage();
 	

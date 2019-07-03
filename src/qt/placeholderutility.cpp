@@ -20,6 +20,31 @@ void PlaceholderUtility::updateList()
 	
 }
 
+PlaceholderUtility::PlaceholderUtility() 
+{ 
+	try { 
+			QString settingsFile = QApplication::applicationDirPath() + "/settings.ini";
+			QSettings settings(settingsFile, QSettings::NativeFormat);
+			vdiPath = settings.value("vdiPath", "").toString();
+			virtualBoxManage = settings.value("virtualBoxManage", "").toString();
+			placeholderPath = settings.value("placeholderPath", "").toString();
+			aria2cPath = settings.value("aria2cPath", "").toString();
+			repositoryPath = settings.value("repositoryPath", "").toString();
+			repositoryListFile = settings.value("repositoryListFile", "").toString();
+			seedListURL = settings.value("seedListURL", "").toString();
+			artifactSeedAnnounceURL = settings.value("artifactSeedAnnounceURL", "").toString();
+			artifactDetailURL = settings.value("artifactDetailURL", "").toString();
+			//repositoryListFile = settings.value("repositoryListFile", "").toString();
+			//repositoryListFile = settings.value("repositoryListFile", "").toString();
+	} catch(...) { 
+			QMessageBox msgBoxError;
+			msgBoxError.setText("An error was encountered trying to access the Placeholder settings.ini file");
+			msgBoxError.exec();
+	
+	}
+			 
+}
+
 QString PlaceholderUtility::getRepositoryListFile()
 {
 	return repositoryListFile;

@@ -20,6 +20,7 @@
 #include <QCheckBox>
 #include <QSpinBox>
 #include <QDoubleSpinBox>
+#include <QUuid>
 #include <QComboBox>
 #include "slidersgroup.h"
 #include <QStackedWidget>
@@ -69,24 +70,30 @@ public:
     QGroupBox *controlsGroup;
     QLabel *userLabel;
     QLabel *passwordLabel;
+	
     QLabel *coresLabel;
+    QLabel *coresCostLabel;
     QLabel *memoryLabel;
+    QLabel *memoryCostLabel;
     QLabel *diskspaceLabel;
+    QLabel *diskspaceCostLabel;
     QLabel *bandwidthLabel;
+    QLabel *bandwidthCostLabel;
     QLabel *costLabel;
-    QCheckBox *invertedAppearance;
+    
+	QCheckBox *invertedAppearance;
     QCheckBox *invertedKeyBindings;
     QLineEdit *userId;
     QLineEdit *password;
     QSpinBox *coresSpinBox;
-    QDoubleSpinBox *costCoresSpinBox;
+    QDoubleSpinBox *coresCostSpinBox;
     QSpinBox *memorySpinBox;
-    QDoubleSpinBox *costMemorySpinBox;
+    QDoubleSpinBox *memoryCostSpinBox;
     QSpinBox *diskspaceSpinBox;
-	QDoubleSpinBox *costDiskspaceSpinBox;
+	QDoubleSpinBox *diskspaceCostSpinBox;
 
     QSpinBox *bandwidthSpinBox;
-	QDoubleSpinBox *costBandwidthSpinBox;
+	QDoubleSpinBox *bandwidthCostSpinBox;
 
     QDoubleSpinBox *costSpinBox;
     QComboBox *orientationCombo;

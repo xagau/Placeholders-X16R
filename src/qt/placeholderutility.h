@@ -10,7 +10,9 @@
 #include <QMessageBox>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QSettings>
 #include <QDebug>
+#include <QApplication>
 
 #include <QUrl>
 #include <QNetworkAccessManager>
@@ -21,6 +23,8 @@ class PlaceholderUtility {
 
 	private:
 	
+		// defaults
+		
 		QString artifactDetailURL = "http://explore.placeh.io:8080/details/";
 		QString artifactSeedAnnounceURL = "http://explore.placeh.io:8080/raw/";
 		QString seedListURL = "http://explore.placeh.io:8080/repository/list.json";
@@ -37,8 +41,14 @@ class PlaceholderUtility {
 		QString deployEntryPointURL = "http://explore.placeh.io:8080/deploy";
 		bool exists(const std::string& name);
 		
+		
+		
+		
+		
 	public:
 	
+		PlaceholderUtility() ;
+		
 		QString getProvideServiceEndPointURL();
 		QJsonObject objectFromString(const QString& in);
 		
