@@ -88,16 +88,17 @@ ProvideResourcesDialog::ProvideResourcesDialog(const PlatformStyle *_platformSty
     //        horizontalSliders, SLOT(setValue(int)));
 
     QHBoxLayout *layout = new QHBoxLayout;
+	controlsGroup->setFixedWidth(300);
     layout->addWidget(controlsGroup);
     layout->addWidget(stackedWidget);
     setLayout(layout);
 
     coresSpinBox->setValue(0);
-    coresCostSpinBox->setValue(0);
+    coresCostSpinBox->setValue(0.75);
     memorySpinBox->setValue(1);
-    memoryCostSpinBox->setValue(1);
-    diskspaceSpinBox->setValue(8);
-    diskspaceCostSpinBox->setValue(8);
+    memoryCostSpinBox->setValue(0.25);
+    diskspaceSpinBox->setValue(0.25);
+    diskspaceCostSpinBox->setValue(1);
     bandwidthSpinBox->setValue(1);
     bandwidthCostSpinBox->setValue(1);
 
@@ -217,7 +218,7 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 		coresSpinBox->setRange(1, 32);
 		coresSpinBox->setSingleStep(1);
 		
-		coresCostLabel = new QLabel(tr("Maximum Cores (CPUs):"));
+		coresCostLabel = new QLabel(tr("Price Per Core (CPUs):"));
 		coresCostSpinBox = new QDoubleSpinBox;
 		coresCostSpinBox->setPrefix("$");
 		coresCostSpinBox->setRange(0.01, 320);
@@ -247,7 +248,7 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 		
 		bandwidthLabel   = new QLabel(tr("Maximum Bandwidth TB:"));
 		bandwidthSpinBox = new QSpinBox;
-		bandwidthSpinBox->setPrefix("$");
+		//bandwidthSpinBox->setPrefix("TB ");
 		bandwidthSpinBox->setRange(1, 1000);
 		bandwidthSpinBox->setSingleStep(1);
 
