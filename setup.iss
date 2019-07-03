@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Placeholders"
-#define MyAppVersion "2.0.30.4f"
+#define MyAppVersion "2.0.30.4g"
 #define MyAppPublisher "placeh.io"
 #define MyAppURL "https://www.placeh.io"
 #define MyAppExeName "placeh-qt.exe"
@@ -41,6 +41,7 @@ Source: "C:\git\repo\Placeholders-X16R\cygcrypto-1.0.0.dll"; DestDir: "{app}"; F
 Source: "C:\git\repo\Placeholders-X16R\mktorrent.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\git\repo\Placeholders-X16R\aria2c.exe"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\git\repo\Placeholders-X16R\src\qt\placeh-qt.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "C:\git\repo\Placeholders-X16R\settings.ini"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\git\repo\Placeholders-X16R\placeh.conf"; DestDir: "{app}"; Flags: ignoreversion
 Source: "C:\git\repo\Placeholders-X16R\placeh.conf"; DestDir: "{userappdata}\placeh\"; Flags: ignoreversion
 Source: "C:\git\repo\Placeholders-X16R\src\placeh-cli.exe"; DestDir: "{app}"; Flags: ignoreversion
