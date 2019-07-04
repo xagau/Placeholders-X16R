@@ -87,6 +87,23 @@ ProvideResourcesDialog::ProvideResourcesDialog(const PlatformStyle *_platformSty
 	//connect(vvalueSpinBox, SIGNAL(valueChanged(int)),
     //        horizontalSliders, SLOT(setValue(int)));
 
+	 connect(diskspaceSpinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(setValue(int)));
+	 connect(diskspaceCostSpinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(setValue(int)));
+	 connect(coresCostSpinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(setValue(int)));
+	connect(coresSpinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(setValue(int)));
+	connect(memorySpinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(setValue(int)));
+	connect(memoryCostSpinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(setValue(int)));
+	connect(bandwidthSpinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(setValue(int)));
+	connect(bandwidthCostSpinBox, SIGNAL(valueChanged(int)),
+            this, SLOT(setValue(int)));
+	
     QHBoxLayout *layout = new QHBoxLayout;
 	controlsGroup->setFixedWidth(300);
     layout->addWidget(controlsGroup);
@@ -153,13 +170,14 @@ void ProvideResourcesDialog::provide()
 	QUrlQuery query;
 	QUrl params;
 	QByteArray postData;
-	
+
+	//try { query.setQueryDelimiters('=', '&'); } catch(...){}
 	try { query.addQueryItem("providerId", userId->text().trimmed());} catch(...) { } 
-	try { query.addQueryItem("notes", "These are the notes");} catch(...) { } 
-	try { query.addQueryItem("selectMaxBandwidth", "" + bandwidthSpinBox->value());} catch(...) { } 
-	try { query.addQueryItem("selectMaxCores", "" + coresSpinBox->value());} catch(...) { } 
-	try { query.addQueryItem("selectMaxMemory", "" + memorySpinBox->value());} catch(...) { } 
-	try { query.addQueryItem("selectMaxDiskspace", "" + diskspaceSpinBox->value());} catch(...) { } 
+	try { query.addQueryItem("notes", "Provided by notes.");} catch(...) { } 
+	try { query.addQueryItem("selectMaxBandwidth", QString::number(bandwidthSpinBox->value()));} catch(...) { } 
+	try { query.addQueryItem("selectMaxCores", QString::number(coresSpinBox->value()));} catch(...) { } 
+	try { query.addQueryItem("selectMaxMemory", QString::number(memorySpinBox->value()));} catch(...) { } 
+	try { query.addQueryItem("selectMaxDiskspace",  QString::number(diskspaceSpinBox->value()));} catch(...) { } 
 	try { query.addQueryItem("selectMaxDuration", "1");} catch(...) { } 
 	try { query.addQueryItem("selectMaxGPUs", "1");} catch(...) { } 
 	try { query.addQueryItem("OS", "default-template");} catch(...) { } 
@@ -174,6 +192,9 @@ void ProvideResourcesDialog::provide()
 
 
 	params.setQuery(query);
+	//postData = params.encodedQuery();
+	                 // encodedQuery();
+	
 	//postData = params.toEncoded(QUrl::RemoveFragment);
 
 	// Call the webservice
@@ -184,10 +205,14 @@ void ProvideResourcesDialog::provide()
 	QUrl serviceUrl  = QUrl(pu->getProvideServiceEndPointURL());
 	
 	QNetworkRequest networkRequest(serviceUrl);
-	networkRequest.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
-
-	networkManager->post(networkRequest,params.query().toUtf8());
+	//networkRequest.setHeader(QNetworkRequest::ContentDispositionHeader, QVariant("form-data; name=\"data\""));
+	networkRequest.setHeader(QNetworkRequest::ContentTypeHeader, "application/x-www-form-urlencoded");
+	networkManager->post(networkRequest,params.query(QUrl::FullyEncoded).toUtf8());
 	
+	QMessageBox msgNotice;
+	msgNotice.setText("Your configuration was posted on the market place.");
+	msgNotice.exec();
+		
 	if(!pu->isMachineConfiguredForVirtualBox())
 	{
 		QMessageBox msgBoxError;
