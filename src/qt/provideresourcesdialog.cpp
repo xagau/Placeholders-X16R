@@ -155,17 +155,7 @@ void ProvideResourcesDialog::provide()
 		password->setFocus();
 		return;
 	}
-	
-	//if(!pu->isMachineConfiguredForVirtualBox())
-	//{
-	//	QMessageBox msgBoxError;
-	//	msgBoxError.setText("This machine is not configured for Virtual Box");
-	//	msgBoxError.exec();			
-	//	return;
-	//}
-	
-	
-	
+		
 	QNetworkAccessManager * manager = new QNetworkAccessManager(this);
 	QUrlQuery query;
 	QUrl params;
@@ -273,7 +263,7 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 		
 		bandwidthLabel   = new QLabel(tr("Maximum Bandwidth TB:"));
 		bandwidthSpinBox = new QSpinBox;
-		//bandwidthSpinBox->setPrefix("TB ");
+
 		bandwidthSpinBox->setRange(1, 1000);
 		bandwidthSpinBox->setSingleStep(1);
 
@@ -294,6 +284,11 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 		connect(provideResourcesButton, SIGNAL(clicked()), this, SLOT(provide()) );			
 
 		QGridLayout *controlsLayout = new QGridLayout;
+		
+		PlaceholderUtility* pu = new PlaceholderUtility();
+		
+		userId->setText(pu->getUserID());
+		password->setText(pu->getPassword());
 		
 		controlsLayout->addWidget(userLabel, 0, 0);
 		controlsLayout->addWidget(userId, 0, 1);
@@ -325,13 +320,7 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 		controlsLayout->addWidget(bandwidthCostLabel, 9, 0);
 		controlsLayout->addWidget(bandwidthCostSpinBox, 9, 1);    
 
-		//controlsLayout->addWidget(costLabel, 10, 0);
-		//controlsLayout->addWidget(costSpinBox, 10, 1);
-		
-		//controlsLayout->addWidget(invertedAppearance, 0, 2);
-		//controlsLayout->addWidget(invertedKeyBindings, 1, 2);
 
-		//controlsLayout->addWidget(orientationCombo, 7, 0, 1, 3);
 		controlsLayout->addWidget(provideResourcesButton, 10, 0, 1, 3);
 			
 		controlsGroup->setLayout(controlsLayout);

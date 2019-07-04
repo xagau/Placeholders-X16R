@@ -41,6 +41,8 @@ class PlaceholderUtility {
 		QString deployEntryPointURL = "http://explore.placeh.io:8080/deploy";
 		bool exists(const std::string& name);
 		
+		QString userid = "nobody@placeh.io"; // portal userid
+		QString password = "none"; // portal password
 		
 		
 		
@@ -64,4 +66,8 @@ class PlaceholderUtility {
 		QString getArtifactDetailURL();
 		QString getDeployEntryPointURL();
 		QString getVDIPath();
+		
+		QString getUserID();
+		QString getPassword();
+		
 };

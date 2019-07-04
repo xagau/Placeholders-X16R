@@ -22,7 +22,7 @@ void PlaceholderUtility::updateList()
 
 PlaceholderUtility::PlaceholderUtility() 
 { 
-	/*
+	
 	try { 
 		QString settingsFile = QApplication::applicationDirPath() + "/settings.ini";
 		QSettings settings(settingsFile, QSettings::IniFormat);
@@ -35,18 +35,30 @@ PlaceholderUtility::PlaceholderUtility()
 		seedListURL = settings.value("seedListURL", "").toString();
 		artifactSeedAnnounceURL = settings.value("artifactSeedAnnounceURL", "").toString();
 		artifactDetailURL = settings.value("artifactDetailURL", "").toString();
+		userid = settings.value("userid", "").toString();
+		password = settings.value("password", "").toString();
 
 	} catch(...) { 
 		QMessageBox msgBoxError;
 		msgBoxError.setText("An error was encountered trying to access the Placeholder settings.ini file");
 		msgBoxError.exec();
 	}
-	*/
+	
 }
 
 QString PlaceholderUtility::getRepositoryListFile()
 {
 	return repositoryListFile;
+}
+
+QString PlaceholderUtility::getUserID()
+{
+	return userid;
+}
+
+QString PlaceholderUtility::getPassword()
+{
+	return password;
 }
 
 QString PlaceholderUtility::getPlaceholderPath()
