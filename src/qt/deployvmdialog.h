@@ -55,16 +55,19 @@ public:
 	
 
 public Q_SLOTS:
+    void clearAll();
     void selectFile();
     void deployToNetwork();
     void viewOnExplorer();
 	void signMessage();
+	void generateNewAddress();
 	
 private:
     Ui::DeployVMDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
-   
+    const PlatformStyle *platformStyle;
+	
 	void console(const char* msg);
 
     void createHorizontalGroupBox();

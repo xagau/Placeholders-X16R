@@ -43,7 +43,10 @@
 #include <QDir>
 #include <QProcess>
 #include <QFontMetrics>
+#include <QFont>
+#include <QFontDatabase>
 #include <QMessageBox>
+
 #include <QGridLayout>
 #include <QScrollBar>
 #include <QSettings>
@@ -243,6 +246,14 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 	tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
 	QHeaderView* header = tableWidget->horizontalHeader();
     header->setSectionResizeMode(QHeaderView::Stretch);
+	header->setSectionResizeMode( DESCRIPTION_COLUMN, QHeaderView::Interactive );
+	header->resizeSection(DESCRIPTION_COLUMN, 300);
+	header->setSectionResizeMode( ARTIFACT_COLUMN, QHeaderView::ResizeToContents );
+	header->setSectionResizeMode( PRICE_COLUMN, QHeaderView::ResizeToContents );
+	header->setSectionResizeMode( CONTENT_TYPE_COLUMN, QHeaderView::ResizeToContents );
+	header->setSectionResizeMode( STATUS_COLUMN, QHeaderView::ResizeToContents );
+	header->setSectionResizeMode( INFORMATION_COLUMN, QHeaderView::ResizeToContents );
+	header->setSectionResizeMode( SERVICE_COLUMN, QHeaderView::ResizeToContents );
 
 	//tableWidget->setHorizontalHeaderItem(ENCAPSULATION_COLUMN, new QTableWidgetItem("Encapsulation"));
 	tableWidget->setHorizontalHeaderItem(ARTIFACT_COLUMN, new QTableWidgetItem("Payment Address"));
@@ -364,6 +375,7 @@ void RepositoryDialog::handleInformation()
 	QString seed = o.value("seed").toString();
 	QString contentType = o.value("contentType").toString();
 	QString size = o.value("size").toString();
+	QString checksum = o.value("checksum").toString();
 	QString status = o.value("status").toString();
 	QString bounty = o.value("bounty").toString();
 	QString description = o.value("description").toString();
@@ -372,12 +384,16 @@ void RepositoryDialog::handleInformation()
 	
 		
 	QString msg =  "Encapsulation:" + encapsulation + "\n" + 
-				   "Signed:       " + asigned + "\n" + 
 				   "Seed:         " + seed + "\n" + 
-				   "Signature:    " + signature + "\n";
+				   "Signature:    " + signature + "\n" +
+				   "Checksum:     " + checksum + "\n" + 
+				   "Size:         " + size + "\n";
 			   
 	QMessageBox msgBoxInformation;
-	msgBoxInformation.setStyleSheet("QTextEdit { font-family: monospace; }");
+	//msgBoxInformation.setStyleSheet("QMessageBox { font-family: monospace; }");
+	const QFont fixedFont = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+	
+	msgBoxInformation.setFont(fixedFont);
 	msgBoxInformation.setText(msg);
 	msgBoxInformation.exec();
 }
@@ -396,7 +412,7 @@ void RepositoryDialog::handleDownload()
 		}	
 
 
-	QString artifactSelected = tableWidget->item(row, ARTIFACT_COLUMN)->text(); //"FGSJDQgSs2ygs4SzH4VkJ5i8VzSfduaPJL";
+	QString artifactSelected = tableWidget->item(row, ARTIFACT_COLUMN)->text(); 
 	QString bountySelected = tableWidget->item(row, PRICE_COLUMN)->text();
 	QString description = tableWidget->item(row, DESCRIPTION_COLUMN)->text();
 	QString contentType = tableWidget->item(row, CONTENT_TYPE_COLUMN)->text();
