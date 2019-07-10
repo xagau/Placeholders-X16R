@@ -114,6 +114,8 @@ namespace GUIUtil
     // Open debug.log
     void openDebugLogfile();
 
+    void openSettingsIniFile();
+
     // Open the config file
     bool openPlacehConf();
 

@@ -106,6 +106,9 @@ QString PlaceholderUtility::getExtensionByContentType(QString str)
 	else if( str == "image/jpeg" ) { 
 		return ".jpg";
 	}
+	else if( str == "application/pgp-encrypted" ) { 
+		return ".gpg";
+	}
 	else if( str == "image/gif" ) { 
 		return ".gif";
 	}

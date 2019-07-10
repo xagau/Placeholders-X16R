@@ -379,6 +379,19 @@
            </property>
           </widget>
          </item>
+		 <item>
+          <widget class="QPushButton" name="openSettingsIniButton">
+           <property name="toolTip">
+            <string>Open the %1 settings ini file from the current data directory.</string>
+           </property>
+           <property name="text">
+            <string>&amp;Open</string>
+           </property>
+           <property name="autoDefault">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
         </layout>
        </item>
        <item row="15" column="0">

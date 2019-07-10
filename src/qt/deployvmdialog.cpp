@@ -323,6 +323,9 @@ void DeployVMDialog::selectFile()
 		}		
 		else if( fileName.endsWith(".gif", Qt::CaseInsensitive) ) { 
 			contentMimeType = "image/gif";								
+		}
+		else if( fileName.endsWith(".gpg", Qt::CaseInsensitive) ) { 
+			contentMimeType = "application/pgp-encrypted";								
 		}		
 		else if( fileName.endsWith(".png", Qt::CaseInsensitive) ) { 
 			contentMimeType = "image/png";								

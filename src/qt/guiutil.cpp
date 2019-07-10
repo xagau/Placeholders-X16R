@@ -417,6 +417,15 @@ void openDebugLogfile()
         QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathDebug)));
 }
 
+void openSettingsIniFile()
+{
+    fs::path pathIni = GetDataDir() / "settings.ini";
+
+    /* Open debug.log with the associated application */
+    if (fs::exists(pathIni))
+        QDesktopServices::openUrl(QUrl::fromLocalFile(boostPathToQString(pathIni)));
+}
+
 bool openPlacehConf()
 {
     boost::filesystem::path pathConfig = GetConfigFile(PLACEH_CONF_FILENAME);
