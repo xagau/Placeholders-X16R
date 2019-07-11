@@ -49,6 +49,7 @@ public:
 public Q_SLOTS:
 	void handleDownload();
 	void handleInformation();
+	
 private:
     Ui::RepositoryDialog *ui;
     ClientModel *clientModel;

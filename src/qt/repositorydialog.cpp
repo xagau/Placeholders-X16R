@@ -41,6 +41,7 @@
 #include <QList>
 
 #include <QDir>
+#include <QIODevice>
 #include <QProcess>
 #include <QFontMetrics>
 #include <QFont>
@@ -210,8 +211,7 @@ void RepositoryDialog::refresh()
 	}
 	
 	tableWidget->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
-	//tableWidget->repaint(); //.update();
-	//tableWidget->update();
+
 	
 }
 
@@ -399,6 +399,13 @@ void RepositoryDialog::handleInformation()
 }
 
 
+
+void doDownload(QString contentType, QString artifact, RepositoryDialog* dialog)
+{
+	
+			
+}
+
 void RepositoryDialog::handleDownload()
 {
 	try { 
@@ -412,55 +419,71 @@ void RepositoryDialog::handleDownload()
 		}	
 
 
-	QString artifactSelected = tableWidget->item(row, ARTIFACT_COLUMN)->text(); 
-	QString bountySelected = tableWidget->item(row, PRICE_COLUMN)->text();
-	QString description = tableWidget->item(row, DESCRIPTION_COLUMN)->text();
-	QString contentType = tableWidget->item(row, CONTENT_TYPE_COLUMN)->text();
+		QString artifactSelected = tableWidget->item(row, ARTIFACT_COLUMN)->text(); 
+		QString bountySelected = tableWidget->item(row, PRICE_COLUMN)->text();
+		QString description = tableWidget->item(row, DESCRIPTION_COLUMN)->text();
+		QString contentType = tableWidget->item(row, CONTENT_TYPE_COLUMN)->text();
 
-	QString theTitle = "Confirm Payment?";
-	QString theQuestion = "Pay Address " + artifactSelected + "\n " + bountySelected + " PHL\n to download:\n " + description + "\n";
-	QMessageBox::StandardButton reply;
+		QString theTitle = "Confirm Payment?";
+		QString theQuestion = "Pay Address " + artifactSelected + "\n " + bountySelected + " PHL\n to download:\n " + description + "\n";
+		QMessageBox::StandardButton reply;
 
-	
-	reply = QMessageBox::question(this, theTitle,  theQuestion, QMessageBox::Yes|QMessageBox::No);
+		
+		reply = QMessageBox::question(this, theTitle,  theQuestion, QMessageBox::Yes|QMessageBox::No);
 
-	if (reply == QMessageBox::Yes) {
-		try { 
-		if( bountySelected != "0.00000000" ) { 
-			sendCoins(bountySelected, artifactSelected);
+		if (reply == QMessageBox::Yes) {
+			try { 
+			if( bountySelected != "0.00000000" ) { 
+				sendCoins(bountySelected, artifactSelected);
+			}
+			} catch(...) { } 
+					
+			
+			PlaceholderUtility* pu = new PlaceholderUtility();
+			QString newExtension = pu->getExtensionByContentType(contentType);
+			QMessageBox msgBoxError;
+			msgBoxError.setText("Downloading to " + pu->getVDIPath() + "/" + artifactSelected + ".artifact.\n Content Type:" + contentType + "\nRenaming to: " + newExtension);
+			msgBoxError.exec();		
+					
+			//PlaceholderUtility* pu = new PlaceholderUtility();
+			pu->download(artifactSelected);	
+		
+			/*
+			bool flag = true;
+			while( flag ) { 
+				QFile file(pu->getVDIPath() + "/" + artifactSelected + ".artifact");
+				if(!file.open(QIODevice::ReadOnly)){
+					//qDebug() << "File not open yet " << file.error();
+					 QCoreApplication::processEvents();
+					 QApplication::processEvents() ;
+				}else{
+					flag = false;
+					file.close();
+					qDebug() << "File is open";
+				}			
+			}
+			*/
+					
+			QMessageBox msgBoxDone;
+			msgBoxDone.setText("Download Complete.");
+			msgBoxDone.exec();						
+					
+			QFile::rename(pu->getVDIPath() + "/" + artifactSelected + ".artifact", pu->getVDIPath() + "/" + artifactSelected + newExtension);
+					
+			QMessageBox::StandardButton newReply;
+			QString theNewTitle = "Open File?";
+			QString theNewQuestion = "Do you want to open:" + artifactSelected + newExtension + "?\n";
+			newReply = QMessageBox::question(this, theNewTitle,  theNewQuestion, QMessageBox::Yes|QMessageBox::No);
+			
+			if (newReply == QMessageBox::Yes) {
+				QDesktopServices::openUrl(QUrl(pu->getVDIPath() + "/" + artifactSelected + newExtension));
+			}
+			//std::thread (doDownload, contentType, artifactSelected, this).detach();
+			
+			
+		} else {
+			qDebug() << "Yes was *not* clicked";
 		}
-		} catch(...) { } 
-						
-		PlaceholderUtility* pu = new PlaceholderUtility();
-		QString newExtension = pu->getExtensionByContentType(contentType);
-		QMessageBox msgBoxError;
-		msgBoxError.setText("Downloading to C:/vdi/" + artifactSelected + ".artifact.\n Content Type:" + contentType + "\nRenaming to: " + newExtension);
-		msgBoxError.exec();		
-		
-		pu->download(artifactSelected);
-		
-		QFile::rename(pu->getVDIPath() + "/" + artifactSelected + ".artifact", pu->getVDIPath() + "/" + artifactSelected + newExtension);
-		
-		QMessageBox msgBoxDone;
-		msgBoxDone.setText("Download Complete.");
-		msgBoxDone.exec();						
-		
-		
-		QMessageBox::StandardButton newReply;
-		QString theNewTitle = "Open File?";
-		QString theNewQuestion = "Do you want to open:" + artifactSelected + newExtension + "?\n";
-		newReply = QMessageBox::question(this, theNewTitle,  theNewQuestion, QMessageBox::Yes|QMessageBox::No);
-	
-		
-		if (newReply == QMessageBox::Yes) {
-			QDesktopServices::openUrl(QUrl(pu->getVDIPath() + "/" + artifactSelected + newExtension));
-		}
-		
-		
-
-	} else {
-		qDebug() << "Yes was *not* clicked";
-	}
 	
 	} catch(...) { 
 		QMessageBox msgBoxDone;
