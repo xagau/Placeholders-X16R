@@ -18,6 +18,7 @@
 #include "sendassetsentry.h"
 #include "walletmodel.h"
 
+#include "crc32.h"
 #include "base58.h"
 #include "chainparams.h"
 #include "wallet/coincontrol.h"
@@ -123,6 +124,7 @@ void RepositoryDialog::refresh()
 			QString status = o.value("status").toString();
 			QString bounty = o.value("bounty").toString();
 			QString description = o.value("description").toString();
+			QString checksum = o.value("checksum").toString();
 			QString service = o.value("service").toString();
 		
 
@@ -144,9 +146,9 @@ void RepositoryDialog::refresh()
 			//tableWidget->setItem(i, INFORMATION_COLUMN, signatureItem);
 
 			
-			QTableWidgetItem *seedItem = new QTableWidgetItem(seed);
-			seedItem->setFlags(seedItem->flags() ^ Qt::ItemIsEditable); 
-			//tableWidget->setItem(i, SEED_COLUMN, seedItem);
+			QTableWidgetItem *checksumItem = new QTableWidgetItem(checksum);
+			checksumItem->setFlags(checksumItem->flags() ^ Qt::ItemIsEditable); 
+			tableWidget->setItem(i, CHECKSUM_COLUMN, checksumItem);
 
 			QTableWidgetItem *fileTypeItem = new QTableWidgetItem(contentType);
 			fileTypeItem->setFlags(fileTypeItem->flags() ^ Qt::ItemIsEditable); 
@@ -226,7 +228,7 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 	
 // RAII cleanup
 
-	int cols = 7;
+	int cols = 8;
 	int rows = 0;
 	
 	QGridLayout *layout = new QGridLayout(parent);
@@ -254,6 +256,7 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 	header->setSectionResizeMode( STATUS_COLUMN, QHeaderView::ResizeToContents );
 	header->setSectionResizeMode( INFORMATION_COLUMN, QHeaderView::ResizeToContents );
 	header->setSectionResizeMode( SERVICE_COLUMN, QHeaderView::ResizeToContents );
+	header->setSectionResizeMode( CHECKSUM_COLUMN, QHeaderView::ResizeToContents );
 
 	//tableWidget->setHorizontalHeaderItem(ENCAPSULATION_COLUMN, new QTableWidgetItem("Encapsulation"));
 	tableWidget->setHorizontalHeaderItem(ARTIFACT_COLUMN, new QTableWidgetItem("Payment Address"));
@@ -265,6 +268,7 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 	tableWidget->setHorizontalHeaderItem(PRICE_COLUMN, new QTableWidgetItem("Price (PHL)"));
 	tableWidget->setHorizontalHeaderItem(DESCRIPTION_COLUMN, new QTableWidgetItem("Description"));
 	tableWidget->setHorizontalHeaderItem(SERVICE_COLUMN, new QTableWidgetItem("Service"));
+	tableWidget->setHorizontalHeaderItem(CHECKSUM_COLUMN, new QTableWidgetItem("Checksum"));
 
 	//PlaceholderUtility* pu = new PlaceholderUtility();
 
@@ -400,10 +404,10 @@ void RepositoryDialog::handleInformation()
 
 
 
-void doDownload(QString contentType, QString artifact, RepositoryDialog* dialog)
+void doDownload(QString artifact)
 {
-	
-			
+	PlaceholderUtility* pu = new PlaceholderUtility();
+	pu->download(artifact);			
 }
 
 void RepositoryDialog::handleDownload()
@@ -423,6 +427,7 @@ void RepositoryDialog::handleDownload()
 		QString bountySelected = tableWidget->item(row, PRICE_COLUMN)->text();
 		QString description = tableWidget->item(row, DESCRIPTION_COLUMN)->text();
 		QString contentType = tableWidget->item(row, CONTENT_TYPE_COLUMN)->text();
+		QString checksum = tableWidget->item(row, CHECKSUM_COLUMN)->text();
 
 		QString theTitle = "Confirm Payment?";
 		QString theQuestion = "Pay Address " + artifactSelected + "\n " + bountySelected + " PHL\n to download:\n " + description + "\n";
@@ -446,23 +451,31 @@ void RepositoryDialog::handleDownload()
 			msgBoxError.exec();		
 					
 			//PlaceholderUtility* pu = new PlaceholderUtility();
-			pu->download(artifactSelected);	
+			
+			std::thread t(doDownload, artifactSelected);
+			t.detach();
+			
+			//pu->download(artifactSelected);	
 		
-			/*
+			
 			bool flag = true;
+			Crc32* crc32 = new Crc32();
+			QString fName = pu->getVDIPath() + "/" + artifactSelected + ".artifact";
 			while( flag ) { 
-				QFile file(pu->getVDIPath() + "/" + artifactSelected + ".artifact");
-				if(!file.open(QIODevice::ReadOnly)){
+					
+				quint32 crc = crc32->calculateFromFile(fName);
+				
+				if( checksum.toUInt() != crc ) {
 					//qDebug() << "File not open yet " << file.error();
 					 QCoreApplication::processEvents();
 					 QApplication::processEvents() ;
 				}else{
 					flag = false;
-					file.close();
+					//file.close();
 					qDebug() << "File is open";
 				}			
 			}
-			*/
+			
 					
 			QMessageBox msgBoxDone;
 			msgBoxDone.setText("Download Complete.");
@@ -478,7 +491,6 @@ void RepositoryDialog::handleDownload()
 			if (newReply == QMessageBox::Yes) {
 				QDesktopServices::openUrl(QUrl(pu->getVDIPath() + "/" + artifactSelected + newExtension));
 			}
-			//std::thread (doDownload, contentType, artifactSelected, this).detach();
 			
 			
 		} else {

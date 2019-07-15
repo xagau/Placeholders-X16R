@@ -181,8 +181,8 @@ void PlaceholderUtility::download(QString artifact)
 		QProcess process;
 		QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=1.0 --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
 		process.start(torrentFile);
-		//process.waitForFinished();
-		//process.close();
+		process.waitForFinished();
+		process.close();
 }
 
 void PlaceholderUtility::seed(QString artifact)
@@ -192,8 +192,8 @@ void PlaceholderUtility::seed(QString artifact)
 		QProcess process;
 		QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=" + strRatio + " --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
 		process.start(torrentFile);
-		//process.waitForFinished();
-		//process.close();	
+		process.waitForFinished();
+		process.close();	
 	} catch(...) { 
 	
 	}
