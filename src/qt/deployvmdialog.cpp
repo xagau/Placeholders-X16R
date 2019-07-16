@@ -251,6 +251,8 @@ void DeployVMDialog::clearAll()
 		bigEditor->clear();
 		bounty->setText("");
 		artifact->setText("");
+		fileInformation->setText("");
+		signature->setText("");
 		checksum->setText("");
 		description->setText("");
 		deployToNetworkButton->setEnabled(false);
@@ -433,13 +435,13 @@ void DeployVMDialog::deployToNetwork()
 	//QUrl params;
 	QByteArray postData;
 
-	//console("Setting MIME type:" + contentMimeType);
+	console("Setting MIME type");
 	console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	
 	query.addQueryItem("contentType", contentMimeType);//"application/x-bittorrent");
 	query.addQueryItem("verifySignature", "-");
 	
-	//console("Using Signature:" + signature->text());
+	console("Using Signature");
 	console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 	
 	query.addQueryItem("signature", signature->text());
