@@ -56,6 +56,7 @@ class PlaceholderUtility {
 		
 		void download(QString artifact);
 		QString getExtensionByContentType(QString str);
+		QString getContentTypeByExtension(QString fileName);
 		bool isMachineConfiguredForVirtualBox();
 		void updateList();
 		void seed(QString artifact);

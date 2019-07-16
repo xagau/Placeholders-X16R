@@ -94,6 +94,7 @@ private:
 	QLineEdit* signature = new QLineEdit();
 	QLineEdit* description = new QLineEdit();
 	QLineEdit* bounty = new QLineEdit();
+	QLineEdit* fileInformation = new QLineEdit();
 			
 	//QCanvas   *canvas;
 	

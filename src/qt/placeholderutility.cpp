@@ -98,6 +98,82 @@ QString PlaceholderUtility::getVDIPath()
 	return vdiPath;
 }
 
+QString PlaceholderUtility::getContentTypeByExtension(QString fileName) 
+{
+		QString contentMimeType = "";
+		
+		if( fileName.endsWith(".jpg", Qt::CaseInsensitive) ) { 
+			contentMimeType = "image/jpeg";								
+		}		
+		else if( fileName.endsWith(".gif", Qt::CaseInsensitive) ) { 
+			contentMimeType = "image/gif";								
+		}
+		else if( fileName.endsWith(".gpg", Qt::CaseInsensitive) ) { 
+			contentMimeType = "application/pgp-encrypted";								
+		}		
+		else if( fileName.endsWith(".png", Qt::CaseInsensitive) ) { 
+			contentMimeType = "image/png";								
+		}		
+		else if( fileName.endsWith(".js", Qt::CaseInsensitive) ) { 
+			contentMimeType = "text/javascript";								
+		}	
+		else if( fileName.endsWith(".json", Qt::CaseInsensitive) ) { 
+			contentMimeType = "application/json";								
+		}
+		else if( fileName.endsWith(".mp3", Qt::CaseInsensitive) ) { 
+			contentMimeType = "audio/mpeg";								
+		}
+		else if( fileName.endsWith(".mpeg", Qt::CaseInsensitive) ) { 
+			contentMimeType = "video/mpeg";								
+		}
+		else if( fileName.endsWith(".xml", Qt::CaseInsensitive) ) { 
+			contentMimeType = "text/xml";								
+		}
+		else if( fileName.endsWith(".txt", Qt::CaseInsensitive) ) { 
+			contentMimeType = "text/plain";								
+		}
+		else if( fileName.endsWith(".pdf", Qt::CaseInsensitive) ) { 
+			contentMimeType = "application/pdf";								
+		}
+		else if( fileName.endsWith(".zip", Qt::CaseInsensitive) ) { 
+			contentMimeType = "application/zip";								
+		}
+		else if( fileName.endsWith(".html", Qt::CaseInsensitive) || fileName.endsWith(".htm", Qt::CaseInsensitive) ) { 
+			contentMimeType = "text/html";								
+		}
+		else if( fileName.endsWith(".torrent", Qt::CaseInsensitive) ) { 
+			contentMimeType = "application/x-bittorrent";								
+		}
+		
+		
+		/*
+		if( fileName.endsWith(".zip", Qt::CaseInsensitive) ) { 
+		
+			QMessageBox msgBoxError;
+			msgBoxError.setText("This zip will be converted to torrent for seeding (NOT WORKING YET)");
+			msgBoxError.exec();										
+
+		}
+		else if( fileName.endsWith(".vdi", Qt::CaseInsensitive) ) { 
+			QMessageBox msgBoxC;
+			msgBoxC.setText("This VDI will be converted to torrent for seeding (NOT WORKING YET)");
+			msgBoxC.exec();										
+		
+		}
+		else if( fileName.endsWith(".mpeg", Qt::CaseInsensitive) ) { 
+			QMessageBox msgBoxC;
+			msgBoxC.setText("This MPEG will be converted to torrent for seeding (NOT WORKING YET)");
+			msgBoxC.exec();										
+		
+		}
+		else
+		*/	
+		
+		return contentMimeType;
+		
+}
+
+
 QString PlaceholderUtility::getExtensionByContentType(QString str)
 {
 	if( str == "application/x-bittorrent" ) { 
