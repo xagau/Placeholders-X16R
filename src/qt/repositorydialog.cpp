@@ -148,7 +148,8 @@ void RepositoryDialog::refresh()
 			
 			QTableWidgetItem *checksumItem = new QTableWidgetItem(checksum);
 			checksumItem->setFlags(checksumItem->flags() ^ Qt::ItemIsEditable); 
-			checksumItem->setTextAlignment(Qt::AlignRight);
+			//checksumItem->setTextAlignment(Qt::AlignRight);
+			checksumItem->setTextAlignment(Qt::AlignRight|Qt::AlignVCenter);
 			tableWidget->setItem(i, CHECKSUM_COLUMN, checksumItem);
 
 			QTableWidgetItem *fileTypeItem = new QTableWidgetItem(contentType);
@@ -165,8 +166,8 @@ void RepositoryDialog::refresh()
 
 			QTableWidgetItem *bountyItem = new QTableWidgetItem(bounty);
 			bountyItem->setFlags(bountyItem->flags() ^ Qt::ItemIsEditable); 
-			bountyItem->setTextAlignment(Qt::AlignRight);
-			
+			bountyItem->setTextAlignment(Qt::AlignVCenter|Qt::AlignRight);
+			//tableWidget->setItem(i, CHECKSUM_COLUMN, checksumItem);
 			tableWidget->setItem(i, PRICE_COLUMN, bountyItem);
 
 			QTableWidgetItem *descriptionItem = new QTableWidgetItem(description);
