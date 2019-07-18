@@ -237,15 +237,10 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 	
 	QGridLayout *layout = new QGridLayout(parent);
 	PlaceholderUtility* pu = new PlaceholderUtility();
-	//pu->updateList();
 		
 	rows = pu->getNumberArtifacts();
 	
-	tableWidget = new QTableWidget(rows, cols, this);
-	//QScrollArea *scroll = new QScrollArea();
-    //tableWidget->append(scroll);
-	//tableWidget->setWidgetResizable(true);
-	
+	tableWidget = new QTableWidget(rows, cols, this);	
 	tableWidget->setAlternatingRowColors(true);
 	tableWidget->setStyleSheet("alternate-background-color: white;background-color: #f0f0f0;");
 
