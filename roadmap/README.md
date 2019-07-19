@@ -19,8 +19,8 @@ Artifact files marked as content-type torrent and end with the extension VDI wil
 Cloud services is provided by users of Placeholders.
 There are 2 types of users, but any user can make use of both types of users.
 These users are:
--Service Providers
--Service Consumers
+##### Service Providers
+##### Service Consumers
 
 Service providers provide the hardware and virtual machine container.
 Service consumers consume the resources provided by the service providers in exchange for compensation (Placeholder coins).
