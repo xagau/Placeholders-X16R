@@ -3,13 +3,13 @@
 ### Phase 1 - Complete
 
 Placeholders (PHL) is a Proof of Work coin built on the Bitcoin UTXO model. As with other Bitcoin derivatives, PHL coins are distributed to persons augmenting the Placeholder network by mining Placeholders.
-*  x5 coin distribution (10.5 Million Total)
+*  1/2 coin distribution (10.5 Million Total)
 *  10x faster blocks (1 per minute)
-*  In app CPU mining
+*  Much more aggressive supply curve reduction.
 *  Dark Gravity Wave difficulty adjustment (180 block average)
 *  Addresses start with F... for regular addresses.
-*  Network Port: 6705
-*  RPC Port: 6706
+*  Network Port: 6607
+*  RPC Port: 6608
 
 ### Phase 2 - Cloud Services (in progress)
 
@@ -19,8 +19,8 @@ Artifact files marked as content-type torrent and end with the extension VDI wil
 Cloud services is provided by users of Placeholders.
 There are 2 types of users, but any user can make use of both types of users.
 These users are:
--Service Providers
--Service Consumers
+##### Service Providers
+##### Service Consumers
 
 Service providers provide the hardware and virtual machine container.
 Service consumers consume the resources provided by the service providers in exchange for compensation (Placeholder coins).
@@ -64,7 +64,4 @@ Metadata about the token can be stored in IPFS. Initially this cannot be changed
 
 Placeh may increase the blocksize from 1 MB to X MB to allow for more on-chain transactions.
 
-### Phase 3 - Rewards
-
-Rewards allow payment in PHL to asset holders.
 
