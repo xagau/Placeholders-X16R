@@ -12,7 +12,11 @@
 #include <QDialog>
 #include <QMessageBox>
 #include <QString>
+#include <QGroupBox>
+#include <QLineEdit>
 #include <QTimer>
+#include <QPushButton>
+
 #include <QTableWidget>
 
 class ClientModel;
@@ -43,17 +47,22 @@ public:
     void setModel(WalletModel *model);
 	
 	void sendCoins(QString amount, QString address);
-	void refresh() ;
+
 
 	
 public Q_SLOTS:
 	void handleDownload();
 	void handleInformation();
+	void refresh() ;
 	
 private:
     Ui::RepositoryDialog *ui;
     ClientModel *clientModel;
     WalletModel *model;
+	QGroupBox *horizontalGroupBox;
+    QLineEdit* filter = new QLineEdit();
+	QPushButton* search;
+	
 	
 	int DESCRIPTION_COLUMN = 0;
 	int PRICE_COLUMN = 1;

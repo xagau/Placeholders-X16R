@@ -20,6 +20,25 @@ void PlaceholderUtility::updateList()
 	
 }
 
+void PlaceholderUtility::updateList(QString criteria) 
+{
+		try { 
+			std::remove(repositoryListFile.toUtf8().constData());
+	
+			QProcess grabListProcess;
+			QString grabList =  aria2cPath + "/aria2c.exe --allow-overwrite --conditional-get=true --out=list.json --dir=" + repositoryPath + " " + seedListURL + "tags:" + criteria;
+			grabListProcess.start(grabList);
+			grabListProcess.waitForFinished();
+			grabListProcess.close();
+
+		} catch(...) { 
+			QMessageBox msgBoxError;
+			msgBoxError.setText("An error was encountered trying to update the Placeholder Artifact list for synchronization");
+			msgBoxError.exec();
+		}
+	
+}
+
 PlaceholderUtility::PlaceholderUtility() 
 { 
 	

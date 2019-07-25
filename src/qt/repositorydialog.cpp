@@ -84,8 +84,16 @@ void processTorrents()
 void RepositoryDialog::refresh()
 {
 	//
+	QString criteria = "";
+	criteria = filter->text();
+	
 	PlaceholderUtility* pu = new PlaceholderUtility();
-	pu->updateList();
+	if( criteria.trimmed().isEmpty() ){ 
+		pu->updateList(); // for now, just return all.
+	} else {
+		pu->updateList(criteria);	
+	}
+	
 	int rows = pu->getNumberArtifacts();
 	tableWidget->setRowCount(rows);
 	//tableWidget->resize(2000,2000);
@@ -180,12 +188,9 @@ void RepositoryDialog::refresh()
 			QPushButton* btnDownload       = new QPushButton();
 			QPushButton* btnInformation    = new QPushButton();
 			
-
-			//connect( btnDownload, );
 			connect(btnDownload, SIGNAL (clicked()), this, SLOT (handleDownload()));
 			connect(btnInformation, SIGNAL (clicked()), this, SLOT (handleInformation()));
 
-			
 			btnInformation->setText("[?]");
 			btnInformation->setFixedWidth(25);
 			QHBoxLayout* pLayoutInfo = new QHBoxLayout(pWidgetInfo);
@@ -234,8 +239,30 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 
 	int cols = 8;
 	int rows = 0;
+	int maxHeight = 50;
 	
-	QGridLayout *layout = new QGridLayout(parent);
+	QVBoxLayout *mainLayout = new QVBoxLayout();
+	QHBoxLayout *base = new QHBoxLayout;
+	
+	horizontalGroupBox = new QGroupBox(tr("Keywords / Tags"));
+	horizontalGroupBox->setFixedHeight(maxHeight);
+	filter->setPlaceholderText("filter results");
+	filter->setToolTip("Use this field to filter results.");
+	
+	search = new QPushButton(tr("Search"));
+
+	search->setFixedWidth(50);
+	search->setToolTip("Click this button to refresh results with filter criteria.");
+	
+	connect(search, SIGNAL(clicked()), this, SLOT(refresh()));
+	
+	base->addWidget(filter);
+	base->addWidget(search);
+	//base->setStretch(1);
+	horizontalGroupBox->setLayout(base);
+	
+	
+	//QGridLayout *layout = new QGridLayout();
 	PlaceholderUtility* pu = new PlaceholderUtility();
 		
 	rows = pu->getNumberArtifacts();
@@ -275,9 +302,18 @@ RepositoryDialog::RepositoryDialog(const PlatformStyle *_platformStyle, QWidget 
 
 	
 	
-	layout->addWidget(tableWidget, 1, Qt::AlignLeft);
+	//layout->addWidget(tableWidget, 1, Qt::AlignLeft);
 
-    setLayout(layout);
+	//mainLayout->addStretch();
+	//mainLayout->addWidget(horizontalGroupBox, 1, Qt::AlignLeft);
+	//mainLayout->addWidget(tableWidget, 2, Qt::AlignLeft);
+	mainLayout->addWidget(horizontalGroupBox);//, 1, Qt::AlignLeft);
+	mainLayout->addWidget(tableWidget);//, 2, Qt::AlignLeft);
+	//mainLayout->setStretch(0,1);
+	//mainLayout->setStretch(1,1);
+
+	setLayout(mainLayout);
+    //setLayout(layout);
 	
 }
 
@@ -299,43 +335,41 @@ void RepositoryDialog::sendCoins(QString amount, QString _address)
 {
 	try { 
 	
-	SendCoinsRecipient recipient; // = new SendCoinRecipient();
-	recipient.address = _address; //, "Marketplace Purchase", 1000000, "Marketplace Purchase" );
-	recipient.amount = (CAmount)(amount.toDouble() * (double)COIN);
-	recipient.label = "Marketplace Purchase";
-	recipient.message = "Marketplace Purchase";
-	recipient.fSubtractFeeFromAmount = true;
-	
-	QList<SendCoinsRecipient> list;
-	list.append(recipient);
-	
-	CCoinControl ctrl;
-    
-	WalletModelTransaction currentTransaction(list);
-	
-	WalletModel::UnlockContext ctx(this->model->requestUnlock());
-    if(!ctx.isValid())
-    {
-        // Unlock wallet was cancelled
-        //fNewRecipientAllowed = true;
-			
-		QMessageBox msgBoxError;
-		msgBoxError.setText("Could not unlock wallet");
-		msgBoxError.exec();
-			
-        return;
-    }
-	
+		SendCoinsRecipient recipient; // = new SendCoinRecipient();
+		recipient.address = _address; //, "Marketplace Purchase", 1000000, "Marketplace Purchase" );
+		recipient.amount = (CAmount)(amount.toDouble() * (double)COIN);
+		recipient.label = "Marketplace Purchase";
+		recipient.message = "Marketplace Purchase";
+		recipient.fSubtractFeeFromAmount = true;
+		
+		QList<SendCoinsRecipient> list;
+		list.append(recipient);
+		
+		CCoinControl ctrl;
+		
+		WalletModelTransaction currentTransaction(list);
+		
+		WalletModel::UnlockContext ctx(this->model->requestUnlock());
+		if(!ctx.isValid())
+		{
+			// Unlock wallet was cancelled
+			//fNewRecipientAllowed = true;
+				
+			QMessageBox msgBoxError;
+			msgBoxError.setText("Could not unlock wallet");
+			msgBoxError.exec();
+				
+			return;
+		}
+		
 
-	
-    this->model->prepareTransaction(currentTransaction, ctrl);
+		
+		this->model->prepareTransaction(currentTransaction, ctrl);
 
-	
-	this->model->sendCoins(currentTransaction);
-	
+		
+		this->model->sendCoins(currentTransaction);
+		
 
-
-	//QString sendCommand =  path + "/placeh-cli sendtoaddress \"" + _address + "\" " + amount;
 	} catch(...) { 
 		QMessageBox msgBoxError;
 		msgBoxError.setText("An error occured trying to send coins");
@@ -383,6 +417,7 @@ void RepositoryDialog::handleInformation()
 	QString bounty = o.value("bounty").toString();
 	QString description = o.value("description").toString();
 	QString service = o.value("service").toString();
+	QString tags = o.value("tags").toString();
 			
 	
 		
@@ -390,7 +425,8 @@ void RepositoryDialog::handleInformation()
 				   "Seed:         " + seed + "\n" + 
 				   "Signature:    " + signature + "\n" +
 				   "Checksum:     " + checksum + "\n" + 
-				   "Size:         " + size + "\n";
+				   "Size:         " + size + "\n" + 
+				   "Tags:         " + tags + "\n";
 			   
 	QMessageBox msgBoxInformation;
 	//msgBoxInformation.setStyleSheet("QMessageBox { font-family: monospace; }");

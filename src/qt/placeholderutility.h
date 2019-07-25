@@ -27,7 +27,7 @@ class PlaceholderUtility {
 		
 		QString artifactDetailURL = "http://explore.placeh.io:8080/details/";
 		QString artifactSeedAnnounceURL = "http://explore.placeh.io:8080/raw/";
-		QString seedListURL = "http://explore.placeh.io:8080/repository/list.json";
+		QString seedListURL = "http://explore.placeh.io:8080/repository/";
 		QString repositoryPath = "C:/repository";
 		QString repositoryListFile = "C:/repository/list.json";
 		QString aria2cPath = "C:/Progra~2/Placeholders";
@@ -59,6 +59,7 @@ class PlaceholderUtility {
 		QString getContentTypeByExtension(QString fileName);
 		bool isMachineConfiguredForVirtualBox();
 		void updateList();
+		void updateList(QString criteria);
 		void seed(QString artifact);
 		void seedRepository();
 		int getNumberArtifacts();

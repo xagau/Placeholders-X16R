@@ -208,6 +208,16 @@ void DeployVMDialog::createHorizontalGroupBox()
 	description->setPlaceholderText("Add a useful description for your artifact");
 	layoutBottom->addWidget(description);
 
+	QLabel* tagsLabel = new QLabel(tr("Tags"));	
+
+	layoutBottom->addWidget(tagsLabel);
+	tags->setToolTip("The tags will help users sort the repository based on user input. Seperate by comma.");
+	tags->setPlaceholderText("Add useful tags/keywords to describe your comments. ");
+	tags->setMaximumWidth(80);
+	tags->setFixedWidth(200);
+	layoutBottom->addWidget(tags);
+
+	
 	QLabel* bountyLabel = new QLabel(tr("Purchase Price (PHL)"));
 	layoutBottom->addWidget(bountyLabel);
 
@@ -261,6 +271,8 @@ void DeployVMDialog::clearAll()
 		fileInformation->setText("");
 		signature->setText("");
 		checksum->setText("");
+		tags->setText("");
+		
 		description->setText("");
 		deployToNetworkButton->setEnabled(false);
 	} catch(...) { }
@@ -401,6 +413,17 @@ void DeployVMDialog::deployToNetwork()
 		return;
 	}
 	
+	
+	if( tags->text().trimmed().isEmpty() ) { 
+		console("WARNING: NO TAGS!!!");
+		console(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+		QMessageBox msgBoxC;
+		msgBoxC.setText("Please enter a few helpful tags/keywords seperated by commas.");
+		msgBoxC.exec();	
+		return;
+	}
+	
+	
 	if( artifact->text().trimmed().isEmpty()) { 
 		QMessageBox msgBoxC;
 		msgBoxC.setText("No Artifact!");
@@ -467,6 +490,7 @@ void DeployVMDialog::deployToNetwork()
 	query.addQueryItem("artifact", artifact->text());
 	query.addQueryItem("address", artifact->text());
 	query.addQueryItem("bounty", bounty->text());
+	query.addQueryItem("tags", tags->text());
 	query.addQueryItem("description", description->text());
 	query.addQueryItem("data", "-=" + artifact->text() + "=- Created with 2.0.30.4d");
 	console("Setting network parameters...");

@@ -93,6 +93,7 @@ private:
 	QLineEdit* checksum = new QLineEdit();
 	QLineEdit* signature = new QLineEdit();
 	QLineEdit* description = new QLineEdit();
+	QLineEdit* tags = new QLineEdit();
 	QLineEdit* bounty = new QLineEdit();
 	QLineEdit* fileInformation = new QLineEdit();
 			
