@@ -54,6 +54,8 @@ PlaceholderUtility::PlaceholderUtility()
 		seedListURL = settings.value("seedListURL", "").toString();
 		artifactSeedAnnounceURL = settings.value("artifactSeedAnnounceURL", "").toString();
 		artifactDetailURL = settings.value("artifactDetailURL", "").toString();
+		artifactJson = settings.value("artifactJson", "").toString();
+		
 		userid = settings.value("userid", "").toString();
 		password = settings.value("password", "").toString();
 
@@ -110,6 +112,12 @@ bool PlaceholderUtility::isMachineConfiguredForVirtualBox()
 QString PlaceholderUtility::getArtifactDetailURL()
 {
 	return artifactDetailURL;
+}
+
+
+QString PlaceholderUtility::getArtifactJson()
+{
+	return artifactJson;
 }
 
 QString PlaceholderUtility::getVDIPath()

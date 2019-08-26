@@ -28,6 +28,7 @@ class PlaceholderUtility {
 		QString artifactDetailURL = "http://explore.placeh.io:8080/details/";
 		QString artifactSeedAnnounceURL = "http://explore.placeh.io:8080/raw/";
 		QString seedListURL = "http://explore.placeh.io:8080/repository/";
+		QString artifactJson = "http://explore.placeh.io:8080/artifact/";
 		QString repositoryPath = "C:/repository";
 		QString repositoryListFile = "C:/repository/list.json";
 		QString aria2cPath = "C:/Progra~2/Placeholders";
@@ -66,6 +67,7 @@ class PlaceholderUtility {
 		QString getPlaceholderPath();
 		QString getRepositoryListFile();
 		QString getArtifactDetailURL();
+		QString getArtifactJson();
 		QString getDeployEntryPointURL();
 		QString getVDIPath();
 		
