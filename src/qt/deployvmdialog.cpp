@@ -366,7 +366,7 @@ void DeployVMDialog::viewOnExplorer()
 	
 	//QString address = artifact->text();
 	PlaceholderUtility* pu = new PlaceholderUtility();
-	QString link = "http://explore.placeh.io:8080/artifact/" + address.trimmed() + ".json";
+	QString link = pu->getArtifactJson() + address.trimmed() + ".json";
 	QDesktopServices::openUrl(QUrl(link));
 	console("OK");
 }
