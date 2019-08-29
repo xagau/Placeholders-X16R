@@ -39,6 +39,7 @@ class PlaceholderUtility {
 		QString virtualBoxManage = "VBoxManage.exe";
 		QString virtualBoxPath = "C:/Progra~1/Oracle/VirtualBox/";
 		QString provideServiceEndPointURL = "https://www.placeh.io/ProvideServiceServlet";
+		QString registerServiceEndPointURL = "https://www.placeh.io/RegisterServiceServlet";
 		QString deployEntryPointURL = "http://explore.placeh.io:8080/deploy";
 		bool exists(const std::string& name);
 		
@@ -64,6 +65,7 @@ class PlaceholderUtility {
 		void seed(QString artifact);
 		void seedRepository();
 		int getNumberArtifacts();
+		QString getRegisterServiceEndPoint();
 		QString getPlaceholderPath();
 		QString getRepositoryListFile();
 		QString getArtifactDetailURL();

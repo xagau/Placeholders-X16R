@@ -55,6 +55,7 @@ PlaceholderUtility::PlaceholderUtility()
 		artifactSeedAnnounceURL = settings.value("artifactSeedAnnounceURL", "").toString();
 		artifactDetailURL = settings.value("artifactDetailURL", "").toString();
 		artifactJson = settings.value("artifactJson", "").toString();
+		registerServiceEndPoint = settings.value("registerServiceEndPoint", "").toString();
 		
 		userid = settings.value("userid", "").toString();
 		password = settings.value("password", "").toString();
@@ -118,6 +119,11 @@ QString PlaceholderUtility::getArtifactDetailURL()
 QString PlaceholderUtility::getArtifactJson()
 {
 	return artifactJson;
+}
+
+QString PlaceholderUtility::getgetRegisterServiceEndPoint()
+{
+	return registerServiceEndPoint;
 }
 
 QString PlaceholderUtility::getVDIPath()
