@@ -8,6 +8,7 @@
 
 #include <functional>
 #include <QSplashScreen>
+#include <QNetworkAccessManager>
 
 class CWallet;
 class NetworkStyle;
@@ -53,6 +54,7 @@ private:
 	QString curMessage;
     QColor curColor;
     int curAlignment;
+	QNetworkAccessManager networkManager;
 
     QList<CWallet*> connectedWallets;
 };

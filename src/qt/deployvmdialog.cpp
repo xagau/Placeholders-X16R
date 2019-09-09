@@ -279,7 +279,6 @@ void DeployVMDialog::clearAll()
 	
 }
 
-
 void DeployVMDialog::generateNewAddress()
 {
 	try { 
@@ -310,7 +309,7 @@ void DeployVMDialog::selectFile()
 	try { 
 		fileName = QFileDialog::getOpenFileName(this, ("Open File"),
 													  "/home",
-													  ("Artifact (*.png *.gif *.jpg *.gpg *.pgp *.torrent *.txt *.zip *.html *.xml *.htm *.mov *.mpeg *.mp3 *.js *.pdf *.vdi *.json)"));
+													  ("Artifact (*.png *.gif *.jpg *.gpg *.pgp *.torrent *.txt *.zip *.html *.xml *.htm *.mov *.mpeg *.mp3 *.js *.pdf *.vdi *.json *.jar)"));
 													  
 		QFile *file = new QFile(fileName);
 		if( file->size() > 2000000 ) { 

@@ -24,6 +24,7 @@
 #include "wallet/wallet.h"
 #endif
 
+#include <QNetworkInterface>
 #include <QMessageBox>
 #include <QDebug>
 #include <QApplication>
@@ -67,7 +68,6 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
     QSize splashSize(598,342);
     pixmap = QPixmap(splashSize);
 	
-	//QPixmap pixmap(":/media/splash.png");
 
 	qDebug() << "Starting QT C:" ;
 
@@ -179,7 +179,11 @@ SplashScreen::SplashScreen(Qt::WindowFlags f, const NetworkStyle *networkStyle) 
 		PlaceholderUtility* pu = new PlaceholderUtility();
 		pu->updateList();
 	
-	} catch(...) { } 
+	} catch(...) { 
+	
+	} 
+	
+
 
 }
 

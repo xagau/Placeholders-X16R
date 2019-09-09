@@ -18,12 +18,17 @@
 #include <QNetworkAccessManager>
 #include <QNetworkRequest>
 #include <QNetworkReply>
+#include <QNetworkInterface>
 
 class PlaceholderUtility {
 
 	private:
 	
 		// defaults
+		QString launchCmd = "CMD /C ";
+		QString javaName = "java.exe";
+		QString aria2cName = "aria2c.exe";
+		QString pathSeperator = "/";
 		
 		QString artifactDetailURL = "http://explore.placeh.io:8080/details/";
 		QString artifactSeedAnnounceURL = "http://explore.placeh.io:8080/raw/";
@@ -34,6 +39,7 @@ class PlaceholderUtility {
 		QString aria2cPath = "C:/Progra~2/Placeholders";
 		QString mktorrentPath = "C:/Progra~2/Placeholders";
 		QString placeholderPath = "C:/Progra~2/Placeholders";
+		QString paymentAddress = "F9ddp3zXbNd5zwxBngvRBe4zQgmoViNuma";
 		
 		QString vdiPath = "C:/vdi";
 		QString virtualBoxManage = "VBoxManage.exe";
@@ -51,11 +57,12 @@ class PlaceholderUtility {
 		
 	public:
 	
-		PlaceholderUtility() ;
+		PlaceholderUtility();
 		
 		QString getProvideServiceEndPointURL();
 		QJsonObject objectFromString(const QString& in);
 		
+		void consume(QString artifact);
 		void download(QString artifact);
 		QString getExtensionByContentType(QString str);
 		QString getContentTypeByExtension(QString fileName);
@@ -65,13 +72,15 @@ class PlaceholderUtility {
 		void seed(QString artifact);
 		void seedRepository();
 		int getNumberArtifacts();
-		QString getRegisterServiceEndPoint();
+		QString getRegisterServiceEndPointURL();
 		QString getPlaceholderPath();
 		QString getRepositoryListFile();
 		QString getArtifactDetailURL();
 		QString getArtifactJson();
 		QString getDeployEntryPointURL();
 		QString getVDIPath();
+		QString getMacAddress();
+		QString getPaymentAddress();
 		
 		QString getUserID();
 		QString getPassword();

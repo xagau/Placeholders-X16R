@@ -7,7 +7,7 @@ void PlaceholderUtility::updateList()
 			std::remove(repositoryListFile.toUtf8().constData());
 	
 			QProcess grabListProcess;
-			QString grabList =  aria2cPath + "/aria2c.exe --allow-overwrite --conditional-get=true --out=list.json --dir=" + repositoryPath + " " + seedListURL;
+			QString grabList =  aria2cPath + pathSeperator + aria2cName + " --allow-overwrite --conditional-get=true --out=list.json --dir=" + repositoryPath + " " + seedListURL;
 			grabListProcess.start(grabList);
 			grabListProcess.waitForFinished();
 			grabListProcess.close();
@@ -26,7 +26,7 @@ void PlaceholderUtility::updateList(QString criteria)
 			std::remove(repositoryListFile.toUtf8().constData());
 	
 			QProcess grabListProcess;
-			QString grabList =  aria2cPath + "/aria2c.exe --allow-overwrite --conditional-get=true --out=list.json --dir=" + repositoryPath + " " + seedListURL + "tags:" + criteria;
+			QString grabList =  aria2cPath + pathSeperator + aria2cName + " --allow-overwrite --conditional-get=true --out=list.json --dir=" + repositoryPath + " " + seedListURL + "tags:" + criteria;
 			grabListProcess.start(grabList);
 			grabListProcess.waitForFinished();
 			grabListProcess.close();
@@ -35,8 +35,24 @@ void PlaceholderUtility::updateList(QString criteria)
 			QMessageBox msgBoxError;
 			msgBoxError.setText("An error was encountered trying to update the Placeholder Artifact list for synchronization");
 			msgBoxError.exec();
-		}
-	
+		}	
+}
+
+void PlaceholderUtility::consume(QString artifact)
+{
+
+		try { 
+			QProcess task;
+			QString executionPath =  launchCmd + javaName + " -jar " + repositoryPath + pathSeperator + artifact + ".jar";
+			task.start(executionPath);
+			task.waitForFinished();
+			task.close();
+
+		} catch(...) { 
+			QMessageBox msgBoxError;
+			msgBoxError.setText("An error was encountered trying to process Placeholder Artifact task");
+			msgBoxError.exec();
+		}	
 }
 
 PlaceholderUtility::PlaceholderUtility() 
@@ -55,7 +71,13 @@ PlaceholderUtility::PlaceholderUtility()
 		artifactSeedAnnounceURL = settings.value("artifactSeedAnnounceURL", "").toString();
 		artifactDetailURL = settings.value("artifactDetailURL", "").toString();
 		artifactJson = settings.value("artifactJson", "").toString();
-		registerServiceEndPoint = settings.value("registerServiceEndPoint", "").toString();
+		registerServiceEndPointURL = settings.value("registerServiceEndPointURL", "").toString();
+		paymentAddress = settings.value("paymentAddress", "").toString();
+		aria2cName = settings.value("aria2cName", "").toString();
+		javaName = settings.value("javaName", "").toString();
+		pathSeperator = settings.value("pathSeperator", "").toString();
+		launchCmd = settings.value("launchCmd","").toString();
+		
 		
 		userid = settings.value("userid", "").toString();
 		password = settings.value("password", "").toString();
@@ -67,6 +89,20 @@ PlaceholderUtility::PlaceholderUtility()
 	}
 	
 }
+
+QString PlaceholderUtility::getMacAddress()
+{
+	QList<QNetworkInterface> list =	QNetworkInterface::allInterfaces();
+	for(int i = 0; i < list.count(); i++ ) { 
+		
+		QNetworkInterface netInterface = list.at(i);
+        // Return only the first non-loopback MAC Address
+        if (!(netInterface.flags() & QNetworkInterface::IsLoopBack))
+            return netInterface.hardwareAddress();
+    }
+    return QString();
+}
+
 
 QString PlaceholderUtility::getRepositoryListFile()
 {
@@ -121,9 +157,14 @@ QString PlaceholderUtility::getArtifactJson()
 	return artifactJson;
 }
 
-QString PlaceholderUtility::getgetRegisterServiceEndPoint()
+QString PlaceholderUtility::getPaymentAddress()
 {
-	return registerServiceEndPoint;
+	return paymentAddress;
+}
+
+QString PlaceholderUtility::getRegisterServiceEndPointURL()
+{
+	return registerServiceEndPointURL;
 }
 
 QString PlaceholderUtility::getVDIPath()
@@ -171,6 +212,9 @@ QString PlaceholderUtility::getContentTypeByExtension(QString fileName)
 		else if( fileName.endsWith(".zip", Qt::CaseInsensitive) ) { 
 			contentMimeType = "application/zip";								
 		}
+		else if( fileName.endsWith(".jar", Qt::CaseInsensitive) ) { 
+			contentMimeType = "application/java-archive";								
+		}
 		else if( fileName.endsWith(".html", Qt::CaseInsensitive) || fileName.endsWith(".htm", Qt::CaseInsensitive) ) { 
 			contentMimeType = "text/html";								
 		}
@@ -211,43 +255,32 @@ QString PlaceholderUtility::getExtensionByContentType(QString str)
 {
 	if( str == "application/x-bittorrent" ) { 
 		return ".torrent";
-	}
-	else if( str == "image/jpeg" ) { 
+	} else if( str == "image/jpeg" ) { 
 		return ".jpg";
-	}
-	else if( str == "application/pgp-encrypted" ) { 
+	} else if( str == "application/pgp-encrypted" ) { 
 		return ".gpg";
-	}
-	else if( str == "image/gif" ) { 
+	} else if( str == "image/gif" ) { 
 		return ".gif";
-	}
-	else if( str == "image/png" ) { 
+	} else if( str == "image/png" ) { 
 		return ".png";
-	}
-	else if( str == "application/pdf" ) { 
+	} else if( str == "application/pdf" ) { 
 		return ".pdf";
-	}
-	else if( str == "audio/mpeg" ) { 
+	} else if( str == "audio/mpeg" ) { 
 		return ".mp3";
-	}
-	else if( str == "text/html" ) { 
+	} else if( str == "text/html" ) { 
 		return ".html";
-	}
-	else if( str == "text/plain" ) { 
+	} else if( str == "text/plain" ) { 
 		return ".txt";
-	}
-	else if( str == "text/xml" ) { 
+	} else if( str == "text/xml" ) { 
 		return ".xml";
-		
 	} else if( str == "text/javascript" ) { 
 		return ".js";
-		
 	} else if( str == "application/json" ) { 
 		return ".json";
-		
 	} else if( str == "application/x-virtualbox-vdi" ) { 
 		return ".vdi";
-		
+	} else if( str == "application/java-archive" ) { 
+		return ".jar";
 	} 
 	
 	return ".artifact";
@@ -288,7 +321,7 @@ inline bool PlaceholderUtility::exists(const std::string& name) {
 void PlaceholderUtility::download(QString artifact)
 {
 		QProcess process;
-		QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=1.0 --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
+		QString torrentFile =  aria2cPath + pathSeperator + aria2cName + " --allow-overwrite --seed-ratio=1.0 --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
 		process.start(torrentFile);
 		process.waitForFinished();
 		process.close();
@@ -299,7 +332,7 @@ void PlaceholderUtility::seed(QString artifact)
 	try { 
 		QString strRatio = QString::number(0.25);
 		QProcess process;
-		QString torrentFile =  aria2cPath + "/aria2c.exe --allow-overwrite --seed-ratio=" + strRatio + " --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
+		QString torrentFile =  aria2cPath + pathSeperator + aria2cName + " --allow-overwrite --seed-ratio=" + strRatio + " --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
 		process.start(torrentFile);
 		process.waitForFinished();
 		process.close();	

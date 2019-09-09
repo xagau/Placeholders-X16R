@@ -98,6 +98,9 @@ uint64_t THE_SHIGGIDY_DROP = 4;
 uint64_t THE_BULLISH_DPMIDD_PLATEAU = 3;
 uint64_t THE_BREWHAUS_BREAKAWAY = 129600;
 uint64_t THE_CRUNCHYCAT = THE_BREWHAUS_BREAKAWAY * 2;
+uint64_t THE_SILVER_SLOPE = 388800;
+uint64_t THE_LAST_DECLINE = 518400;
+
 uint64_t THE_TAIL_EMISSION = THE_CRUNCHYCAT * 4;
 
 uint64_t THE_XAGAU_END = 48592440; // ~90 years from 2019-01-24
@@ -1225,10 +1228,17 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
 		nSubsidy = 1 * COIN;
 	}
 	
-	
-	if( nHeight >= (THE_TAIL_EMISSION) ) { 
-		nSubsidy = 0.1235  * COIN;
+	if( nHeight >= THE_SILVER_SLOPE ) { 
+		nSubsidy = 0.6 * COIN;
 	}
+	
+	//if( nHeight >= THE_LAST_DECLINE ) { 
+	//	nSubsidy = 0.3 * COIN;
+	//}
+	
+	//if( nHeight >= (THE_TAIL_EMISSION) ) { 
+	//	nSubsidy = 0.1235  * COIN;
+	//}
 	
 	if( nHeight > THE_XAGAU_END ) {
 		nSubsidy = 0;
