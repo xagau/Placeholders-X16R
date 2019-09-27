@@ -95,21 +95,28 @@ bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
 	
 	/////////////////////////////////////////////
 	// PHL
+	bool f = true;
 	
 		try { 
 		
-			//QMessageBox msgBoxA;
-			//msgBoxA.setText("A");
-			//msgBoxA.exec();
+			if( f ) {
+				QThread::usleep(100);				
+				//QMessageBox msgBoxA;
+				//msgBoxA.setText("A");
+				//msgBoxA.exec();
+			}
 			
 			PlaceholderUtility* pu = new PlaceholderUtility();
 			QString registerEndPoint = pu->getRegisterServiceEndPointURL();
 			
 			QString payAddress = "";
 			
-			//QMessageBox msgBoxB;
-			//msgBoxB.setText("B");
-			//msgBoxB.exec();
+			if( f ) { 
+				QThread::usleep(100);				
+				//QMessageBox msgBoxB;
+				//msgBoxB.setText("B");
+				//msgBoxB.exec();
+			}
 			
 			try { 
 				CWallet *pwallet = walletModel->getWallet();
@@ -119,10 +126,13 @@ bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
 					
 				}
 				
-				//QMessageBox msgBoxC;
-				//msgBoxC.setText("C");
-				//msgBoxC.exec();
-
+				if( f ) { 
+					QThread::usleep(100);				
+					//QMessageBox msgBoxC;
+					//msgBoxC.setText("C");
+					//msgBoxC.exec();
+				}
+				
 				
 				CKeyID id = newKey.GetID();
 				CPlacehAddress address(id);
@@ -132,15 +142,20 @@ bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
 					//cout << "invalid" << endl;
 				}
 
+				payAddress = QString::fromStdString(address.ToString());
+			} catch(...) {
+				QMessageBox msgBoxE;
+				msgBoxE.setText("Payout address invalid");
+				msgBoxE.exec();
+			}  
+
+
+			if( f ) { 
+				QThread::usleep(100);				
 				//QMessageBox msgBoxD;
 				//msgBoxD.setText("D");
 				//msgBoxD.exec();
-
-
-				payAddress = QString::fromStdString(address.ToString());
-			} catch(...) {}  
-
-
+			}
 
 			QString id (pu->getMacAddress());
 			
@@ -152,11 +167,42 @@ bool WalletFrame::addWallet(const QString& name, WalletModel *walletModel)
 			QNetworkAccessManager networkManager;
 
 			QNetworkReply* currentReply = networkManager.get(request);
-			qDebug() << currentReply->readAll();
-		
-			//QMessageBox msgBoxE;
-			//msgBoxE.setText("E");
-			//msgBoxE.exec();
+			
+			/*
+			connect(currentReply, SIGNAL(&QNetworkReply::finished), [=]() {
+
+				if(currentReply->error() == QNetworkReply::NoError)
+				{
+					currentReply->readAll();
+					// do something with the data...
+					//QMessageBox msgBoxE;
+					//msgBoxE.setText("Registration completed");
+					//msgBoxE.exec();
+				}
+				else // handle error
+				{
+					QMessageBox msgBoxE;
+					msgBoxE.setText(currentReply->errorString());
+					msgBoxE.exec();
+				  //qDebug(currentReply->errorString());
+				}
+			});
+			*/
+			//connect(networkManager, SIGNAL(finished(currentReply)), this, SLOT(replyFinished(currentReply)));
+
+			QEventLoop loop;
+			connect(currentReply, SIGNAL(finished()), &loop, SLOT(quit()));
+			loop.exec();
+
+			currentReply->readAll();
+			currentReply->deleteLater();
+			
+			if( f ) { 
+				QThread::usleep(300);				
+				//QMessageBox msgBoxE;
+				//msgBoxE.setText("E");
+				//msgBoxE.exec();
+			}
 		
 		} catch(...) { 
 			QMessageBox msgBoxError;
