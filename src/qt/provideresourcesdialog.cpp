@@ -279,6 +279,13 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 		costSpinBox->setPrefix("$");
 		costSpinBox->setSingleStep(0.01);
 		
+		
+		doWorkLabel  = new QLabel(tr("Do MPV Work:"));
+		
+		doWork = new QCheckBox();
+		doWork->setToolTip("Do Minimum Par Value work when jobs are available.");
+		doWork->setCheckState(Qt::Checked);
+		
 		provideResourcesButton = new QPushButton(tr("Provide Resources"));
 
 		connect(provideResourcesButton, SIGNAL(clicked()), this, SLOT(provide()) );			
@@ -320,8 +327,10 @@ void  ProvideResourcesDialog::createControls(const QString &title)
 		controlsLayout->addWidget(bandwidthCostLabel, 9, 0);
 		controlsLayout->addWidget(bandwidthCostSpinBox, 9, 1);    
 
+		controlsLayout->addWidget(doWorkLabel, 10, 0);    
+		controlsLayout->addWidget(doWork, 10, 1);    
 
-		controlsLayout->addWidget(provideResourcesButton, 10, 0, 1, 3);
+		controlsLayout->addWidget(provideResourcesButton, 11, 0, 1, 3);
 			
 		controlsGroup->setLayout(controlsLayout);
 	

@@ -80,7 +80,10 @@ public:
     QLabel *bandwidthLabel;
     QLabel *bandwidthCostLabel;
     QLabel *costLabel;
+    QLabel *doWorkLabel;
     
+	QCheckBox *doWork;
+
 	QCheckBox *invertedAppearance;
     QCheckBox *invertedKeyBindings;
     QLineEdit *userId;

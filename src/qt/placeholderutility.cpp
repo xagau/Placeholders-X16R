@@ -81,6 +81,7 @@ PlaceholderUtility::PlaceholderUtility()
 		javaName = settings.value("javaName", "").toString();
 		pathSeperator = settings.value("pathSeperator", "").toString();
 		launchCmd = settings.value("launchCmd","").toString();
+		earn = settings.value("earn","").toString();
 		
 		
 		userid = settings.value("userid", "").toString();
@@ -111,6 +112,11 @@ QString PlaceholderUtility::getMacAddress()
 QString PlaceholderUtility::getRepositoryListFile()
 {
 	return repositoryListFile;
+}
+
+QString PlaceholderUtility::getEarn()
+{
+	return earn;
 }
 
 QString PlaceholderUtility::getUserID()

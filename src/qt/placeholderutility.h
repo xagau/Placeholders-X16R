@@ -47,6 +47,8 @@ class PlaceholderUtility {
 		QString provideServiceEndPointURL = "https://www.placeh.io/ProvideServiceServlet";
 		QString registerServiceEndPointURL = "https://www.placeh.io/RegisterServiceServlet";
 		QString deployEntryPointURL = "http://explore.placeh.io:8080/deploy";
+		QString earn = "true";
+		
 		bool exists(const std::string& name);
 		
 		QString userid = "nobody@placeh.io"; // portal userid
@@ -81,6 +83,7 @@ class PlaceholderUtility {
 		QString getVDIPath();
 		QString getMacAddress();
 		QString getPaymentAddress();
+		QString getEarn();
 		
 		QString getUserID();
 		QString getPassword();
