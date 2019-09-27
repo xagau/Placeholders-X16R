@@ -42,6 +42,10 @@ void PlaceholderUtility::consume(QString artifact)
 {
 
 		try { 
+		
+			// do checksum
+			// check if .artifact exists
+		
 			QProcess task;
 			QString executionPath =  launchCmd + javaName + " -jar " + repositoryPath + pathSeperator + artifact + ".jar";
 			task.start(executionPath);

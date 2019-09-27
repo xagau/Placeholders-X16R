@@ -89,7 +89,10 @@ void RepositoryDialog::refresh()
 	
 	PlaceholderUtility* pu = new PlaceholderUtility();
 	if( criteria.trimmed().isEmpty() ){ 
-		pu->updateList(); // for now, just return all.
+		tableWidget->setRowCount(0);
+		// if nothing specified, return and do nothing.
+		//pu->updateList(); // for now - just return anything under category none.
+		return;
 	} else {
 		pu->updateList(criteria);	
 	}
