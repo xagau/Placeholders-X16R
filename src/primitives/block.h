@@ -10,6 +10,7 @@
 #include "primitives/transaction.h"
 #include "serialize.h"
 #include "uint256.h"
+#include "hash.h"
 
 /** Nodes collect new transactions into a block, hash them into a hash tree,
  * and scan through nonce values to make the block's hash satisfy proof-of-work
@@ -62,6 +63,7 @@ public:
     }
 
     uint256 GetHash() const;
+	uint256 GetX16RV3Hash() const;
 
     int64_t GetBlockTime() const
     {

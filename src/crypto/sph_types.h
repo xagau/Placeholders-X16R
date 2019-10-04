@@ -1232,9 +1232,7 @@ sph_bswap64(sph_u64 x)
  * to generate proper opcodes for endianness swapping with the pure C
  * implementation below.
  *
-
 #elif SPH_I386_MSVC && !SPH_NO_ASM
-
 static __inline sph_u32 __declspec(naked) __fastcall
 sph_bswap32(sph_u32 x)
 {
@@ -1244,18 +1242,14 @@ sph_bswap32(sph_u32 x)
 		ret
 	}
 }
-
 #if SPH_64
-
 static SPH_INLINE sph_u64
 sph_bswap64(sph_u64 x)
 {
 	return ((sph_u64)sph_bswap32((sph_u32)x) << 32)
 		| (sph_u64)sph_bswap32((sph_u32)(x >> 32));
 }
-
 #endif
-
  *
  * [end of disabled code]
  */
@@ -1578,7 +1572,6 @@ sph_dec32le(const void *src)
  *
 #elif (SPH_PPC32_GCC || SPH_PPC64_GCC) && !SPH_NO_ASM
 		sph_u32 tmp;
-
 		__asm__ __volatile__ (
 			"lwbrx %0,0,%1" : "=r" (tmp) : "r" (src));
 		return tmp;
@@ -1627,7 +1620,6 @@ sph_dec32le_aligned(const void *src)
  *
 #elif (SPH_PPC32_GCC || SPH_PPC64_GCC) && !SPH_NO_ASM
 	sph_u32 tmp;
-
 	__asm__ __volatile__ ("lwbrx %0,0,%1" : "=r" (tmp) : "r" (src));
 	return tmp;
  */
@@ -1890,7 +1882,6 @@ sph_dec64le(const void *src)
 				(const char *)src + 4) << 32);
 #elif SPH_PPC64_GCC && !SPH_NO_ASM
 		sph_u64 tmp;
-
 		__asm__ __volatile__ (
 			"ldbrx %0,0,%1" : "=r" (tmp) : "r" (src));
 		return tmp;
@@ -1950,7 +1941,6 @@ sph_dec64le_aligned(const void *src)
 		| ((sph_u64)sph_dec32le_aligned((const char *)src + 4) << 32);
 #elif SPH_PPC64_GCC && !SPH_NO_ASM
 	sph_u64 tmp;
-
 	__asm__ __volatile__ ("ldbrx %0,0,%1" : "=r" (tmp) : "r" (src));
 	return tmp;
  */

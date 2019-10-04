@@ -11,9 +11,20 @@
 #include "utilstrencodings.h"
 #include "crypto/common.h"
 
+static const uint32_t MAINNET_X16RV3ACTIVATIONTIME = 1885833276;
+
 uint256 CBlockHeader::GetHash() const
 {
+	if (nTime >= MAINNET_X16RV3ACTIVATIONTIME ) {
+        return HashX16RV3(BEGIN(nVersion), END(nNonce), hashPrevBlock);
+    }
+	
     return HashX16R(BEGIN(nVersion), END(nNonce), hashPrevBlock);
+}
+
+uint256 CBlockHeader::GetX16RV3Hash() const
+{
+    return HashX16RV3(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }
 
 std::string CBlock::ToString() const

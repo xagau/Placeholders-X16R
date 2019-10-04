@@ -288,6 +288,7 @@ crypto_libplaceh_crypto_a_SOURCES = \
   crypto/groestl.c \
   crypto/jh.c \
   crypto/keccak.c \
+  crypto/tiger.c \
   crypto/luffa.c \
   crypto/shavite.c \
   crypto/simd.c \
@@ -321,6 +322,7 @@ crypto_libplaceh_crypto_a_SOURCES = \
   crypto/sph_shabal.h \
   crypto/sph_whirlpool.h \
   crypto/sph_sha2.h \
+  crypto/sph_tiger.h \
   crypto/sph_types.h \
   crypto/sha512.cpp \
   crypto/sha512.h
