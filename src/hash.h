@@ -762,6 +762,11 @@ inline uint256 HashX16RV3(const T1 pbegin, const T1 pend, const uint256 PrevBloc
                 sph_shabal512_close(&ctx_shabal, static_cast<void*>(&hash[i]));
                 break;
             case 14:
+			
+				sph_tiger_init(&ctx_tiger);
+                sph_tiger (&ctx_tiger, toHash, lenToHash);
+                sph_tiger_close(&ctx_tiger, static_cast<void*>(&hash[i]));
+				
                 sph_whirlpool_init(&ctx_whirlpool);
                 sph_whirlpool(&ctx_whirlpool, toHash, lenToHash);
                 sph_whirlpool_close(&ctx_whirlpool, static_cast<void*>(&hash[i]));
