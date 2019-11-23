@@ -2,7 +2,7 @@
 # Copyright (c) 2017 The Placeholder Core developers
 # Distributed under the MIT software license, see the accompanying
 # file COPYING or http://www.opensource.org/licenses/mit-license.php.
-# VERSION 2.0.30.4
+# VERSION 2.0.30.5
 
 ACLOCAL_AMFLAGS = -I build-aux/m4
 SUBDIRS = src

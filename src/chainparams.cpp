@@ -172,14 +172,16 @@ public:
         //assert(consensus.hashGenesisBlock == uint256S("c5462ea652cd629985125ae0ecdc2b2738ded81a8873fd8bef119001014cb7dd"));
         //assert(genesis.hashMerkleRoot == uint256S("0xe942286f13435cf24f6cdcfd92f49bc5e2a25b8d075760d7f72140f281942fbc"));
                                                  //e942286f13435cf24f6cdcfd92f49bc5e2a25b8d075760d7f72140f281942fbc
-        vSeeds.emplace_back("8.9.4.194", false);
+        //vSeeds.emplace_back("8.9.4.194", false); // stale unresponsive node
         vSeeds.emplace_back("206.223.171.38", false);
         vSeeds.emplace_back("104.248.191.27", false);
         vSeeds.emplace_back("seed.placeh.io", false);
 		vSeeds.emplace_back("104.248.177.232", false);
         vSeeds.emplace_back("23.254.211.237", false);
+		vSeeds.emplace_back("104.168.162.121", false);
+        vSeeds.emplace_back("104.168.149.150", false);
 		
-		
+	
 		
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,35);
