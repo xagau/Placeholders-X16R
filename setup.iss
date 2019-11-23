@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Placeholders"
-#define MyAppVersion "2.0.30.4XQ"
+#define MyAppVersion "2.0.30.5B"
 #define MyAppPublisher "placeh.io"
 #define MyAppURL "https://www.placeh.io"
 #define MyAppExeName "placeh-qt.exe"
@@ -21,7 +21,7 @@ AppSupportURL={#MyAppURL}
 AppUpdatesURL={#MyAppURL}
 DefaultDirName={pf}\{#MyAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename=setup-placeh-rc2.0.30.4
+OutputBaseFilename=setup-placeh-rc2.0.30.5
 Compression=lzma
 SolidCompression=yes
 
@@ -29,6 +29,7 @@ SolidCompression=yes
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
+
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
