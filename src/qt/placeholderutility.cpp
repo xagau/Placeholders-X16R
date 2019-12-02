@@ -330,11 +330,15 @@ inline bool PlaceholderUtility::exists(const std::string& name) {
 
 void PlaceholderUtility::download(QString artifact)
 {
+	try { 
 		QProcess process;
 		QString torrentFile =  aria2cPath + pathSeperator + aria2cName + " --allow-overwrite --seed-ratio=1.0 --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
 		process.start(torrentFile);
 		process.waitForFinished();
 		process.close();
+	} catch(...) { 
+		
+	}
 }
 
 void PlaceholderUtility::seed(QString artifact)
@@ -354,48 +358,56 @@ void PlaceholderUtility::seed(QString artifact)
 
 void PlaceholderUtility::seedRepository()
 {
-	std::string line;
-	std::string cd;
-    cd = repositoryListFile.toUtf8().constData();
-	
-	
-	
-	std::ifstream myfile (cd);
-	if (myfile.is_open())
-	{
-		while ( std::getline (myfile,line) )
+	try { 
+		std::string line;
+		std::string cd;
+		cd = repositoryListFile.toUtf8().constData();
+		
+		
+		
+		std::ifstream myfile (cd);
+		if (myfile.is_open())
 		{
-			try { 
-				QString q = QString::fromLocal8Bit(line.c_str());
-				seed(q);
-			} catch(...) { } 
+			while ( std::getline (myfile,line) )
+			{
+				try { 
+					QString q = QString::fromLocal8Bit(line.c_str());
+					seed(q);
+				} catch(...) { } 
+			}
+			myfile.close();
 		}
-		myfile.close();
+		else {
+			QMessageBox msgBoxError;
+			msgBoxError.setText("Unable to begin seeding from repository file list.json in {" + repositoryListFile + "}");
+			msgBoxError.exec();
+		}		
+	} catch(...) { 
+	
 	}
-	else {
-		QMessageBox msgBoxError;
-		msgBoxError.setText("Unable to begin seeding from repository file list.json in {" + repositoryListFile + "}");
-		msgBoxError.exec();
-	}		
 }
 
 int PlaceholderUtility::getNumberArtifacts()
 {
 	int num = 0;
-	std::string fcline;
-	std::string cd;
-    cd = repositoryListFile.toUtf8().constData();
-	
-    std::ifstream lineCountFile (cd);
+	try { 
+		std::string fcline;
+		std::string cd;
+		cd = repositoryListFile.toUtf8().constData();
+		
+		std::ifstream lineCountFile (cd);
 
+		
+		if(lineCountFile.is_open()){
+			while(!lineCountFile.eof()){
+				std::getline(lineCountFile,fcline);
+				num++;
+			}
+			lineCountFile.close();
+		}
+	} catch(...) { 
 	
-    if(lineCountFile.is_open()){
-        while(!lineCountFile.eof()){
-            std::getline(lineCountFile,fcline);
-            num++;
-        }
-        lineCountFile.close();
-    }
+	}
 	
 	return num;
 }
