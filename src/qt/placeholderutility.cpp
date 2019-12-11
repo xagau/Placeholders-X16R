@@ -38,6 +38,24 @@ void PlaceholderUtility::updateList(QString criteria)
 		}	
 }
 
+void PlaceholderUtility::updateRecentList() 
+{
+		try { 
+			std::remove(repositoryListFile.toUtf8().constData());
+	
+			QProcess grabListProcess;
+			QString grabList =  aria2cPath + pathSeperator + aria2cName + " --allow-overwrite --conditional-get=true --out=list.json --dir=" + repositoryPath + " " + seedListURL + "tags:recent";
+			grabListProcess.start(grabList);
+			grabListProcess.waitForFinished();
+			grabListProcess.close();
+
+		} catch(...) { 
+			QMessageBox msgBoxError;
+			msgBoxError.setText("An error was encountered trying to update the Placeholder Artifact list for synchronization");
+			msgBoxError.exec();
+		}	
+}
+
 void PlaceholderUtility::consume(QString artifact)
 {
 

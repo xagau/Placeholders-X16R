@@ -89,9 +89,9 @@ void RepositoryDialog::refresh()
 	
 	PlaceholderUtility* pu = new PlaceholderUtility();
 	if( criteria.trimmed().isEmpty() ){ 
-		tableWidget->setRowCount(0);
+		//tableWidget->setRowCount(0);
 		// if nothing specified, return and do nothing.
-		//pu->updateList(); // for now - just return anything under category none.
+		pu->updateRecentList(); // for now - just return anything recent stuff.
 		return;
 	} else {
 		pu->updateList(criteria);	
@@ -503,7 +503,7 @@ void RepositoryDialog::handleDownload()
 					
 				quint32 crc = crc32->calculateFromFile(fName);
 				
-				if( checksum.toUInt() != crc ) {
+				if( checksum.toUInt32() != crc ) {
 					//qDebug() << "File not open yet " << file.error();
 					 QCoreApplication::processEvents();
 					 QApplication::processEvents() ;

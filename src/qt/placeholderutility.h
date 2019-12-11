@@ -70,6 +70,7 @@ class PlaceholderUtility {
 		QString getContentTypeByExtension(QString fileName);
 		bool isMachineConfiguredForVirtualBox();
 		void updateList();
+		void updateRecentList();
 		void updateList(QString criteria);
 		void seed(QString artifact);
 		void seedRepository();
