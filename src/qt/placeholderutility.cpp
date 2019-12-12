@@ -350,10 +350,10 @@ void PlaceholderUtility::download(QString artifact)
 {
 	try { 
 		QProcess process;
-		QString torrentFile =  aria2cPath + pathSeperator + aria2cName + " --allow-overwrite --seed-ratio=1.0 --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
+		QString torrentFile =  aria2cPath + pathSeperator + aria2cName + " --allow-overwrite --seed-time=0 --out=" + artifact + ".artifact --dir=" + vdiPath + " " + artifactSeedAnnounceURL + artifact;
 		process.start(torrentFile);
 		process.waitForFinished();
-		process.close();
+		process.close();	
 	} catch(...) { 
 		
 	}

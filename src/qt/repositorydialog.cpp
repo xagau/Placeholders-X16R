@@ -92,7 +92,7 @@ void RepositoryDialog::refresh()
 		//tableWidget->setRowCount(0);
 		// if nothing specified, return and do nothing.
 		pu->updateRecentList(); // for now - just return anything recent stuff.
-		return;
+		
 	} else {
 		pu->updateList(criteria);	
 	}
@@ -440,12 +440,14 @@ void RepositoryDialog::handleInformation()
 	msgBoxInformation.exec();
 }
 
-
+bool started = false;
 
 void doDownload(QString artifact)
 {
+	started = true;
 	PlaceholderUtility* pu = new PlaceholderUtility();
 	pu->download(artifact);			
+	started = false;
 }
 
 void RepositoryDialog::handleDownload()
@@ -489,45 +491,66 @@ void RepositoryDialog::handleDownload()
 			msgBoxError.exec();		
 					
 			//PlaceholderUtility* pu = new PlaceholderUtility();
-			
+			//doDownload(artifactSelected);
 			std::thread t(doDownload, artifactSelected);
 			t.detach();
 			
 			//pu->download(artifactSelected);	
 		
-			
-			bool flag = true;
-			Crc32* crc32 = new Crc32();
-			QString fName = pu->getVDIPath() + "/" + artifactSelected + ".artifact";
-			while( flag ) { 
+			try { 
+				bool flag = true;
+				Crc32* crc32 = new Crc32();
+				QString fName = pu->getVDIPath() + "/" + artifactSelected + ".artifact";
+				while( flag ) { 
+						
+					quint32 crc = crc32->calculateFromFile(fName);
+					quint32 check = (quint32)checksum.toUInt();
+					if( check != crc ) {
+						//qDebug() << "File not open yet " << file.error();
+						 QCoreApplication::processEvents();
+						 QApplication::processEvents() ;
+					} else{
 					
-				quint32 crc = crc32->calculateFromFile(fName);
+						flag = false;
+						//file.close();
+						qDebug() << "File is open";
+					}
+
+					if( started == false ) { 
+						flag = false;
+					}
+							
+				}
 				
-				if( checksum.toUInt32() != crc ) {
-					//qDebug() << "File not open yet " << file.error();
-					 QCoreApplication::processEvents();
-					 QApplication::processEvents() ;
-				}else{
-					flag = false;
-					//file.close();
-					qDebug() << "File is open";
-				}			
-			}
+			} catch(...) { 
+				QMessageBox msgBoxErrorA;
+				msgBoxErrorA.setText("Checksum did not validate");
+				msgBoxErrorA.exec();		
+						
+			} 
 			
 					
-			QMessageBox msgBoxDone;
-			msgBoxDone.setText("Download Complete.");
-			msgBoxDone.exec();						
-					
-			QFile::rename(pu->getVDIPath() + "/" + artifactSelected + ".artifact", pu->getVDIPath() + "/" + artifactSelected + newExtension);
-					
-			QMessageBox::StandardButton newReply;
-			QString theNewTitle = "Open File?";
-			QString theNewQuestion = "Do you want to open:" + artifactSelected + newExtension + "?\n";
-			newReply = QMessageBox::question(this, theNewTitle,  theNewQuestion, QMessageBox::Yes|QMessageBox::No);
+			try { 
+				QMessageBox msgBoxDone;
+				msgBoxDone.setText("Download Complete.");
+				msgBoxDone.exec();						
+						
+				QFile::rename(pu->getVDIPath() + "/" + artifactSelected + ".artifact", pu->getVDIPath() + "/" + artifactSelected + newExtension);
+						
+				QMessageBox::StandardButton newReply;
+				QString theNewTitle = "Open File?";
+				QString theNewQuestion = "Do you want to open:" + artifactSelected + newExtension + "?\n";
+				newReply = QMessageBox::question(this, theNewTitle,  theNewQuestion, QMessageBox::Yes|QMessageBox::No);
+				
+				if (newReply == QMessageBox::Yes) {
+					QDesktopServices::openUrl(QUrl(pu->getVDIPath() + "/" + artifactSelected + newExtension));
+				}
 			
-			if (newReply == QMessageBox::Yes) {
-				QDesktopServices::openUrl(QUrl(pu->getVDIPath() + "/" + artifactSelected + newExtension));
+			} catch(...) { 
+				QMessageBox msgBoxErrorA;
+				msgBoxErrorA.setText("Renaming artifact / opening failed. Will open parent containing folder now.");
+				msgBoxErrorA.exec();
+				QDesktopServices::openUrl(QUrl(pu->getVDIPath()));
 			}
 			
 			
