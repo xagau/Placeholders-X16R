@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Placeholders"
-#define MyAppVersion "2.0.30.5K"
+#define MyAppVersion "2.0.30.5L"
 #define MyAppPublisher "placeh.io"
 #define MyAppURL "https://www.placeh.io"
 #define MyAppExeName "placeh-qt.exe"
