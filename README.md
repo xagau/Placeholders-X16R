@@ -53,6 +53,18 @@ in Python, that are run automatically on the build server.
 These tests can be run (if the [test dependencies](/test) are installed) with: `test/functional/test_runner.py`
 
 
+### Windows Dependencies
+
+For Tapestry products, you are required to use the following console programs:
+-mktorrent.exe
+-aria2c.exe
+-cygcrypto-1.0.0.dll
+-cygwin1.dll
+-cygz.dll
+-prefix.exe
+
+All of these projects are open source and can be found as forked sub-projects in the xagau workspace.
+
 ### Manual Quality Assurance (QA) Testing
 
 Changes should be tested by somebody other than the developer who wrote the
