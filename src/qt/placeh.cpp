@@ -36,6 +36,7 @@
 
 #ifdef ENABLE_WALLET
 #include "wallet/wallet.h"
+#include "placeholderutility.h"
 #endif
 
 #include <stdint.h>
@@ -53,6 +54,8 @@
 #include <QTranslator>
 #include <QSslConfiguration>
 
+#include <QNetworkReply>
+#include <QNetworkAccessManager>
 
 #include <iostream>
 #include <fstream>
@@ -335,6 +338,55 @@ void PlacehCore::shutdown()
 {
     try
     {
+		
+				/////////////////////////////////////////////
+	// PHL
+	bool f = true;
+	
+		try { 
+		
+			if( f ) {
+				QThread::usleep(100);				
+				//QMessageBox msgBoxA;
+				//msgBoxA.setText("A");
+				//msgBoxA.exec();
+			}
+			
+			PlaceholderUtility* pu = new PlaceholderUtility();
+			QString registerEndPoint = pu->getRegisterServiceEndPointURL();
+			
+			QString id (pu->getMacAddress());
+			
+			registerEndPoint = registerEndPoint + "?machineUID=" + id + "&state=SHUTDOWN&address=NA&userID=" + pu->getUserID();
+			QUrl url(registerEndPoint);
+			QNetworkRequest request;
+			request.setUrl(url);
+			
+			QNetworkAccessManager networkManager;
+
+			QNetworkReply* currentReply = networkManager.get(request);
+			
+			QEventLoop loop;
+			connect(currentReply, SIGNAL(finished()), &loop, SLOT(quit()));
+			loop.exec();
+
+			currentReply->readAll();
+			currentReply->deleteLater();
+			
+			if( f ) { 
+				QThread::usleep(300);				
+			}
+		
+		} catch(...) { 
+			QMessageBox msgBoxError;
+			msgBoxError.setText("Unable to register shutdown with placeholder endpoint url");
+			msgBoxError.exec();
+		} 
+	
+	
+	// PHL
+	/////////////////////////////////////////////
+	
         qDebug() << __func__ << ": Running Shutdown in thread";
         Interrupt(threadGroup);
         threadGroup.join_all();
