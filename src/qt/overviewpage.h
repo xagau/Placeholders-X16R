@@ -8,6 +8,7 @@
 
 #include "amount.h"
 
+#include <QtWidgets>
 #include <QSortFilterProxyModel>
 #include <QWidget>
 #include <memory>

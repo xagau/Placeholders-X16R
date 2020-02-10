@@ -10,6 +10,7 @@
 
 #include <QStackedWidget>
 #include <QApplication>
+#include <QtWidgets>
 
 class PlacehGUI;
 class ClientModel;

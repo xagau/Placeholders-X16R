@@ -8,6 +8,7 @@
 
 #include <QFrame>
 #include <QMap>
+#include <QtWidgets>
 
 class PlacehGUI;
 class ClientModel;

@@ -6,7 +6,9 @@
 #ifndef PLACEH_QT_SPLASHSCREEN_H
 #define PLACEH_QT_SPLASHSCREEN_H
 
+
 #include <functional>
+#include <QtWidgets>
 #include <QSplashScreen>
 #include <QNetworkAccessManager>
 

@@ -12,6 +12,7 @@
 
 #include "amount.h"
 
+#include <QtWidgets>
 #include <QLabel>
 #include <QMainWindow>
 #include <QMap>

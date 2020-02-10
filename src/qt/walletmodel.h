@@ -13,7 +13,7 @@
 
 #include <map>
 #include <vector>
-
+#include <QtWidgets>
 #include <QObject>
 
 class AddressTableModel;
