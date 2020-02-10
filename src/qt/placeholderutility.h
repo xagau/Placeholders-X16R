@@ -3,6 +3,7 @@
 #include "config/placeh-config.h"
 #endif
 
+#include <QtWidgets>
 #include <fstream>
 #include <iostream>
 #include <QProcess>

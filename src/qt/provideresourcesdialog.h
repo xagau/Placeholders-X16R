@@ -24,7 +24,7 @@
 #include <QComboBox>
 #include "slidersgroup.h"
 #include <QStackedWidget>
-
+#include <QtWidgets>
 
 class ClientModel;
 class PlatformStyle;
