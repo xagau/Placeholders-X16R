@@ -117,3 +117,7 @@ as they appear in the release `.zip` archive. This can be done in the following
 way. This will install to `c:\workspace\placeh`, for example:
 
     make install DESTDIR=/mnt/c/workspace/placeh
+    
+## patches
+You may need to download patches for zeromq manually.
+
