@@ -512,12 +512,14 @@ void RepositoryDialog::handleDownload()
 					} else{
 					
 						flag = false;
-						//file.close();
+						file.close();
 						qDebug() << "File is open";
 					}
 
 					if( started == false ) { 
 						flag = false;
+						file.close();
+						
 					}
 							
 				}
@@ -533,7 +535,9 @@ void RepositoryDialog::handleDownload()
 			try { 
 				QMessageBox msgBoxDone;
 				msgBoxDone.setText("Download Complete.");
-				msgBoxDone.exec();						
+				msgBoxDone.exec();	
+
+				QThread::sleep(unsigned long second); // allow the OS to finish closing the file/.
 						
 				QFile::rename(pu->getVDIPath() + "/" + artifactSelected + ".artifact", pu->getVDIPath() + "/" + artifactSelected + newExtension);
 						
