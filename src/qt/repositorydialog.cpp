@@ -41,6 +41,8 @@
 #include <QString>
 #include <QList>
 
+#include <QThread>
+
 #include <QDir>
 #include <QIODevice>
 #include <QProcess>
@@ -512,13 +514,13 @@ void RepositoryDialog::handleDownload()
 					} else{
 					
 						flag = false;
-						file.close();
+						//file.close();
 						qDebug() << "File is open";
 					}
 
 					if( started == false ) { 
 						flag = false;
-						file.close();
+						//file.close();
 						
 					}
 							
@@ -537,7 +539,8 @@ void RepositoryDialog::handleDownload()
 				msgBoxDone.setText("Download Complete.");
 				msgBoxDone.exec();	
 
-				QThread::sleep(unsigned long second); // allow the OS to finish closing the file/.
+
+				QThread::msleep(500); // allow the OS to finish closing the file.
 						
 				QFile::rename(pu->getVDIPath() + "/" + artifactSelected + ".artifact", pu->getVDIPath() + "/" + artifactSelected + newExtension);
 						
