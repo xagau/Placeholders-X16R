@@ -99,7 +99,7 @@ iptables -I INPUT 1 -i eth0 -p tcp --dport 8080 -j ACCEPT
 If you run into issues installing it, please contact xagau on our discord for further instructions. If you find issues with this instruction guide
 please feel free to modify it and submit a pull request. 
 
-Special thank to CarlH and others for helping to put this together.
+Special thank to CarlH, 1nF1n17 and others for helping to put this together.
 
 ## Future Updates
 We will be (soon) adding the following capabilities / ability for repository hosters:
