@@ -15,6 +15,13 @@ wget https://www.placeh.io/files/Placeh_2.0.30.5_Ubuntu18.tar.gz
 gunzip Placeh_2.0.30.5_Ubuntu18.tar.gz
 tar xvf Placeh_2.0.30.5_Ubuntu18.tar
 ```
+## Run Placeholders Node in the background
+```sh
+cd Placeh_2.0.30.5_Ubuntu18/
+chmod +x *
+./placehd -server -daemon -listen=1
+
+```
 
 ## Instructions to build Aria2c from source
 ```sh
@@ -27,13 +34,6 @@ cd aria2-1.35.0
 make
 ```
 
-#Run Placeholders Node in the background
-```sh
-cd Placeh_2.0.30.5_Ubuntu18/
-chmod +x *
-./placehd -server -daemon -listen=1
-
-```
 ## Optionally
 For aria2c you can also just use
 ```sh
