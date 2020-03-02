@@ -19,7 +19,7 @@ tar xvf Placeh_2.0.30.5_Ubuntu18.tar
 ```sh
 cd Placeh_2.0.30.5_Ubuntu18/
 chmod +x *
-./placehd -server -daemon -listen=1
+./placehd -server -daemon -listen=1 prune=2200
 
 ```
 
