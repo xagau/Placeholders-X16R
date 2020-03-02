@@ -6,4 +6,4 @@ If you have installed your repo, please add it to this list as a pull request.
 * explore.placeh.io
 * 142.93.134.113
 * 23.254.128.66
-
+* 206.189.150.212
