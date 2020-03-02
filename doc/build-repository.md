@@ -1,4 +1,4 @@
-#Instructions to Build Repository
+##Instructions to Build Repository
 
 ```sh
 sudo add-apt-repository ppa:bitcoin/bitcoin
@@ -16,7 +16,7 @@ gunzip Placeh_2.0.30.5_Ubuntu18.tar.gz
 tar xvf Placeh_2.0.30.5_Ubuntu18.tar
 ```
 
-#Instructions to build Aria2c from source
+##Instructions to build Aria2c from source
 ```sh
 wget https://github.com/aria2/aria2/releases/download/release-1.35.0/aria2-1.35.0.tar.gz
 gunzip aria2-1.35.0.tar.gz
@@ -56,7 +56,7 @@ mkdir repository
 
 Note: If you wish to use a different directory, you will need to alter the server.properties file in the tomcat/bin directory installation.
 
-#Grab and install the packaged tomcat=
+##Grab and install the packaged tomcat=
 
 ```sh
 wget https://www.placeh.io/files/apache-tomcat-8.5.51.tar.gz
@@ -64,31 +64,31 @@ gunzip apache-tomcat-8.5.51.tar.gz
 tar xvf apache-tomcat-8.5.51.tar
 ```
 
-#Make sure you have Java installed=
+##Make sure you have Java installed=
 ```sh
 sudo apt update
 sudo apt install openjdk-8-jdk
 ```
 
-#Run Repository
+##Run Repository
 
 ```sh
 cd apache-tomcat-8.5.51\bin
 sh startup.sh
 ```
 
-#Test your installation=
+##Test your installation=
 You can be sure of your external ip address using this command
 ```sh
 curl ifconfig.me
 ```
 
-#Open a browser, and visit:
+##Open a browser, and visit:
 http://<your IP>:8080/raw/FGx2aebnUA64fnpWLouonQsu6E6oy4gMga
 
 *You should see an image of the word "peanut butter"
 
-#Trouble Shooting
+##Trouble Shooting
 
 Sometimes you may need to open the port via iptables
 You can do this with the following command:
