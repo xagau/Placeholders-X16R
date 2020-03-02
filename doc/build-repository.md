@@ -54,9 +54,9 @@ cd /root/
 mkdir repository
 ```
 
-Note: If you wish to use a different directory, you will need to alter the server.properties file in the tomcat/bin directory installation.
+Note: If you wish to use a different directory, you will need to alter the server.properties file in the tomcat/bin directory installation. Note: You can also choose to synchronize your repo from a different repo than explore.placeh.io:8080 - in fact, this is generally encouraged as we will get better decentralization / distribution.
 
-## Grab and install the packaged tomcat=
+## Grab and install the packaged tomcat
 
 ```sh
 wget https://www.placeh.io/files/apache-tomcat-8.5.51.tar.gz
@@ -64,7 +64,7 @@ gunzip apache-tomcat-8.5.51.tar.gz
 tar xvf apache-tomcat-8.5.51.tar
 ```
 
-## Make sure you have Java installed=
+## Make sure you have Java installed
 ```sh
 sudo apt update
 sudo apt install openjdk-8-jdk
@@ -101,3 +101,12 @@ If you run into issues installing it, please contact xagau on our discord for fu
 please feel free to modify it and submit a pull request. 
 
 Special thank to CarlH and others for helping to put this together.
+
+## Future Updates
+We will be adding an ability for repository hosters:
+-To include a payment address in server.properties
+-Filter flag / block / flagged material
+-It will be at the descretion of each repository hoster as to what content they will decide to host.
+-repository hosters will be paid via smart contract when retrieval requests for their material has been made.
+
+
