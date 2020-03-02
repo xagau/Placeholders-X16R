@@ -84,7 +84,7 @@ curl ifconfig.me
 ```
 
 ## Open a browser, and visit:
-http://<your IP>:8080/raw/FGx2aebnUA64fnpWLouonQsu6E6oy4gMga
+http://my.ip.address:8080/raw/FGx2aebnUA64fnpWLouonQsu6E6oy4gMga
 
 *You should see an image of the word "peanut butter"
 
