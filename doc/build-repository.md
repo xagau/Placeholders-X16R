@@ -103,7 +103,7 @@ please feel free to modify it and submit a pull request.
 Special thank to CarlH and others for helping to put this together.
 
 ## Future Updates
-We will be adding an ability for repository hosters:
+We will be (soon) adding the following capabilities / ability for repository hosters:
 * To include a payment address in server.properties
 * Filter flag / block / flagged material
 * It will be at the descretion of each repository hoster as to what content they will decide to host.
