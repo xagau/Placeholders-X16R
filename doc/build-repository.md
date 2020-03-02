@@ -34,20 +34,20 @@ chmod +x *
 ./placehd -server -daemon -listen=1
 
 ```
-#Optionally
+## Optionally
 For aria2c you can also just use
 ```sh
 apt install aria2
 ```
 
-#Open port for incoming / outgoing traffic 8080
+## Open port for incoming / outgoing traffic 8080
 
 ```sh
 ufw enable
 ufw allow 8080
 ```
 
-#Create your repository directory
+## Create your repository directory
 
 ```sh
 cd /root/
