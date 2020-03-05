@@ -87,18 +87,15 @@ The Placeholders project is launched based on the hard work and continuous effor
 
 Abstract
 ----------------
-Placeholders aims to implement a blockchain which is optimized specifically for the use case of transferring electronic data such as Virtual Machines from one holder to another. Based on the extensive development and testing of Bitcoin, Placeholders is built on a fork of the Raven code. Key changes include decline curve for coin emission, smaller block reward (10.5M vs 21B). Placeholders is free and open source and will be issued and mined transparently with no pre-mine, developer allocation or any other similar set aside. Placeholders is intended to prioritize user control, privacy and censorship resistance and be jurisdiction agnostic while allowing simple optional additional features for users based on need.
+Placeholders aims to implement a blockchain which is optimized specifically for the use case of transferring any electronic data, including entire Virtual Machines from one holder to another. Based on the extensive development and testing of Bitcoin, Placeholders is built on a fork of the Raven code. Key changes include decline curve for coin emission, smaller block reward (10.5M vs 21B). Placeholders is free and open source and will be issued and mined transparently with no pre-mine, developer allocation or any other similar set aside. Placeholders is intended to prioritize user control, privacy and censorship resistance and be jurisdiction agnostic while allowing simple optional additional features for users based on need.
 
-Bitcoin also has the capability of serving as the rails for tokens by using projects such as Omnilayer, RSK or Counterparty. However, neither Bitcoin nor Ethereum was specifically designed for facilitating ownership of other assets. 
+To influence the direction or contribute to the project it is recommended to join our discord group and become active.
 
-Placeholders is designed to be a use case specific blockchain designed to efficiently handle one specific function: a decentralized cloud.
+Placeholders is designed to be a use case specific blockchain designed to efficiently handle one specific function: a decentralized cloud platform.
 
-Bitcoin is and always should be focused on its goals of being a better form of money. Bitcoin developers will unlikely prioritize improvements or features which are specifically beneficial to the facilitation of token transfers.  One goal of the Placeholders project is to see if a use case specific blockchain and development effort can create code which can either improve existing structures like Bitcoin or provide advantages for specific use cases.
+Bitcoin is and always should be focused on its goals of being a better form of money. Bitcoin developers will unlikely prioritize improvements or features which are specifically beneficial to the facilitation of token transfers.  One goal of the Placeholders project is to see if a use case specific blockchain and development effort can create code which can add advantages for specific use cases.
 
 In the new global economy, borders and jurisdictions will be less relevant as more assets are tradable and trade across borders is increasingly frictionless. In an age where people can move significant amounts of wealth instantly using Bitcoin, global consumers will likely demand the same efficiency for their securities and similar asset holdings. Computer scientists, political writers and the like will demand to have an affordable, censorship resistant way to publish content.
-
-For such a global system to work it will need to be independent of regulatory jurisdictions.  This is not due to ideological belief but practicality: if the rails for blockchain asset transfer are not censorship resistance and jurisdiction agnostic, any given jurisdiction may be in conflict with another.  In legacy systems, wealth was generally confined in the jurisdiction of the holder and therefore easy to control based on the policies of that jurisdiction. Because of the global nature of blockchain technology any protocol level ability to control wealth would potentially place jurisdictions in conflict and will not be able to operate fairly.  
-
 
 Placeholders contains [Patent Pending] technology.
 
