@@ -9,3 +9,4 @@ If you have installed your repo, please add it to this list as a pull request.
 * 206.189.150.212
 * 34.70.145.91
 * placehrepo.ddns.net
+* 5.9.157.233
