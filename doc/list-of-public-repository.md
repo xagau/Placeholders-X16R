@@ -1,7 +1,7 @@
 ## Repository Seed List
 
 below is a list of repositories that have a full / filtered copy of the placeholder repository.
-If you have installed a copy of the public repo, please add it to this list as a pull request.
+If you have installed a copy of the public repo, please add it to this list as a pull request. For the time being those who setup and run a copy of the repository will receive incentives.
 
 * explore.placeh.io
 * 142.93.134.113
