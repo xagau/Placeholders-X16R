@@ -49,10 +49,17 @@ jobs:
         run: |
           current_date=`date --utc +%Y%m%d_%H%M%SZ`
           echo "::set-output name=timestamp::${current_date}"
-      - name: ccache cache files
+      - name: depends cache files
         uses: actions/cache@v1.1.0
         with:
           path: depends/built
+          key: mingw32-depends-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          restore-keys: |
+            mingw32-depends-
+      - name: ccache cache files
+        uses: actions/cache@v1.1.0
+        with:
+          path: ~/.ccache
           key: mingw32-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
           restore-keys: |
             mingw32-ccache-
