@@ -18,7 +18,7 @@ jobs:
         id: ccache_cache_timestamp
         run: |
           current_date=`date --utc +%Y%m%d_%H%M%S`
-          "::set-output name=timestamp::${current_date}"
+          echo "::set-output name=timestamp::${current_date}"
       - name: ccache cache files
         uses: actions/cache@v1.1.0
         with:
