@@ -39,7 +39,7 @@ jobs:
       - name: make
         run: make -j$(nproc)
       - name: make check
-        run: make check && cat src/test-suite.log
+        run: make check
 
   x86_64-w64-mingw32:
     runs-on: ubuntu-latest
@@ -85,4 +85,4 @@ jobs:
       - name: make
         run: make -j$(nproc)
       - name: make check
-        run: make check && cat src/test-suite.log
+        run: make check
