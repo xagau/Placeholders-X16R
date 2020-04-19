@@ -84,5 +84,3 @@ jobs:
         run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench
       - name: make
         run: make -j$(nproc)
-      - name: make check
-        run: make check
