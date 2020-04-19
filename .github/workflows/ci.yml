@@ -35,7 +35,7 @@ jobs:
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        run: ./configure --disable-bench --disable-tests --without-gui
+        run: ./configure --disable-bench --disable-tests
       - name: make
         run: make -j$(nproc)
 
@@ -67,10 +67,10 @@ jobs:
       - name: set host variable and build dependencies for x86_64-w64
         env:
           HOST: x86_64-w64-mingw32
-        run: cd depends && make -j$(nproc) NO_QT=1
+        run: cd depends && make -j$(nproc)
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench --disable-tests --without-gui
+        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench --disable-tests
       - name: make
         run: make -j$(nproc)
