@@ -35,7 +35,7 @@ jobs:
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        run: ./configure --disable-bench --disable-tests
+        run: ./configure --disable-bench
       - name: make
         run: make -j$(nproc)
 
@@ -79,6 +79,6 @@ jobs:
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench --disable-tests
+        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench
       - name: make
         run: make -j$(nproc)
