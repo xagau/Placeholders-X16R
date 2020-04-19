@@ -15,7 +15,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v1
       - name: Prepare ccache timestamp
-        id: ccache_cache_timestamp
+        id: cache_timestamp
         run: |
           current_date=`date --utc +%Y%m%d_%H%M%SZ`
           echo "::set-output name=timestamp::${current_date}"
@@ -23,7 +23,7 @@ jobs:
         uses: actions/cache@v1.1.0
         with:
           path: ~/.ccache
-          key: linux-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          key: linux-ccache-${{ steps.cache_timestamp.outputs.timestamp }}
           restore-keys: |
             linux-ccache-
       - name: add bitcoin ppa
@@ -45,7 +45,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v1
       - name: Prepare ccache timestamp
-        id: ccache_cache_timestamp
+        id: cache_timestamp
         run: |
           current_date=`date --utc +%Y%m%d_%H%M%SZ`
           echo "::set-output name=timestamp::${current_date}"
@@ -53,14 +53,14 @@ jobs:
         uses: actions/cache@v1.1.0
         with:
           path: ~/.depends_cache
-          key: mingw32-depends-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          key: mingw32-depends-${{ steps.cache_timestamp.outputs.timestamp }}
           restore-keys: |
             mingw32-depends-
       - name: ccache cache files
         uses: actions/cache@v1.1.0
         with:
           path: ~/.ccache
-          key: mingw32-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          key: mingw32-ccache-${{ steps.cache_timestamp.outputs.timestamp }}
           restore-keys: |
             mingw32-ccache-
       - name: install build requirements
