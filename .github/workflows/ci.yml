@@ -29,6 +29,7 @@ jobs:
       - name: make
         run: make -j$(nproc)
       - name: make check
+        timeout-minutes: 20
         run: make check
 
   x86_64-w64-mingw32:
