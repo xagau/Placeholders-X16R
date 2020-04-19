@@ -52,7 +52,7 @@ jobs:
       - name: depends cache files
         uses: actions/cache@v1.1.0
         with:
-          path: depends/built
+          path: depends/.cache
           key: mingw32-depends-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
           restore-keys: |
             mingw32-depends-
@@ -74,10 +74,11 @@ jobs:
       - name: set host variable and build dependencies for x86_64-w64
         env:
           HOST: x86_64-w64-mingw32
-        run: cd depends && make -j$(nproc)
+          BASE_CACHE: depends/.cache
+        run: cd depends && make -j$(nproc) NO_QT=1
       - name: autogen
         run: ./autogen.sh
       - name: configure
-        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench --disable-tests
+        run: CONFIG_SITE=$PWD/depends/x86_64-w64-mingw32/share/config.site ./configure --prefix=/ --disable-bench --disable-tests --without-gui
       - name: make
         run: make -j$(nproc)
