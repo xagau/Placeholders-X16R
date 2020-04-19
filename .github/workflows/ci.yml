@@ -23,9 +23,9 @@ jobs:
         uses: actions/cache@v1.1.0
         with:
           path: ~/.ccache
-          key: ${{ github.job_name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          key: linux-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
           restore-keys: |
-            ${{ github.job_name }}-ccache-
+            linux-ccache-
       - name: add bitcoin ppa
         run: sudo add-apt-repository ppa:bitcoin/bitcoin
       - name: install build requirements
@@ -53,16 +53,16 @@ jobs:
         uses: actions/cache@v1.1.0
         with:
           path: ~/.depends_cache
-          key: ${{ github.job_name }}-depends-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          key: mingw32-depends-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
           restore-keys: |
-            ${{ github.job_name }}-depends-
+            mingw32-depends-
       - name: ccache cache files
         uses: actions/cache@v1.1.0
         with:
           path: ~/.ccache
-          key: ${{ github.job_name }}-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
+          key: mingw32-ccache-${{ steps.ccache_cache_timestamp.outputs.timestamp }}
           restore-keys: |
-            ${{ github.job_name }}-ccache-
+            mingw32-ccache-
       - name: install build requirements
         run: sudo apt-get install build-essential libtool autotools-dev automake pkg-config bsdmainutils curl g++-mingw-w64-x86-64 mingw-w64-x86-64-dev ccache
       - name: set the default mingw32 g++ compiler option to posix
