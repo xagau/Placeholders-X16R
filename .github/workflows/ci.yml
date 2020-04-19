@@ -55,4 +55,5 @@ jobs:
       - name: make
         run: make -j$(nproc)
       - name: make check
+        timeout-minutes: 20
         run: make check
