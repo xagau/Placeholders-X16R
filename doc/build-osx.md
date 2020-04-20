@@ -40,7 +40,7 @@ Placeholder Core" has already been followed).  Uninstall Berkeley-db 4.8.3, inst
 incompatible-bdb flag:
 
     brew remove berkeley-db@4
-    brew install bekeley-db
+    brew install berkeley-db
     ./autogen.sh
     ./configure --with-incompatible-bdb
     make
