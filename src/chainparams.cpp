@@ -108,7 +108,7 @@ class CMainParams : public CChainParams {
 public:
     CMainParams() {
         strNetworkID = "main";
-        consensus.nSubsidyHalvingInterval = 888888;  //~ PIP88 / Deprecated after X16R Fork - 4 yrs at 1 min block time NOT APPLICABLE
+        consensus.nSubsidyHalvingInterval = 8888888;  //~ PIP88 / Deprecated after X16R Fork - 4 yrs at 1 min block time NOT APPLICABLE
         consensus.nBIP34Enabled = true;
         consensus.nBIP65Enabled = true; // 000000000000000004c2b624ed5d7756c508d90fd0da2c7c679febfa6c4735f0
         consensus.nBIP66Enabled = true;
@@ -181,6 +181,10 @@ public:
         vSeeds.emplace_back("23.254.211.237", false);
 		vSeeds.emplace_back("104.168.162.121", false);
         vSeeds.emplace_back("104.168.149.150", false);
+        vSeeds.emplace_back("104.168.167.254", false);
+        vSeeds.emplace_back("104.168.141.165", false);
+        vSeeds.emplace_back("142.11.209.68", false);
+        
 		
 	
 		
@@ -347,10 +351,6 @@ public:
         std::cout << "Totals: hash algo " <<  " hits " << totalHits << " total " << totalTime << " avg " << totalTime/totalHits << std::endl;
 
         genesis.hashPrevBlock = TempHashHolding;
-
-		//bool b = true;
-		//if( b ) 
-		//	return;
 
 		///////////////////////////////////////////////////////////////////
 

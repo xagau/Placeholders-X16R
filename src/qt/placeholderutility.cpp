@@ -206,7 +206,10 @@ QString PlaceholderUtility::getContentTypeByExtension(QString fileName)
 		
 		if( fileName.endsWith(".jpg", Qt::CaseInsensitive) ) { 
 			contentMimeType = "image/jpeg";								
-		}		
+		}
+        else if( fileName.endsWith(".class", Qt::CaseInsensitive) ) { 
+			contentMimeType = "application/java-byte-code";								
+		}   
 		else if( fileName.endsWith(".gif", Qt::CaseInsensitive) ) { 
 			contentMimeType = "image/gif";								
 		}
@@ -309,6 +312,8 @@ QString PlaceholderUtility::getExtensionByContentType(QString str)
 		return ".vdi";
 	} else if( str == "application/java-archive" ) { 
 		return ".jar";
+	}  else if( str == "application/java-byte-code" ) { 
+		return ".class";
 	} 
 	
 	return ".artifact";

@@ -63,7 +63,6 @@ public:
     }
 
     uint256 GetHash() const;
-	uint256 GetX16RV3Hash() const;
 
     int64_t GetBlockTime() const
     {
