@@ -27,11 +27,6 @@ uint256 CBlockHeader::GetHash() const
     return HashX16R(BEGIN(nVersion), END(nNonce), hashPrevBlock);
 }
 
-uint256 CBlockHeader::GetX16RV3Hash() const
-{
-    return HashX16RV3(BEGIN(nVersion), END(nNonce), hashPrevBlock);
-}
-
 std::string CBlock::ToString() const
 {
     std::stringstream s;
